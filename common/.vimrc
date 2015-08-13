@@ -87,6 +87,10 @@ set guioptions-=L
 set pastetoggle=<F2>
 imap kj <Esc>
 
+" Preserve terminal background color.
+hi Normal ctermbg=none
+hi NonText ctermbg=none
+
 " Trim trailing whitespace
 autocmd BufWritePre * :%s/\s\+$//e
 " Autosave html files for easier things.
