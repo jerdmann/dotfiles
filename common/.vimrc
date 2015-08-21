@@ -11,10 +11,8 @@ Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-surround'
-Plugin 'flazz/vim-colorschemes'
 Plugin 'Raimondi/delimitMate'
 Plugin 'ervandew/supertab'
-Plugin 'danielmiessler/VimBlog'
 Plugin 'christoomey/vim-tmux-navigator'
 call vundle#end()
 set t_Co=256
