@@ -70,7 +70,6 @@ alias newvm='~/debesys-scripts/run ~/debesys-scripts/deploy/chef/scripts/vcloud_
 alias ec2='~/debesys-scripts/run ~/debesys-scripts/deploy/chef/scripts/ec2_instance.py'
 alias bump='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/bump_cookbook_version.py'
 alias deploy='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/request_deploy.py'
-alias deb='cd $(pwd | grep dev-root | cut -f1-5 -d\/) || echo "Not in a repo under dev-root."'
 alias debone='cd ~/dev-root/debesys-one'
 alias debtwo='cd ~/dev-root/debesys-two'
 alias debthree='cd ~/dev-root/debesys-three'
@@ -136,7 +135,12 @@ function cbup {
     while true; do knife cookbook --cookbook-path `git rev-parse --show-toplevel`/deploy/chef/cookbooks upload "$1" && break; sleep .1; done
 }
 
-function reporoot {
+function external-knife_() {
+   knife "$@" -c ~/.chef/knife.external.rb
+}
+alias eknife='external-knife_'
+
+function rr {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         cd $reporootdir

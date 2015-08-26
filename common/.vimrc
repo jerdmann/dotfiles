@@ -91,8 +91,6 @@ hi NonText ctermbg=none
 
 " Trim trailing whitespace
 autocmd BufWritePre * :%s/\s\+$//e
-" Autosave html files for easier things.
-autocmd FocusLost *.html w
 
 autocmd Filetype python set textwidth=100
 
