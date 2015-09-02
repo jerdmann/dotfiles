@@ -81,6 +81,7 @@ alias emacs='emacs -nw'
 alias ez="vim ~/.zshrc"
 alias sz='source ~/.zshrc'
 alias dbd='smbclient -U jerdmann -W intad //chifs01.int.tt.local/Share'
+alias ttpy='`git rev-parse --show-toplevel`/run python'
 
 alias tnew='tmux new-session -s '
 alias tattach='tmux attach-session -t '

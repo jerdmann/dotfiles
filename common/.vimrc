@@ -35,7 +35,7 @@ set tabstop=4
 set shiftround
 
 let g:ctrlp_by_filename = 1
-let g:ctrlp_working_path=0
+let g:ctrlp_working_path_mode = 'a'
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
 let g:ag_prg="ag --column --nogroup --noheading --nobreak"
