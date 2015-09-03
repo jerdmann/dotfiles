@@ -102,6 +102,9 @@ export JENKINS_USER='jason.erdmann@tradingtechnologies.com'
 # ec2 manager name
 export MGR="jerdmann"
 
+# enable autocomplete in interactive python shells
+export PYTHONSTARTUP="/home/jason/.pythonrc"
+
 # ttnet project dirs
 alias cdspl='cd ~/ttnet/monitoring/splunk'
 alias cdici='cd ~/ttnet/monitoring/icinga'
