@@ -15,16 +15,11 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'ervandew/supertab'
 Plugin 'christoomey/vim-tmux-navigator'
 call vundle#end()
-set t_Co=256
-colors badwolf
-" colorcolumn is apparently not supported in the centos 6.4 vim
-call system("test -f /etc/debian_version")
-if v:shell_error == 0
-    set colorcolumn=+1
-endif
+colors apprentice
 filetype plugin indent on
 
 set autoindent
+set autoread
 set autowrite
 set nobackup
 set expandtab
@@ -51,7 +46,6 @@ set history=1000
 set clipboard=unnamed
 set go+=a
 set shortmess=atI
-set autoread
 
 syntax on
 set t_ut=
@@ -73,6 +67,10 @@ set scrolloff=3
 set scrolljump=6
 set laststatus=2
 
+" Set a textwidth but don't autowrap anything.
+set textwidth=80
+set fo-=t
+
 set wildmenu
 set wildmode=list:longest,full
 set wildignore=*.swp,*.pyc
@@ -85,14 +83,8 @@ set guioptions-=L
 set pastetoggle=<F2>
 imap kj <Esc>
 
-" Preserve terminal background color.
-hi Normal ctermbg=none
-hi NonText ctermbg=none
-
 " Trim trailing whitespace
 autocmd BufWritePre * :%s/\s\+$//e
-
-autocmd Filetype python set textwidth=100
 
 let mapleader = ","
 nnoremap <leader>l :set invrelativenumber<cr>

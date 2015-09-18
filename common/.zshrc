@@ -76,6 +76,7 @@ alias debthree='cd ~/dev-root/debesys-three'
 alias debs='cd ~/debesys-scripts'
 alias dev='cd ~/dev-root'
 alias dot='cd ~/.dotfiles'
+alias scan='cd ~/darwin-local/debesys-repo/scry/dashboard/darwinscan/tt/darwinscan/'
 alias gvim='gvim --remote-silent'
 alias emacs='emacs -nw'
 alias ez="vim ~/.zshrc"
