@@ -81,7 +81,7 @@
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
 (global-set-key (kbd "C-p") 'lame-ctrlp)
 
+(load-theme 'sanityinc-tomorrow-night)
 (if (display-graphic-p)
     (progn
-      (set-frame-font "Dejavu Sans Mono-10.5" nil t)
-      (ample-theme)))
+      (set-frame-font "Dejavu Sans Mono-10.5" nil t)))
