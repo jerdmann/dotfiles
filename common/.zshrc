@@ -70,6 +70,7 @@ alias newvm='~/debesys-scripts/run ~/debesys-scripts/deploy/chef/scripts/vcloud_
 alias ec2='~/debesys-scripts/run ~/debesys-scripts/deploy/chef/scripts/ec2_instance.py'
 alias bump='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/bump_cookbook_version.py'
 alias deploy='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/request_deploy.py'
+alias build='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/request_build.py'
 alias debone='cd ~/dev-root/debesys-one'
 alias debtwo='cd ~/dev-root/debesys-two'
 alias debthree='cd ~/dev-root/debesys-three'

@@ -20,7 +20,6 @@ filetype plugin indent on
 
 set autoindent
 set autoread
-set autowrite
 set nobackup
 set expandtab
 set smarttab
