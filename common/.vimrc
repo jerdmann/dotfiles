@@ -89,6 +89,7 @@ let mapleader = ","
 nnoremap <leader>l :set invrelativenumber<cr>
 nnoremap <leader>w :w<cr>
 nnoremap <leader><space> :noh<cr>
+nnoremap <leader>rs :%s/\s\+$<cr>
 
 nnoremap gl :b#<CR>
 nnoremap Q <nop>
