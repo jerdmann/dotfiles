@@ -69,8 +69,10 @@ alias vcloud='~/debesys-scripts/run ~/debesys-scripts/deploy/chef/scripts/vcloud
 alias newvm='~/debesys-scripts/run ~/debesys-scripts/deploy/chef/scripts/vcloud_server.py -a -s s --bootstrap'
 alias ec2='~/debesys-scripts/run ~/debesys-scripts/deploy/chef/scripts/ec2_instance.py'
 alias bump='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/bump_cookbook_version.py'
+alias checkrepo='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/check_repo.py'
 alias deploy='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/request_deploy.py'
 alias build='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/request_build.py'
+alias knife-ssh='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/knife_ssh.py'
 alias debone='cd ~/dev-root/debesys-one'
 alias debtwo='cd ~/dev-root/debesys-two'
 alias debthree='cd ~/dev-root/debesys-three'
@@ -163,7 +165,7 @@ function vpn {
 }
 
 function makehome {
-    scp ~/.vimrc "$1":~ && scp -r ~/.vim "$1":~ && scp ~/.tmux.conf "$1":~
+    scp ~/.vimrc "$1":~ && scp -r ~/.vim "$1":~ &>/dev/null && scp ~/.tmux.conf "$1":~
 }
 
 function external()
