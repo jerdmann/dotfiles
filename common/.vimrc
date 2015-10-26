@@ -14,6 +14,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
 Plugin 'ervandew/supertab'
 Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'fatih/vim-go'
 call vundle#end()
 colors apprentice
 filetype plugin indent on
@@ -42,7 +43,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_ruby_mri_args = '-T1 -c'
 
 set history=1000
-set clipboard=unnamed
+set clipboard=unnamedplus
 set go+=a
 set shortmess=atI
 

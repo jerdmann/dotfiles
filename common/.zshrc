@@ -107,6 +107,9 @@ export MGR="jerdmann"
 # enable autocomplete in interactive python shells
 export PYTHONSTARTUP="/home/jason/.pythonrc"
 
+export GOPATH="/home/jason/gocode"
+export PATH=$PATH:/usr/local/go/bin
+
 # ttnet project dirs
 alias cdspl='cd ~/ttnet/monitoring/splunk'
 alias cdici='cd ~/ttnet/monitoring/icinga'
