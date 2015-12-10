@@ -30,7 +30,6 @@
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 (setq backup-inhibited t)
-(xterm-mouse-mode 1)
 (setq mouse-yank-at-point t)
 
 (setq inhibit-startup-screen 1)
@@ -65,8 +64,10 @@
 (global-set-key (kbd "C-o") 'other-window)
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
 (global-set-key (kbd "C-p") 'lame-ctrlp)
+(global-set-key (kbd "<f5>") 'compile)
 
-(load-theme 'sanityinc-tomorrow-night)
+(load-theme 'material)
 (if (display-graphic-p)
     (progn
-      (set-frame-font "Dejavu Sans Mono-10.5" nil t)))
+      (set-frame-font "Hack-10.5" nil t)
+      ))

@@ -113,9 +113,6 @@ export GOPATH="/home/jason/gocode"
 export PATH=$PATH:/usr/local/go/bin
 
 # ttnet project dirs
-alias cdspl='cd ~/ttnet/monitoring/splunk'
-alias cdici='cd ~/ttnet/monitoring/icinga'
-alias cdds='cd ~/ttnet/monitoring/scripts/centosDs'
 alias debone='cd ~/dev-root/debesys-one'
 alias debtwo='cd ~/dev-root/debesys-two'
 alias debthree='cd ~/dev-root/debesys-three'
