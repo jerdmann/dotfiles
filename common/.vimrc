@@ -4,7 +4,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'davidhalter/jedi-vim'
-Plugin 'sjl/badwolf'
+Plugin 'romainl/Apprentice'
 Plugin 'kien/ctrlp.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'rking/ag.vim'
@@ -93,6 +93,9 @@ imap kj <Esc>
 
 " Trim trailing whitespace
 autocmd BufWritePre * :%s/\s\+$//e
+
+autocmd Filetype javascript setlocal ts=2 sw=2
+autocmd Filetype html setlocal ts=2 sw=2
 
 let mapleader = ","
 nnoremap <leader>l :set invrelativenumber<cr>

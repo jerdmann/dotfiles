@@ -10,7 +10,8 @@
   (when (not package-archive-contents)
     (package-refresh-contents))
   (dolist (p '(flycheck
-               pyflakes))
+               pyflakes
+               color-theme-sanityinc-tomorrow))
     (when (not (package-installed-p p))
       (package-install p))))
 
@@ -41,7 +42,6 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-hook 'python-mode-hook 'flycheck-mode)
 ;; (add-hook 'python-mode-hook 'jedi:setup)
-(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (setq ruby-indent-level 4)
 
 (require 'uniquify)
@@ -52,21 +52,6 @@
 (setq ido-enable-flex-matching 1)
 
 (setq grep-command "grep -nHR -e ")
-
-;; (defun dev-cookbook-upload ()
-;;   "Upload a cookbook version < 1.0.0, or bail otherwise."
-;;   (interactive)
-;;   (let ((cb (nth 1 (member "cookbooks" (split-string default-directory "/"))))
-;;         (metafile 'nil)
-;;     (if cb
-;;         (while (not metafile)
-;;           (setq metafile
-;;                 (delete
-;;       (with-temp-buffer
-;;         (insert-file-contents
-;;          (
-;;       (message "no cb found..."))))
-;; (mapconcat 'identity tokens "/")
 
 (defun lame-ctrlp ()
   """Super lame emulation of the excellent ctrlp vim plugin."""
