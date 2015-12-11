@@ -51,6 +51,8 @@ let g:go_highlight_trailing_whitespace_error = 0
 let g:go_highlight_extra_types = 0
 let g:go_highlight_operators = 0
 
+let delimitMate_expand_cr = 1
+
 set history=1000
 set clipboard=unnamedplus
 set go+=a
