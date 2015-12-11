@@ -22,12 +22,16 @@ filetype plugin indent on
 set autoindent
 set autoread
 set nobackup
-set expandtab
 set smarttab
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 set shiftround
+
+autocmd Filetype javascript setlocal ts=2 sw=2
+autocmd Filetype html setlocal ts=2 sw=2
+autocmd Filetype python setlocal ts=4 sw=4 expandtab
+autocmd Filetype ruby setlocal ts=4 sw=4 expandtab
 
 let g:ctrlp_by_filename = 1
 let g:ctrlp_working_path_mode = 'a'
@@ -49,6 +53,8 @@ let g:go_highlight_array_whitespace_error = 0
 let g:go_highlight_trailing_whitespace_error = 0
 let g:go_highlight_extra_types = 0
 let g:go_highlight_operators = 0
+
+let delimitMate_expand_cr = 1
 
 set history=1000
 set clipboard=unnamedplus
@@ -93,9 +99,6 @@ imap kj <Esc>
 
 " Trim trailing whitespace
 autocmd BufWritePre * :%s/\s\+$//e
-
-autocmd Filetype javascript setlocal ts=2 sw=2
-autocmd Filetype html setlocal ts=2 sw=2
 
 let mapleader = ","
 nnoremap <leader>l :set invrelativenumber<cr>
