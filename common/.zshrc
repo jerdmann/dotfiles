@@ -118,25 +118,15 @@ alias debtwo='cd ~/dev-root/debesys-two'
 alias debthree='cd ~/dev-root/debesys-three'
 alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
 
-# misc dir stuff
-alias -g ...='../..'
-alias -g ....='../../..'
-alias -g .....='../../../..'
-alias -g ......='../../../../..'
-
 if [[ -f ~/.keys ]]; then
     . ~/.keys
-fi
-
-if [[ -f ~/.darwincfg ]]; then
-    . ~/.darwincfg
 fi
 
 # capslock is useless
 setxkbmap -option ctrl:nocaps 2>/dev/null
 
 # set brightness
-xbacklight -set 90 2>/dev/null || cat /dev/null
+xbacklight -set 80 2>/dev/null || :
 
 # some function definitions
 function cbup {
@@ -155,10 +145,8 @@ function rr {
     fi
 }
 
-# The strace below mysteriously gets the juniper vpn client to work.  Otherwise it bails when trying
-# to set routes?  Not sure what the deal is...
 function vpn {
-    sudo strace -f /home/jason/.juniper_networks/ncsvc -h us-ttvpn.tradingtechnologies.com -u jerdmann -p "$1" -r "TT VPN" -f /home/jason/.juniper_networks/tt.cert
+    sudo /home/jason/.juniper_networks/ncsvc -h us-ttvpn.tradingtechnologies.com -u jerdmann -p "$1" -r "TT VPN" -f /home/jason/.juniper_networks/tt.cert
 }
 
 function makehome {
