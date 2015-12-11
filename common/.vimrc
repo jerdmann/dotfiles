@@ -15,6 +15,7 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'ervandew/supertab'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
+Plugin 'msanders/snipmate.vim'
 call vundle#end()
 colors apprentice
 filetype plugin indent on
