@@ -22,12 +22,13 @@ filetype plugin indent on
 
 set autoindent
 set autoread
+set cursorline
 set nobackup
-set smarttab
+set shiftround
 set shiftwidth=4
+set smarttab
 set softtabstop=4
 set tabstop=4
-set shiftround
 
 autocmd Filetype javascript setlocal ts=2 sw=2
 autocmd Filetype html setlocal ts=2 sw=2
@@ -98,10 +99,9 @@ set guioptions-=L
 set pastetoggle=<F2>
 imap kj <Esc>
 
-" Trim trailing whitespace
-autocmd BufWritePre * :%s/\s\+$//e
-
 let mapleader = ","
+nnoremap <leader>a :Ag
+nnoremap <leader>c :ccl<cr>
 nnoremap <leader>l :set invrelativenumber<cr>
 nnoremap <leader>w :w<cr>
 nnoremap <leader><space> :noh<cr>
