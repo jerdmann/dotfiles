@@ -4,7 +4,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'davidhalter/jedi-vim'
-Plugin 'romainl/Apprentice'
+Plugin 'flazz/vim-colorschemes'
 Plugin 'kien/ctrlp.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'rking/ag.vim'
@@ -17,7 +17,7 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
 Plugin 'msanders/snipmate.vim'
 call vundle#end()
-colors apprentice
+colors molokai
 filetype plugin indent on
 
 set autoindent
