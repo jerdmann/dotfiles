@@ -2,3 +2,5 @@ ext/
 *.min.*
 tags
 TAGS
+node_modules
+bower_modules
