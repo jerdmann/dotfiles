@@ -86,6 +86,7 @@ alias ez="vim ~/.zshrc"
 alias sz='source ~/.zshrc'
 alias dbd='smbclient -U jerdmann -W intad //chifs01.int.tt.local/Share'
 alias ttpy='`git rev-parse --show-toplevel`/run python'
+alias angdoc='cd ~/Downloads/angular-1.5.0-rc.0 && python -m SimpleHTTPServer 8000 && google-chrome http://localhost:8000/docs'
 
 alias tnew='tmux new-session -s '
 alias tattach='tmux attach-session -t '
