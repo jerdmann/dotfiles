@@ -5,6 +5,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'flazz/vim-colorschemes'
+Plugin 'romainl/Apprentice'
 Plugin 'kien/ctrlp.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'rking/ag.vim'
@@ -17,13 +18,14 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
 Plugin 'msanders/snipmate.vim'
 call vundle#end()
-colors molokai
+colors apprentice
 filetype plugin indent on
 
 set autoindent
 set autoread
 set cursorline
 set nobackup
+set noswapfile
 set shiftround
 set shiftwidth=4
 set smarttab
