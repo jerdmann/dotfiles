@@ -1,5 +1,6 @@
 ext/
 *.min.*
+vendor.js
 tags
 TAGS
 node_modules

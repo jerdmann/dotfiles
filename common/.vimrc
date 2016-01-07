@@ -17,6 +17,7 @@ Plugin 'ervandew/supertab'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
 Plugin 'msanders/snipmate.vim'
+Plugin 'tpope/vim-fugitive'
 call vundle#end()
 colors apprentice
 filetype plugin indent on
@@ -89,6 +90,9 @@ set laststatus=2
 set textwidth=80
 set fo-=t
 
+" Trim trailing whitespace
+autocmd BufWritePre * :%s/\s\+$//e
+
 set wildmenu
 set wildmode=list:longest,full
 set wildignore=*.swp,*.pyc
@@ -107,7 +111,6 @@ nnoremap <leader>c :ccl<cr>
 nnoremap <leader>l :set invrelativenumber<cr>
 nnoremap <leader>w :w<cr>
 nnoremap <leader><space> :noh<cr>
-nnoremap <leader>rs :%s/\s\+$<cr>
 
 nnoremap gl :b#<CR>
 nnoremap Q <nop>

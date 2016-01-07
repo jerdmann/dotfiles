@@ -95,7 +95,7 @@ alias tlist='tmux list-session'
 
 # debesys stuff
 alias ttknife='`git rev-parse --show-toplevel`/run `git rev-parse --show-toplevel`/ttknife'
-alias run='`git rev-parse --show-toplevel`/run'
+alias ttrun='`git rev-parse --show-toplevel`/run'
 
 # vcd stuff
 export INTAD_USER=jerdmann
@@ -135,9 +135,14 @@ function cbup {
 }
 
 function external-knife_() {
-   knife "$@" -c ~/.chef/knife.external.rb
+    knife "$@" -c ~/.chef/knife.external.rb
 }
 alias eknife='external-knife_'
+
+function pulldev {
+	scp "10.192.1.36:/opt/debesys/scry/python/tt/scryscan/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scryscan/tt/scryscan/
+	scp "10.192.1.36:/opt/debesys/scry/python/tt/scryweb/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scryweb/
+}
 
 function rr {
     reporootdir=$(git rev-parse --show-toplevel)
