@@ -76,6 +76,7 @@ alias knife-ssh='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scri
 alias debone='cd ~/dev-root/debesys-one'
 alias debtwo='cd ~/dev-root/debesys-two'
 alias debthree='cd ~/dev-root/debesys-three'
+alias debscry='cd ~/scrytest/debesys-repo/scry'
 alias debscripts='cd ~/debesys-scripts/deploy/chef/scripts'
 alias debs='cd ~/debesys-scripts'
 alias dev='cd ~/dev-root'
@@ -139,9 +140,19 @@ function external-knife_() {
 }
 alias eknife='external-knife_'
 
-function pulldev {
-	scp "10.192.1.36:/opt/debesys/scry/python/tt/scryscan/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scryscan/tt/scryscan/
-	scp "10.192.1.36:/opt/debesys/scry/python/tt/scryweb/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scryweb/
+function pullscry {
+	scp "$1:/opt/debesys/scry/python/tt/scryscan/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scryscan/tt/scryscan/
+	scp "$1:/opt/debesys/scry/python/tt/scrylib/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scrylib/tt/scrylib/
+	scp "$1:/opt/debesys/scry/python/tt/scryweb/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scryweb/
+}
+
+function scrymake {
+    rm -f ~/scrytest/debesys-repo/build/x86-64/debug/python/tt/scryscan/*
+    cp -l ~/scrytest/debesys-repo/scry/dashboard/scryscan/tt/scryscan/*.py ~/scrytest/debesys-repo/build/x86-64/debug/python/tt/scryscan/
+}
+
+function scrytest {
+    ttpy ~/scrytest/debesys-repo/scry/dashboard/scryscan/tests/test_data_store.py
 }
 
 function rr {

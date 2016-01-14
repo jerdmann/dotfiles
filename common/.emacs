@@ -40,6 +40,7 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-hook 'python-mode-hook 'flycheck-mode)
+(add-hook 'c++-mode-hook 'flycheck-mode)
 ;; (add-hook 'python-mode-hook 'jedi:setup)
 (setq ruby-indent-level 4)
 
@@ -63,7 +64,6 @@
 (global-set-key (kbd "C-b") 'ido-switch-buffer)
 (global-set-key (kbd "C-o") 'other-window)
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
-(global-set-key (kbd "C-p") 'lame-ctrlp)
 (global-set-key (kbd "<f5>") 'compile)
 
 (load-theme 'material)
