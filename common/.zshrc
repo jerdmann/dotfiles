@@ -146,7 +146,9 @@ function pullscry {
 
 function scrymake {
     rm -f ~/scrytest/debesys-repo/build/x86-64/debug/python/tt/scryscan/*
+    rm -f ~/scrytest/debesys-repo/build/x86-64/debug/python/tt/scrylib/*
     cp -l ~/scrytest/debesys-repo/scry/dashboard/scryscan/tt/scryscan/*.py ~/scrytest/debesys-repo/build/x86-64/debug/python/tt/scryscan/
+    cp -l ~/scrytest/debesys-repo/scry/dashboard/scrylib/tt/scrylib/*.py ~/scrytest/debesys-repo/build/x86-64/debug/python/tt/scrylib/
 }
 
 function scrytest {

@@ -13,7 +13,7 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
-Plugin 'Valloric/YouCompleteMe'
+Plugin 'ervandew/supertab'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
 Plugin 'msanders/snipmate.vim'
@@ -60,6 +60,9 @@ let g:go_highlight_extra_types = 0
 let g:go_highlight_operators = 0
 
 let delimitMate_expand_cr = 1
+
+let g:syntastic_cpp_compiler = 'clang++'
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 
 set history=1000
 set clipboard=unnamedplus

@@ -22,7 +22,6 @@
 
 (setq custom-safe-themes t)
 (setq-default highlight-tabs t)
-(setq-default indent-tabs-mode nil)
 (setq tab-always-indent `complete)
 (global-auto-revert-mode t)
 (setq fill-column 80)
@@ -40,6 +39,7 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-hook 'python-mode-hook 'flycheck-mode)
+
 (add-hook 'c++-mode-hook 'flycheck-mode)
 ;; (add-hook 'python-mode-hook 'jedi:setup)
 (setq ruby-indent-level 4)
@@ -50,6 +50,8 @@
 (require 'ido)
 (ido-mode t)
 (setq ido-enable-flex-matching 1)
+
+(require 'company)
 
 (setq grep-command "grep -nHR -e ")
 

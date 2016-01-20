@@ -1,5 +1,6 @@
 ext/
 *.min.*
+*.pyc
 vendor.js
 tags
 TAGS
