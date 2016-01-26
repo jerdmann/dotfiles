@@ -5,26 +5,23 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'flazz/vim-colorschemes'
-Plugin 'romainl/Apprentice'
 Plugin 'kien/ctrlp.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
-Plugin 'tpope/vim-surround'
 Plugin 'Raimondi/delimitMate'
-Plugin 'ervandew/supertab'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
 Plugin 'msanders/snipmate.vim'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'tpope/vim-fugitive'
 call vundle#end()
-colors apprentice
+colors Tomorrow-Night
 filetype plugin indent on
 
 set autoindent
 set autoread
-set cursorline
 set nobackup
 set noswapfile
 set shiftround
@@ -33,6 +30,8 @@ set smarttab
 set softtabstop=4
 set tabstop=4
 
+autocmd Filetype cpp setlocal ts=2 sw=2 expandtab
+autocmd Filetype make setlocal ts=8 noexpandtab
 autocmd Filetype javascript setlocal ts=2 sw=2 expandtab
 autocmd Filetype html setlocal ts=2 sw=2 expandtab
 autocmd Filetype python setlocal ts=4 sw=4 expandtab
@@ -50,6 +49,7 @@ let g:syntastic_cursor_column = 0
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_ruby_mri_args = '-T1 -c'
+let g:syntastic_disabled_filetypes=['cpp']
 
 let g:go_fmt_fail_silently = 0
 let g:go_autodetect_gopath = 1
@@ -61,8 +61,7 @@ let g:go_highlight_operators = 0
 
 let delimitMate_expand_cr = 1
 
-let g:syntastic_cpp_compiler = 'clang++'
-let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+let g:ycm_confirm_extra_conf = 0
 
 set history=1000
 set clipboard=unnamedplus
@@ -85,8 +84,7 @@ set splitright
 set ruler
 set showcmd
 set hidden
-set scrolloff=3
-set scrolljump=6
+set scrolljump=10
 set laststatus=2
 
 " Set a textwidth but don't autowrap anything.
@@ -106,7 +104,7 @@ set guioptions-=r
 set guioptions-=L
 
 set pastetoggle=<F2>
-imap kj <Esc>
+imap jf <Esc>
 
 let mapleader = ","
 nnoremap <leader>a :Ag
