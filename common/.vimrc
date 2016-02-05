@@ -31,9 +31,9 @@ set softtabstop=4
 set tabstop=4
 
 autocmd Filetype cpp setlocal ts=2 sw=2 expandtab
-autocmd Filetype make setlocal ts=8 noexpandtab
-autocmd Filetype javascript setlocal ts=2 sw=2 expandtab
-autocmd Filetype html setlocal ts=2 sw=2 expandtab
+autocmd Filetype make setlocal ts=8
+autocmd Filetype javascript setlocal ts=2 sw=2
+autocmd Filetype html setlocal ts=2 sw=2
 autocmd Filetype python setlocal ts=4 sw=4 expandtab
 autocmd Filetype ruby setlocal ts=4 sw=4 expandtab
 
@@ -87,10 +87,6 @@ set hidden
 set scrolljump=10
 set laststatus=2
 
-" Set a textwidth but don't autowrap anything.
-set textwidth=80
-set fo-=t
-
 " Trim trailing whitespace
 autocmd BufWritePre * :%s/\s\+$//e
 
@@ -104,7 +100,7 @@ set guioptions-=r
 set guioptions-=L
 
 set pastetoggle=<F2>
-imap jf <Esc>
+imap kj <Esc>
 
 let mapleader = ","
 nnoremap <leader>a :Ag
