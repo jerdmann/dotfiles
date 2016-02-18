@@ -86,8 +86,6 @@ alias sz='source ~/.zshrc'
 alias dbd='smbclient -U jerdmann -W intad //chifs01.int.tt.local/Share'
 alias ttpy='`git rev-parse --show-toplevel`/run python'
 
-alias cppdoc='cd ~/Downloads/cppreference/output/reference && google-chrome http://localhost:8000/en && python -m SimpleHTTPServer 8000'
-
 alias tnew='tmux new-session -s '
 alias tattach='tmux attach-session -t '
 alias tkill='tmux kill-session -t '
@@ -170,6 +168,13 @@ function vpn {
 function makehome {
     scp ~/.vimrc "$1":~ && scp -r ~/.vim "$1":~ &>/dev/null && scp ~/.tmux.conf "$1":~
 }
+
+function cppdoc {
+    cd ~/Downloads/cppreference/reference/en.cppreference.com
+    python -m SimpleHTTPServer 8000 &
+    google-chrome http://localhost:8000 &
+}
+
 
 function external()
 {

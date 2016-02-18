@@ -29,13 +29,21 @@ set shiftwidth=4
 set smarttab
 set softtabstop=4
 set tabstop=4
+set expandtab
 
-autocmd Filetype cpp setlocal ts=2 sw=2 expandtab
-autocmd Filetype make setlocal ts=8
+augroup reload_vimrc " {
+    autocmd!
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END " }
+
+autocmd Filetype cpp setlocal ts=2 sw=2
+autocmd Filetype make setlocal ts=8 noexpandtab
 autocmd Filetype javascript setlocal ts=2 sw=2
 autocmd Filetype html setlocal ts=2 sw=2
-autocmd Filetype python setlocal ts=4 sw=4 expandtab
-autocmd Filetype ruby setlocal ts=4 sw=4 expandtab
+autocmd Filetype python setlocal ts=4 sw=4
+autocmd Filetype ruby setlocal ts=4 sw=4
+
+autocmd BufWritePre * :%s/\s\+$//e
 
 let g:ctrlp_by_filename = 1
 let g:ctrlp_working_path_mode = 'a'
@@ -49,7 +57,6 @@ let g:syntastic_cursor_column = 0
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_ruby_mri_args = '-T1 -c'
-let g:syntastic_disabled_filetypes=['cpp']
 
 let g:go_fmt_fail_silently = 0
 let g:go_autodetect_gopath = 1
@@ -61,6 +68,7 @@ let g:go_highlight_operators = 0
 
 let delimitMate_expand_cr = 1
 
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
 
 set history=1000
@@ -86,9 +94,6 @@ set showcmd
 set hidden
 set scrolljump=10
 set laststatus=2
-
-" Trim trailing whitespace
-autocmd BufWritePre * :%s/\s\+$//e
 
 set wildmenu
 set wildmode=list:longest,full
