@@ -17,8 +17,11 @@ Plugin 'msanders/snipmate.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'tpope/vim-fugitive'
 call vundle#end()
-colors Tomorrow-Night
+
+colors Tomorrow-Night-Eighties
 filetype plugin indent on
+set number
+set cursorline
 
 set autoindent
 set autoread

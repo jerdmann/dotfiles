@@ -22,7 +22,7 @@
 
 (setq custom-safe-themes t)
 (setq-default highlight-tabs t)
-(setq tab-width 4)
+(setq tab-width 2)
 (global-auto-revert-mode t)
 (setq fill-column 80)
 
@@ -40,6 +40,7 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+(setq-default c-basic-offset 2 c-default-style "linux")
 (setq compile-command "g++ -std=c++11 -Wall ")
 (setq compilation-ask-about-save nil)
 (add-hook 'c++-mode-hook 'auto-complete-mode)
@@ -58,6 +59,7 @@
 (setq ido-enable-flex-matching 1)
 
 (require 'auto-complete)
+(require 'auto-complete-clang)
 (global-auto-complete-mode)
 
 ;; (require 'company)
@@ -77,7 +79,7 @@
 (global-set-key (kbd "C-o") 'other-window)
 (global-set-key (kbd "<f5>") 'compile)
 
-(load-theme 'wombat)
+(load-theme 'sanityinc-tomorrow-night)
 (if (display-graphic-p)
     (progn
       (set-frame-font "DejaVu Sans Mono-11" nil t)

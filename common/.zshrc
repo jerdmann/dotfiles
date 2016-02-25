@@ -63,6 +63,8 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
+export LD_LIBRARY_PATH='/usr/local/include'
+
 # some more aliases
 alias ll='ls -alF'
 alias vcloud='~/debesys-scripts/run ~/debesys-scripts/deploy/chef/scripts/vcloud_server.py'
