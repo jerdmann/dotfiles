@@ -118,6 +118,7 @@ alias debone='cd ~/dev-root/debesys-one'
 alias debtwo='cd ~/dev-root/debesys-two'
 alias debthree='cd ~/dev-root/debesys-three'
 alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
+alias proto='cd `git rev-parse --show-toplevel`/all_messages/source/tt/messaging'
 
 if [[ -f ~/.keys ]]; then
     . ~/.keys
@@ -140,9 +141,9 @@ function external-knife_() {
 alias eknife='external-knife_'
 
 function pullscry {
-	scp "$1:/opt/debesys/scry/python/tt/scryscan/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scryscan/tt/scryscan/
-	scp "$1:/opt/debesys/scry/python/tt/scrylib/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scrylib/tt/scrylib/
-	scp "$1:/opt/debesys/scry/python/tt/scryweb/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scryweb/
+    scp "$1:/opt/debesys/scry/python/tt/scryscan/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scryscan/tt/scryscan/
+    scp "$1:/opt/debesys/scry/python/tt/scrylib/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scrylib/tt/scrylib/
+    scp "$1:/opt/debesys/scry/python/tt/scryweb/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scryweb/
 }
 
 function scrymake {
