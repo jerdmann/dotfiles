@@ -172,7 +172,7 @@ function makehome {
 }
 
 function cppdoc {
-    cd ~/Downloads/cppreference/reference/en.cppreference.com
+    cd ~/Documents/cppreference/reference/en.cppreference.com
     python -m SimpleHTTPServer 8000 &
     google-chrome http://localhost:8000 &
 }

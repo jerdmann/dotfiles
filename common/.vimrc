@@ -20,7 +20,6 @@ call vundle#end()
 
 colors Tomorrow-Night-Eighties
 filetype plugin indent on
-set number
 set cursorline
 
 set autoindent
