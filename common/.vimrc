@@ -120,6 +120,9 @@ nnoremap gl :b#<CR>
 nnoremap Q <nop>
 nnoremap Y y$
 
+nnoremap <silent> <F7> :tp<cr>
+nnoremap <silent> <F8> :tn<cr>
+
 nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-j> <C-w>j
 nnoremap <silent> <C-k> <C-w>k

@@ -1,6 +1,8 @@
 ext/
 *.min.*
 *.pyc
+*.gz
+*.svg
 *.css
 vendor.js
 tags

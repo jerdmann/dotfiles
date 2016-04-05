@@ -1,1 +1,3 @@
 --python-kinds=-i
+--exclude=tags
+--languages=C,C++,Python

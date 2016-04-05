@@ -78,7 +78,7 @@ alias knife-ssh='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scri
 alias debone='cd ~/dev-root/debesys-one'
 alias debtwo='cd ~/dev-root/debesys-two'
 alias debthree='cd ~/dev-root/debesys-three'
-alias debscry='cd ~/scrytest/debesys-repo/scry'
+alias debvm='cd ~/centvm/debesys-repo'
 alias dev='cd ~/dev-root'
 alias dot='cd ~/.dotfiles'
 alias gvim='gvim --remote-silent'
@@ -141,20 +141,29 @@ function external-knife_() {
 alias eknife='external-knife_'
 
 function pullscry {
-    scp "$1:/opt/debesys/scry/python/tt/scryscan/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scryscan/tt/scryscan/
-    scp "$1:/opt/debesys/scry/python/tt/scrylib/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scrylib/tt/scrylib/
-    scp "$1:/opt/debesys/scry/python/tt/scryweb/*.py" /home/jason/scrytest/debesys-repo/scry/dashboard/scryweb/
+    reporootdir=$(git rev-parse --show-toplevel)
+    if [[ $? -eq 0 ]]; then
+        scp "$1:/opt/debesys/scry/python/tt/scryscan/*.py" $reporootdir/scry/dashboard/scryscan/tt/scryscan/
+        scp "$1:/opt/debesys/scry/python/tt/scrylib/*.py" $reporootdir/scry/dashboard/scrylib/tt/scrylib/
+        scp "$1:/opt/debesys/scry/python/tt/scryweb/*.py" $reporootdir/scry/dashboard/scryweb/
+    fi
 }
 
 function scrymake {
-    rm -f ~/scrytest/debesys-repo/build/x86-64/debug/python/tt/scryscan/*
-    rm -f ~/scrytest/debesys-repo/build/x86-64/debug/python/tt/scrylib/*
-    cp -l ~/scrytest/debesys-repo/scry/dashboard/scryscan/tt/scryscan/*.py ~/scrytest/debesys-repo/build/x86-64/debug/python/tt/scryscan/
-    cp -l ~/scrytest/debesys-repo/scry/dashboard/scrylib/tt/scrylib/*.py ~/scrytest/debesys-repo/build/x86-64/debug/python/tt/scrylib/
+    reporootdir=$(git rev-parse --show-toplevel)
+    if [[ $? -eq 0 ]]; then
+        rm -f $reporootdir/build/x86-64/debug/python/tt/scryscan/*
+        rm -f $reporootdir/build/x86-64/debug/python/tt/scrylib/*
+        cp -l $reporootdir/build/x86-64/debug/python/tt/scryscan/ $reporootdir/build/x86-64/debug/python/tt/scryscan/
+        cp -l $reporootdir/scry/dashboard/scrylib/tt/scrylib/*.py $reporootdir/build/x86-64/debug/python/tt/scrylib/
+    fi
 }
 
 function scrytest {
-    ttpy ~/scrytest/debesys-repo/scry/dashboard/scryscan/tests/test_data_store.py
+    reporootdir=$(git rev-parse --show-toplevel)
+    if [[ $? -eq 0 ]]; then
+        ttpy $reporootdir/scry/dashboard/scryscan/tests/test_data_store.py
+    fi
 }
 
 function rr {
@@ -176,39 +185,4 @@ function cppdoc {
     cd ~/Documents/cppreference/reference/en.cppreference.com
     python -m SimpleHTTPServer 8000 &
     google-chrome http://localhost:8000 &
-}
-
-
-function external()
-{
-    usage="external on|off"
-    if [[ -z "$1" ]]; then
-        echo "$usage"
-        return
-    fi
-
-    if [[ "on" == "$1" ]]; then
-        export PRE_EXTERNAL_PS1=$PS1
-        export PS1="%{$fg[red]%}[EXT] $PRE_EXTERNAL_PS1"
-        alias ttknife='`git rev-parse --show-toplevel`/run `git rev-parse --show-toplevel`/ttknife -C ~/.chef/knife.external.rb'
-        alias ttknife
-        echo
-        echo '######## ##     ## ######## ######## ########  ##    ##    ###    ##'
-        echo '##        ##   ##     ##    ##       ##     ## ###   ##   ## ##   ##'
-        echo '##         ## ##      ##    ##       ##     ## ####  ##  ##   ##  ##'
-        echo '######      ###       ##    ######   ########  ## ## ## ##     ## ##'
-        echo '##         ## ##      ##    ##       ##   ##   ##  #### ######### ##'
-        echo '##        ##   ##     ##    ##       ##    ##  ##   ### ##     ## ##'
-        echo '######## ##     ##    ##    ######## ##     ## ##    ## ##     ## ########'
-        echo
-        # http://patorjk.com/software/taag/#p=display&h=1&v=1&f=Banner3&t=EXTERNAL
-    elif [[ "off" == "$1" ]]; then
-        if [[ ! -z "$PRE_EXTERNAL_PS1" ]]; then
-            export PS1=$PRE_EXTERNAL_PS1
-        fi
-        alias ttknife='`git rev-parse --show-toplevel`/run `git rev-parse --show-toplevel`/ttknife'
-        alias ttknife
-    else
-        echo "$usage"
-    fi
 }
