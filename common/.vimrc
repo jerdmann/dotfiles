@@ -14,7 +14,6 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
 Plugin 'msanders/snipmate.vim'
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'tpope/vim-fugitive'
 call vundle#end()
 
@@ -27,8 +26,8 @@ set autoread
 set nobackup
 set noswapfile
 set shiftround
-set shiftwidth=4
 set smarttab
+set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 set expandtab
@@ -38,14 +37,9 @@ augroup reload_vimrc " {
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END " }
 
-autocmd Filetype cpp setlocal ts=2 sw=2
-autocmd Filetype make setlocal ts=8 noexpandtab
+autocmd Filetype make setlocal noexpandtab
 autocmd Filetype javascript setlocal ts=2 sw=2
 autocmd Filetype html setlocal ts=2 sw=2
-autocmd Filetype python setlocal ts=4 sw=4
-autocmd Filetype ruby setlocal ts=4 sw=4
-
-autocmd BufWritePre * :%s/\s\+$//e
 
 let g:ctrlp_by_filename = 1
 let g:ctrlp_working_path_mode = 'a'
@@ -70,9 +64,6 @@ let g:go_highlight_operators = 0
 
 let delimitMate_expand_cr = 1
 
-let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-let g:ycm_confirm_extra_conf = 0
-
 set history=1000
 set clipboard=unnamedplus
 set go+=a
@@ -94,7 +85,8 @@ set splitright
 set ruler
 set showcmd
 set hidden
-set scrolljump=10
+set scrolloff=3
+set scrolljump=5
 set laststatus=2
 
 set wildmenu
