@@ -1,8 +1,6 @@
 [user]
 	name = Jason Erdmann
 	email = jason.erdmann@tradingtechnologies.com
-[push]
-	default = simple
 [alias]
     glog = log --graph --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
     br = branch
@@ -10,3 +8,5 @@
     cm = commit
     st = status
     up = !git pull -q && git submodule -q init && git submodule -q update && git remote prune origin && git status
+[color]
+	ui = auto

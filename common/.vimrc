@@ -53,6 +53,7 @@ let g:syntastic_cursor_column = 0
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_ruby_mri_args = '-T1 -c'
+let g:syntastic_cpp_compiler_options = "-std=c++11 -Wall"
 
 let g:go_fmt_fail_silently = 0
 let g:go_autodetect_gopath = 1
