@@ -177,7 +177,7 @@ function ct {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         cd $reporootdir
-        ctags -R ext/linux/x86-64/release/include/smds/md-core synthetic_engine price_server/ps_common
+        ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ext/linux/x86-64/release/include/smds/md-core synthetic_engine price_server/ps_common
     fi
 }
 
