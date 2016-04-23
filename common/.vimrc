@@ -6,15 +6,14 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'kien/ctrlp.vim'
-Plugin 'pangloss/vim-javascript'
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 Plugin 'Raimondi/delimitMate'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
-Plugin 'msanders/snipmate.vim'
-Plugin 'tpope/vim-fugitive'
+Plugin 'Rip-Rip/clang_complete'
+Plugin 'ervandew/supertab'
 call vundle#end()
 
 colors Tomorrow-Night-Eighties
@@ -48,7 +47,6 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ag_prg="ag --column --nogroup --noheading --nobreak"
 
 let g:syntastic_python_checkers = ['pyflakes']
-let g:syntastic_enable_perl_checker = 1
 let g:syntastic_cursor_column = 0
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_wq = 0
@@ -62,8 +60,6 @@ let g:go_highlight_array_whitespace_error = 0
 let g:go_highlight_trailing_whitespace_error = 0
 let g:go_highlight_extra_types = 0
 let g:go_highlight_operators = 0
-
-let delimitMate_expand_cr = 1
 
 set history=1000
 set clipboard=unnamedplus

@@ -40,7 +40,7 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(setq-default c-basic-offset 2 c-default-style "linux")
+(setq-default c-basic-offset 4 c-default-style "linux")
 (setq compile-command "g++ -std=c++11 -Wall ")
 (setq compilation-ask-about-save nil)
 (add-hook 'c++-mode-hook 'auto-complete-mode)
@@ -82,5 +82,5 @@
 (load-theme 'sanityinc-tomorrow-night)
 (if (display-graphic-p)
     (progn
-      (set-frame-font "DejaVu Sans Mono-11" nil t)
+      (set-frame-font "DejaVu Sans Mono-10.5" nil t)
       ))
