@@ -97,6 +97,7 @@ set guioptions-=L
 
 set pastetoggle=<F2>
 imap kj <Esc>
+set timeoutlen=100
 
 let mapleader = ","
 nnoremap <leader>a :Ag

@@ -1,0 +1,13 @@
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+
+set showcmd
+imap kj <Esc>
+set timeoutlen 100
+
+nnoremap gl :b#<CR>
+nnoremap Y y$
+nnoremap ; :
+vnoremap ; :

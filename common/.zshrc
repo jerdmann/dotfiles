@@ -121,6 +121,8 @@ alias debthree='cd ~/dev-root/debesys-three'
 alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
 alias proto='cd `git rev-parse --show-toplevel`/all_messages/source/tt/messaging'
 
+alias eclipse='GTK2_RC_FILES=$GTK2_RC_FILES:~/.gtkrc-eclipse /opt/eclipse/eclipse --launcher.GTK_version 2'
+
 if [[ -f ~/.keys ]]; then
     . ~/.keys
 fi
