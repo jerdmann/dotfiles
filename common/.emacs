@@ -79,7 +79,6 @@
 (global-set-key (kbd "C-o") 'other-window)
 (global-set-key (kbd "<f5>") 'compile)
 
-(load-theme 'sanityinc-tomorrow-night)
 (if (display-graphic-p)
     (progn
       (set-frame-font "DejaVu Sans Mono-10.5" nil t)

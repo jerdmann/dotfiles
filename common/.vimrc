@@ -30,6 +30,7 @@ set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 set expandtab
+set tags=tags;
 
 augroup reload_vimrc " {
     autocmd!
@@ -110,8 +111,8 @@ nnoremap gl :b#<CR>
 nnoremap Q <nop>
 nnoremap Y y$
 
-nnoremap <silent> <F7> :tp<cr>
-nnoremap <silent> <F8> :tn<cr>
+nnoremap <silent> <F7> :bp<cr>
+nnoremap <silent> <F8> :bn<cr>
 
 nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-j> <C-w>j

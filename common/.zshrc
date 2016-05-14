@@ -38,6 +38,7 @@ HISTFILE=~/.zsh_history
 # Use modern completion system
 autoload -Uz compinit
 compinit
+compdef -d git
 
 zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' completer _expand _complete _correct _approximate
@@ -78,8 +79,6 @@ alias knife-ssh='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scri
 alias debone='cd ~/dev-root/debesys-one'
 alias debtwo='cd ~/dev-root/debesys-two'
 alias debthree='cd ~/dev-root/debesys-three'
-alias wdebone='cd /mnt/workstation/debesys-one'
-alias wdebtwo='cd /mnt/workstation/debesys-two'
 alias dev='cd ~/dev-root'
 alias dot='cd ~/.dotfiles'
 alias gvim='gvim --remote-silent'
@@ -173,14 +172,6 @@ function rr {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         cd $reporootdir
-    fi
-}
-
-function ct {
-    reporootdir=$(git rev-parse --show-toplevel)
-    if [[ $? -eq 0 ]]; then
-        cd $reporootdir
-        ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ext/linux/x86-64/release/include/smds/md-core synthetic_engine price_server/ps_common
     fi
 }
 
