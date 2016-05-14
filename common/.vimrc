@@ -83,8 +83,7 @@ set splitright
 set ruler
 set showcmd
 set hidden
-set scrolloff=3
-set scrolljump=5
+set scrolljump=8
 set laststatus=2
 
 set wildmenu
