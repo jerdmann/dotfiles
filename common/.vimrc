@@ -9,16 +9,13 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
-Plugin 'Raimondi/delimitMate'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
-Plugin 'Rip-Rip/clang_complete'
 Plugin 'ervandew/supertab'
 call vundle#end()
 
-colors Tomorrow-Night-Eighties
+colors sorcerer
 filetype plugin indent on
-set cursorline
 
 set autoindent
 set autoread
@@ -31,6 +28,7 @@ set softtabstop=4
 set tabstop=4
 set expandtab
 set tags=tags;
+set backspace=indent,eol,start
 
 augroup reload_vimrc " {
     autocmd!
