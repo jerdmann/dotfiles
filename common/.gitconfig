@@ -10,3 +10,5 @@
     up = !git pull -q && git submodule -q init && git submodule -q update && git remote prune origin && git status
 [color]
 	ui = auto
+[core]
+    excludesfile = ~/.githome/.gitignore
