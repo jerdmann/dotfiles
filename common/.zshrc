@@ -1,5 +1,4 @@
 # Set up the prompt
-export TERM=xterm-256color
 autoload -U colors && colors
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' formats '%b '
@@ -126,6 +125,10 @@ if [[ -f ~/.keys ]]; then
     . ~/.keys
 fi
 
+if [[ -f ~/.workstation ]]; then
+    . ~/.workstation
+fi
+
 # capslock is useless
 setxkbmap -option ctrl:nocaps 2>/dev/null
 
@@ -165,6 +168,15 @@ function scrytest {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         ttpy $reporootdir/scry/dashboard/scryscan/tests/test_data_store.py
+    fi
+}
+
+function sbe {
+    reporootdir=$(git rev-parse --show-toplevel)
+    if [[ $? -eq 0 ]]; then
+        pushd $reporootdir/price_server/ps_common/sbe_messages
+        ./make_schema.sh
+        popd
     fi
 }
 

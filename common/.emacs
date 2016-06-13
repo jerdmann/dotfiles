@@ -10,7 +10,7 @@
   (when (not package-archive-contents)
     (package-refresh-contents))
   (dolist (p '(auto-complete
-			   flycheck
+	       flycheck
                pyflakes))
     (when (not (package-installed-p p))
       (package-install p))))
@@ -32,9 +32,9 @@
 (setq mouse-yank-at-point t)
 
 (setq inhibit-startup-screen 1)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
+;; (tool-bar-mode -1)
+;; (menu-bar-mode -1)
+;; (scroll-bar-mode -1)
 (column-number-mode)
 (xterm-mouse-mode)
 
@@ -59,7 +59,6 @@
 (setq ido-enable-flex-matching 1)
 
 (require 'auto-complete)
-(require 'auto-complete-clang)
 (global-auto-complete-mode)
 
 ;; (require 'company)
@@ -79,6 +78,7 @@
 (global-set-key (kbd "C-o") 'other-window)
 (global-set-key (kbd "<f5>") 'compile)
 
+(load-theme 'ample)
 (if (display-graphic-p)
     (progn
       (set-frame-font "DejaVu Sans Mono-10.5" nil t)
