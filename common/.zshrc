@@ -63,7 +63,8 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-export LD_LIBRARY_PATH='/usr/local/include'
+export LIBRARY_PATH="/usr/lib/x86_64-linux-gnu"
+export LD_LIBRARY_PATH="/usr/local/include"
 
 # some more aliases
 alias ll='ls -alF'
@@ -119,7 +120,7 @@ alias debthree='cd ~/dev-root/debesys-three'
 alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
 alias proto='cd `git rev-parse --show-toplevel`/all_messages/source/tt/messaging'
 
-alias eclipse='GTK2_RC_FILES=$GTK2_RC_FILES:~/.gtkrc-eclipse /opt/eclipse/eclipse --launcher.GTK_version 2'
+alias eclipse='GTK2_RC_FILES=$GTK2_RC_FILES:~/.gtkrc /opt/eclipse/eclipse --launcher.GTK_version 2'
 
 if [[ -f ~/.keys ]]; then
     . ~/.keys
@@ -137,7 +138,7 @@ xbacklight -set 80 2>/dev/null || :
 
 # some function definitions
 function cbup {
-    while true; do knife cookbook --cookbook-path `git rev-parse --show-toplevel`/deploy/chef/cookbooks upload "$1" && break; sleep .1; done
+    knife cookbook --cookbook-path `git rev-parse --show-toplevel`/deploy/chef/cookbooks upload "$@"
 }
 
 function external-knife_() {
