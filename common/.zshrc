@@ -84,6 +84,8 @@ alias dot='cd ~/.dotfiles'
 alias gvim='gvim --remote-silent'
 alias emacs='emacs -nw'
 alias ez="vim ~/.zshrc"
+alias esr="vim /etc/debesys/srl_config.xml"
+alias elbm="vim /etc/debesys/lbm.conf"
 alias sz='source ~/.zshrc'
 alias dbd='smbclient -U jerdmann -W intad //chifs01.int.tt.local/Share'
 alias ttpy='`git rev-parse --show-toplevel`/run python'
@@ -121,6 +123,7 @@ alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
 alias proto='cd `git rev-parse --show-toplevel`/all_messages/source/tt/messaging'
 
 alias eclipse='GTK2_RC_FILES=$GTK2_RC_FILES:~/.gtkrc /opt/eclipse/eclipse --launcher.GTK_version 2'
+alias cov='~/cov-analysis-linux64-8.0.0/bin/cov-run-desktop'
 
 if [[ -f ~/.keys ]]; then
     . ~/.keys

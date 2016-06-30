@@ -12,6 +12,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
 Plugin 'ervandew/supertab'
+
 call vundle#end()
 
 colors sorcerer
@@ -60,6 +61,8 @@ let g:go_highlight_trailing_whitespace_error = 0
 let g:go_highlight_extra_types = 0
 let g:go_highlight_operators = 0
 
+let g:clang_library_path="/home/jerdmann/dev-root/debesys-one/ext/linux/x86-64/release/opt/clang-3.4/lib/libclang.so"
+
 set history=1000
 set clipboard=unnamedplus
 set go+=a
@@ -95,11 +98,10 @@ set guioptions-=L
 
 set pastetoggle=<F2>
 imap kj <Esc>
-set timeoutlen=100
 
 let mapleader = ","
 nnoremap <leader>a :Ag
-nnoremap <leader>c :ccl<cr>
+nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
 nnoremap <leader>l :set invrelativenumber<cr>
 nnoremap <leader>w :w<cr>
 nnoremap <leader><space> :noh<cr>
