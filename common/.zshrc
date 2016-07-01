@@ -176,6 +176,14 @@ function scrytest {
     fi
 }
 
+function priceapipush {
+    if [[ -z $1 ]]; then
+        return
+    fi
+    rsync -av /home/jason/dev-root/debesys-one/price_server/price_api $1:/home/jason/dev-root/debesys-one/price_server
+    rsync -av /home/jason/dev-root/debesys-one/price_server/tests $1:/home/jason/dev-root/debesys-one/price_server
+}
+
 function sbe {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
