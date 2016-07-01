@@ -122,6 +122,7 @@ alias debtwo='cd ~/dev-root/debesys-two'
 alias debthree='cd ~/dev-root/debesys-three'
 alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
 alias proto='cd `git rev-parse --show-toplevel`/all_messages/source/tt/messaging'
+alias sbed='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messages'
 
 alias eclipse='GTK2_RC_FILES=$GTK2_RC_FILES:~/.gtkrc /opt/eclipse/eclipse --launcher.GTK_version 2'
 alias cov='~/cov-analysis-linux64-8.0.0/bin/cov-run-desktop'
