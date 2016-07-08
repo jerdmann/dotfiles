@@ -112,7 +112,7 @@ nnoremap Q <nop>
 nnoremap Y y$
 
 set makeprg=make\ -j4\ price_client_merger_test
-nnoremap <silent> <F5> :silent make<cr>
+nnoremap <silent> <F5> :silent make \| redraw!<cr>
 nnoremap <silent> <F7> :cp<cr>
 nnoremap <silent> <F8> :cn<cr>
 nnoremap <silent> <Right> :bn<cr>
