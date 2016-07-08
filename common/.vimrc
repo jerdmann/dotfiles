@@ -51,6 +51,7 @@ let g:syntastic_cursor_column = 0
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_ruby_mri_args = '-T1 -c'
+let g:syntastic_cpp_compiler = "clang++"
 let g:syntastic_cpp_compiler_options = "-std=c++11 -Wall"
 
 let g:go_fmt_fail_silently = 0
@@ -110,8 +111,14 @@ nnoremap gl :b#<CR>
 nnoremap Q <nop>
 nnoremap Y y$
 
-nnoremap <silent> <F7> :bp<cr>
-nnoremap <silent> <F8> :bn<cr>
+set makeprg=make\ -j4\ price_client_merger_test
+nnoremap <silent> <F5> :silent make<cr>
+nnoremap <silent> <F7> :cp<cr>
+nnoremap <silent> <F8> :cn<cr>
+nnoremap <silent> <Right> :bn<cr>
+nnoremap <silent> <Left> :bp<cr>
+nnoremap <silent> <Up> :copen<cr>
+nnoremap <silent> <Down> :ccl<cr>
 
 nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-j> <C-w>j
