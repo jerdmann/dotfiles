@@ -11,7 +11,7 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
-Plugin 'ervandew/supertab'
+Plugin 'Rip-Rip/clang_complete'
 
 call vundle#end()
 
@@ -62,7 +62,7 @@ let g:go_highlight_trailing_whitespace_error = 0
 let g:go_highlight_extra_types = 0
 let g:go_highlight_operators = 0
 
-let g:clang_library_path="/home/jerdmann/dev-root/debesys-one/ext/linux/x86-64/release/opt/clang-3.4/lib/libclang.so"
+let g:clang_library_path="/usr/lib/llvm-3.5/lib/libclang.so"
 
 set history=1000
 set clipboard=unnamedplus
@@ -111,7 +111,8 @@ nnoremap gl :b#<CR>
 nnoremap Q <nop>
 nnoremap Y y$
 
-set makeprg=make\ -j4\ price_client_merger_test
+set makeprg=make\ -j4\ def_search_path=price_server\ price_client_merger_test
+
 nnoremap <silent> <F5> :silent make \| redraw!<cr>
 nnoremap <silent> <F7> :cp<cr>
 nnoremap <silent> <F8> :cn<cr>
