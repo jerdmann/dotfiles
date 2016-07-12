@@ -151,30 +151,8 @@ function external-knife_() {
 }
 alias eknife='external-knife_'
 
-function pullscry {
-    reporootdir=$(git rev-parse --show-toplevel)
-    if [[ $? -eq 0 ]]; then
-        scp "$1:/opt/debesys/scry/python/tt/scryscan/*.py" $reporootdir/scry/dashboard/scryscan/tt/scryscan/
-        scp "$1:/opt/debesys/scry/python/tt/scrylib/*.py" $reporootdir/scry/dashboard/scrylib/tt/scrylib/
-        scp "$1:/opt/debesys/scry/python/tt/scryweb/*.py" $reporootdir/scry/dashboard/scryweb/
-    fi
-}
-
-function scrymake {
-    reporootdir=$(git rev-parse --show-toplevel)
-    if [[ $? -eq 0 ]]; then
-        rm -f $reporootdir/build/x86-64/debug/python/tt/scryscan/*
-        rm -f $reporootdir/build/x86-64/debug/python/tt/scrylib/*
-        cp -l $reporootdir/build/x86-64/debug/python/tt/scryscan/ $reporootdir/build/x86-64/debug/python/tt/scryscan/
-        cp -l $reporootdir/scry/dashboard/scrylib/tt/scrylib/*.py $reporootdir/build/x86-64/debug/python/tt/scrylib/
-    fi
-}
-
-function scrytest {
-    reporootdir=$(git rev-parse --show-toplevel)
-    if [[ $? -eq 0 ]]; then
-        ttpy $reporootdir/scry/dashboard/scryscan/tests/test_data_store.py
-    fi
+function dmake {
+    make -j$(nproc) def_search_path=$1 $2
 }
 
 function sbe {
