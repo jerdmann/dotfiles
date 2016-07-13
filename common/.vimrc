@@ -12,6 +12,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
 Plugin 'Rip-Rip/clang_complete'
+Plugin 'octol/vim-cpp-enhanced-highlight'
 
 call vundle#end()
 
@@ -21,7 +22,6 @@ filetype plugin indent on
 set autoindent
 set autoread
 set nobackup
-set noswapfile
 set shiftround
 set smarttab
 set shiftwidth=4
@@ -111,7 +111,7 @@ nnoremap gl :b#<CR>
 nnoremap Q <nop>
 nnoremap Y y$
 
-set makeprg=make\ -j4\ def_search_path=price_server\ price_client_merger_test
+set makeprg=~/build.sh\ msg_converter_test
 
 nnoremap <silent> <F5> :silent make \| redraw!<cr>
 nnoremap <silent> <F7> :cp<cr>
