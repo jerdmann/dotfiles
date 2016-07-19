@@ -151,8 +151,13 @@ function external-knife_() {
 }
 alias eknife='external-knife_'
 
-function dmake {
-    make -j$(nproc) def_search_path=$1 $2
+function pmake {
+    reporootdir=$(git rev-parse --show-toplevel)
+    if [[ $? -eq 0 ]]; then
+        pushd $reporootdir
+        make -j$(nproc) def_search_path=price_server $1
+        popd
+    fi
 }
 
 function sbe {

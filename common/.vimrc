@@ -116,10 +116,8 @@ set makeprg=~/build.sh\ msg_converter_test
 nnoremap <silent> <F5> :silent make \| redraw!<cr>
 nnoremap <silent> <F7> :cp<cr>
 nnoremap <silent> <F8> :cn<cr>
-nnoremap <silent> <Right> :bn<cr>
-nnoremap <silent> <Left> :bp<cr>
-nnoremap <silent> <Up> :copen<cr>
-nnoremap <silent> <Down> :ccl<cr>
+nnoremap <silent> <F9> :copen<cr>
+nnoremap <silent> <F10> :ccl<cr>
 
 nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-j> <C-w>j
