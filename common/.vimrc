@@ -11,8 +11,6 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
-Plugin 'Rip-Rip/clang_complete'
-Plugin 'octol/vim-cpp-enhanced-highlight'
 
 call vundle#end()
 
