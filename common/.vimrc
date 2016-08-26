@@ -11,8 +11,6 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
-Plugin 'Rip-Rip/clang_complete'
-Plugin 'octol/vim-cpp-enhanced-highlight'
 
 call vundle#end()
 
@@ -111,7 +109,7 @@ nnoremap gl :b#<CR>
 nnoremap Q <nop>
 nnoremap Y y$
 
-set makeprg=~/build.sh\ msg_converter_test
+set makeprg=~/build.sh\ cme_lh
 
 nnoremap <silent> <F5> :silent make \| redraw!<cr>
 nnoremap <silent> <F7> :cp<cr>

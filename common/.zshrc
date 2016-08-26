@@ -79,7 +79,6 @@ alias build='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/
 alias knife-ssh='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/knife_ssh.py'
 alias debone='cd ~/dev-root/debesys-one'
 alias debtwo='cd ~/dev-root/debesys-two'
-alias debthree='cd ~/dev-root/debesys-three'
 alias dev='cd ~/dev-root'
 alias dot='cd ~/.dotfiles'
 alias gvim='gvim --remote-silent'
@@ -97,15 +96,24 @@ alias tkill='tmux kill-session -t '
 alias tlist='tmux list-session'
 
 # debesys stuff
-alias ttknife='`git rev-parse --show-toplevel`/run `git rev-parse --show-toplevel`/ttknife'
 alias ttrun='`git rev-parse --show-toplevel`/run'
+alias cf='cd /etc/debesys'
+alias lg='cd /var/log/debesys'
+function mkdeb () {
+    sudo mkdir /etc/debesys 2>/dev/null || :
+    sudo mkdir /var/log/debesys 2>/dev/null || :
+    sudo chown jason /etc/debesys
+    sudo chown jason /var/log/debesys
+    sudo chmod 775 /etc/debesys
+    sudo chmod 775 /var/log/debesys
+}
 
 # vcd stuff
 export INTAD_USER=jerdmann
 export VCD_ORG=Dev_General
 
 export AWS_DEFAULT_REGION='us-east-1'
-export JENKINS_USER='jason.erdmann@tradingtechnologies.com'
+export JENKINS_USER='jerdmann'
 
 # ec2 manager name
 export MGR="jerdmann"
@@ -127,13 +135,8 @@ alias sbed='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messag
 alias eclipse='GTK2_RC_FILES=$GTK2_RC_FILES:~/.gtkrc /opt/eclipse/eclipse --launcher.GTK_version 2'
 alias cov='~/cov-analysis-linux64-8.0.0/bin/cov-run-desktop'
 
-if [[ -f ~/.keys ]]; then
-    . ~/.keys
-fi
-
-if [[ -f ~/.workstation ]]; then
-    . ~/.workstation
-fi
+test -f ~/.keys && . ~/.keys
+test -f ~/.workstation && . ~/.workstation
 
 # capslock is useless
 setxkbmap -option ctrl:nocaps 2>/dev/null
@@ -155,7 +158,7 @@ function pmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         pushd $reporootdir
-        make -j$(nproc) def_search_path=price_server $1
+        make -j$(nproc) def_search_path="fixit misc price_server all_messages md_server synthetic_engine" $@
         popd
     fi
 }
@@ -176,6 +179,13 @@ function rr {
     fi
 }
 
+function cdlh {
+    reporootdir=$(git rev-parse --show-toplevel)
+    if [[ $? -eq 0 ]]; then
+        cd $reporootdir/price_server/exchange/test_lh
+    fi
+}
+
 function vpn {
     sudo /home/jason/.juniper_networks/ncsvc -h us-ttvpn.tradingtechnologies.com -u jerdmann -p "$1" -r "TT VPN" -f /home/jason/.juniper_networks/tt.cert
 }
@@ -189,3 +199,5 @@ function cppdoc {
     python -m SimpleHTTPServer 8000 &
     google-chrome http://localhost:8000 &
 }
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

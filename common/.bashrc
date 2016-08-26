@@ -134,3 +134,5 @@ setxkbmap -option ctrl:nocaps 2>/dev/null
 
 # set brightness
 xbacklight -set 90 2>/dev/null || cat /dev/null
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
