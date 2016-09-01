@@ -8,7 +8,8 @@ precmd() {
     vcs_info
 }
 
-PROMPT='%{$fg_bold[blue]%}${vcs_info_msg_0_}%{$fg_bold[green]%}%1~ %1(j.%{$fg_bold[yellow]%}(%j%).)%{$fg_bold[green]%}>%{$reset_color%} '
+PROMPT='%{$fg_bold[blue]%}${vcs_info_msg_0_}%{$fg_bold[green]%}%~ 
+%1(j.%{$fg_bold[yellow]%}(%j%).)%{$fg_bold[green]%}>%{$reset_color%} '
 if [[ -n "$SSH_CLIENT" ]]; then
     PROMPT="%{$fg_bold[yellow]%}ssh@$HOST $PROMPT"
 fi
@@ -127,22 +128,20 @@ export PATH=$PATH:/usr/local/go/bin
 # ttnet project dirs
 alias debone='cd ~/dev-root/debesys-one'
 alias debtwo='cd ~/dev-root/debesys-two'
-alias debthree='cd ~/dev-root/debesys-three'
 alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
+alias cdps='cd `git rev-parse --show-toplevel`/price_server'
 alias proto='cd `git rev-parse --show-toplevel`/all_messages/source/tt/messaging'
 alias sbed='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messages'
 
 alias eclipse='GTK2_RC_FILES=$GTK2_RC_FILES:~/.gtkrc /opt/eclipse/eclipse --launcher.GTK_version 2'
 alias cov='~/cov-analysis-linux64-8.0.0/bin/cov-run-desktop'
 
-test -f ~/.keys && . ~/.keys
-test -f ~/.workstation && . ~/.workstation
+test -r ~/.keys && source ~/.keys
+test -r ~/.workstation && source ~/.workstation
+test -r ~/.vpn && source ~/.vpn
 
 # capslock is useless
 setxkbmap -option ctrl:nocaps 2>/dev/null
-
-# set brightness
-xbacklight -set 80 2>/dev/null || :
 
 # some function definitions
 function cbup {
@@ -154,11 +153,16 @@ function external-knife_() {
 }
 alias eknife='external-knife_'
 
+export DEF_SEARCH_PATH="price_server"
 function pmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
+        if [[ -z "$DEF_SEARCH_PATH" ]]; then
+            echo "warning: DEF_SEARCH_PATH is unset, defaulting to local directory"
+            DEF_SEARCH_PATH="."
+        fi
         pushd $reporootdir
-        make -j$(nproc) def_search_path="fixit misc price_server all_messages md_server synthetic_engine" $@
+        make -j$(nproc) def_search_path="$DEF_SEARCH_PATH" $1
         popd
     fi
 }
@@ -186,10 +190,6 @@ function cdlh {
     fi
 }
 
-function vpn {
-    sudo /home/jason/.juniper_networks/ncsvc -h us-ttvpn.tradingtechnologies.com -u jerdmann -p "$1" -r "TT VPN" -f /home/jason/.juniper_networks/tt.cert
-}
-
 function makehome {
     scp ~/.vimrc "$1":~ && scp -r ~/.vim "$1":~ &>/dev/null && scp ~/.tmux.conf "$1":~
 }
@@ -201,3 +201,7 @@ function cppdoc {
 }
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+function servethis {
+    python -m SimpleHTTPServer 8000 &
+}

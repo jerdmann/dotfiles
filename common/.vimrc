@@ -116,6 +116,8 @@ nnoremap <silent> <F7> :cp<cr>
 nnoremap <silent> <F8> :cn<cr>
 nnoremap <silent> <F9> :copen<cr>
 nnoremap <silent> <F10> :ccl<cr>
+nnoremap <silent> <Left> :bp<cr>
+nnoremap <silent> <Right> :bn<cr>
 
 nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-j> <C-w>j
