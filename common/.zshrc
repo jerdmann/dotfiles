@@ -8,8 +8,7 @@ precmd() {
     vcs_info
 }
 
-PROMPT='%{$fg_bold[blue]%}${vcs_info_msg_0_}%{$fg_bold[green]%}%~ 
-%1(j.%{$fg_bold[yellow]%}(%j%).)%{$fg_bold[green]%}>%{$reset_color%} '
+PROMPT='%{$fg_bold[blue]%}${vcs_info_msg_0_}%{$fg_bold[green]%}%1~ %1(j.%{$fg_bold[yellow]%}(%j%).)%{$fg_bold[green]%}>%{$reset_color%} '
 if [[ -n "$SSH_CLIENT" ]]; then
     PROMPT="%{$fg_bold[yellow]%}ssh@$HOST $PROMPT"
 fi
@@ -78,15 +77,10 @@ alias checkrepo='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scri
 alias deploy='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/request_deploy.py'
 alias build='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/request_build.py'
 alias knife-ssh='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/knife_ssh.py'
-alias debone='cd ~/dev-root/debesys-one'
-alias debtwo='cd ~/dev-root/debesys-two'
-alias dev='cd ~/dev-root'
+
 alias dot='cd ~/.dotfiles'
 alias gvim='gvim --remote-silent'
-alias emacs='emacs -nw'
 alias ez="vim ~/.zshrc"
-alias esr="vim /etc/debesys/srl_config.xml"
-alias elbm="vim /etc/debesys/lbm.conf"
 alias sz='source ~/.zshrc'
 alias dbd='smbclient -U jerdmann -W intad //chifs01.int.tt.local/Share'
 alias ttpy='`git rev-parse --show-toplevel`/run python'
@@ -123,25 +117,23 @@ export MGR="jerdmann"
 export PYTHONSTARTUP="/home/jason/.pythonrc"
 
 export GOPATH="/home/jason/gocode"
-export PATH=$PATH:/usr/local/go/bin
+export PATH=/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:$PATH
 
-# ttnet project dirs
+# project dirs
 alias debone='cd ~/dev-root/debesys-one'
 alias debtwo='cd ~/dev-root/debesys-two'
 alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
 alias cdps='cd `git rev-parse --show-toplevel`/price_server'
-alias proto='cd `git rev-parse --show-toplevel`/all_messages/source/tt/messaging'
-alias sbed='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messages'
+alias cdlh='cd `git rev-parse --show-toplevel`/price_server/exchange/test_lh'
+alias cdsbe='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messages'
+alias cdpro='cd `git rev-parse --show-toplevel`/all_messages/source/tt/messaging'
+alias rr='cd `git rev-parse --show-toplevel`'
 
-alias eclipse='GTK2_RC_FILES=$GTK2_RC_FILES:~/.gtkrc /opt/eclipse/eclipse --launcher.GTK_version 2'
 alias cov='~/cov-analysis-linux64-8.0.0/bin/cov-run-desktop'
 
 test -r ~/.keys && source ~/.keys
 test -r ~/.workstation && source ~/.workstation
 test -r ~/.vpn && source ~/.vpn
-
-# capslock is useless
-setxkbmap -option ctrl:nocaps 2>/dev/null
 
 # some function definitions
 function cbup {
@@ -176,32 +168,13 @@ function sbe {
     fi
 }
 
-function rr {
-    reporootdir=$(git rev-parse --show-toplevel)
-    if [[ $? -eq 0 ]]; then
-        cd $reporootdir
-    fi
-}
-
-function cdlh {
-    reporootdir=$(git rev-parse --show-toplevel)
-    if [[ $? -eq 0 ]]; then
-        cd $reporootdir/price_server/exchange/test_lh
-    fi
-}
-
 function makehome {
     scp ~/.vimrc "$1":~ && scp -r ~/.vim "$1":~ &>/dev/null && scp ~/.tmux.conf "$1":~
-}
-
-function cppdoc {
-    cd ~/Documents/cppreference/reference/en.cppreference.com
-    python -m SimpleHTTPServer 8000 &
-    google-chrome http://localhost:8000 &
 }
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 function servethis {
     python -m SimpleHTTPServer 8000 &
+    google-chrome http://localhost:8000 &
 }
