@@ -8,6 +8,8 @@
     cm = commit
     st = status
     up = !git pull -q && git submodule -q init && git submodule -q update && git remote prune origin && git status
+[push]
+	default = simple
 [color]
 	ui = auto
 [core]
