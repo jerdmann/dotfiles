@@ -69,7 +69,6 @@ set shortmess=atI
 
 syntax on
 set t_ut=
-set title
 set ttyfast
 set lazyredraw
 
