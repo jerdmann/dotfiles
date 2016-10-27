@@ -14,7 +14,7 @@ Plugin 'fatih/vim-go'
 
 call vundle#end()
 
-colors sorcerer
+colors Tomorrow-Night
 filetype plugin indent on
 
 set autoindent
@@ -28,6 +28,8 @@ set tabstop=4
 set expandtab
 set tags=tags;
 set backspace=indent,eol,start
+set number
+set cursorline
 
 augroup reload_vimrc " {
     autocmd!
@@ -97,6 +99,8 @@ set guioptions-=L
 set pastetoggle=<F2>
 imap kj <Esc>
 
+let g:netrw_liststyle=3
+
 let mapleader = ","
 nnoremap <leader>a :Ag
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
@@ -115,8 +119,6 @@ nnoremap <silent> <F7> :cp<cr>
 nnoremap <silent> <F8> :cn<cr>
 nnoremap <silent> <F9> :copen<cr>
 nnoremap <silent> <F10> :ccl<cr>
-nnoremap <silent> <Left> :bp<cr>
-nnoremap <silent> <Right> :bn<cr>
 
 nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-j> <C-w>j

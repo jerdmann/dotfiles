@@ -69,18 +69,20 @@ export LD_LIBRARY_PATH="/usr/local/include"
 
 # some more aliases
 alias ll='ls -alF'
-alias vcloud='~/debesys-scripts/run ~/debesys-scripts/deploy/chef/scripts/vcloud_server.py'
-alias newvm='~/debesys-scripts/run ~/debesys-scripts/deploy/chef/scripts/vcloud_server.py -a -s s --bootstrap'
-alias ec2='~/debesys-scripts/run ~/debesys-scripts/deploy/chef/scripts/ec2_instance.py'
-alias bump='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/bump_cookbook_version.py'
-alias checkrepo='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/check_repo.py'
-alias deploy='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/request_deploy.py'
-alias build='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/request_build.py'
-alias knife-ssh='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/knife_ssh.py'
+alias vcloud='~/dev-root/debesys-one/run ~/dev-root/debesys-one/deploy/chef/scripts/vcloud_server.py'
+alias newvm='~/dev-root/debesys-one/run ~/dev-root/debesys-one/deploy/chef/scripts/vcloud_server.py -a -s s --bootstrap'
+alias ec2='~/dev-root/debesys-one/run ~/dev-root/debesys-one/deploy/chef/scripts/ec2_instance.py'
+alias bump='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/bump_cookbook_version.py'
+alias checkrepo='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/check_repo.py'
+alias deploy='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/request_deploy.py'
+alias build='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/request_build.py'
+alias knife-ssh='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/knife_ssh.py'
+alias oneoff='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/deploy_one_off.py'
 
 alias dot='cd ~/.dotfiles'
 alias gvim='gvim --remote-silent'
 alias ez="vim ~/.zshrc"
+alias ev="vim ~/.vimrc"
 alias sz='source ~/.zshrc'
 alias dbd='smbclient -U jerdmann -W intad //chifs01.int.tt.local/Share'
 alias ttpy='`git rev-parse --show-toplevel`/run python'
@@ -128,6 +130,7 @@ alias cdlh='cd `git rev-parse --show-toplevel`/price_server/exchange/test_lh'
 alias cdsbe='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messages'
 alias cdpro='cd `git rev-parse --show-toplevel`/all_messages/source/tt/messaging'
 alias rr='cd `git rev-parse --show-toplevel`'
+alias pstest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client && popd'
 
 alias cov='~/cov-analysis-linux64-8.0.0/bin/cov-run-desktop'
 
@@ -145,16 +148,16 @@ function external-knife_() {
 }
 alias eknife='external-knife_'
 
-export DEF_SEARCH_PATH="price_server"
+export DEF_SEARCH_PATH="price_server synthetic_engine fixit misc"
 function pmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         if [[ -z "$DEF_SEARCH_PATH" ]]; then
-            echo "warning: DEF_SEARCH_PATH is unset, defaulting to local directory"
+            echo "warning: DEF_SEARCH_PATH is unset, defaulting to entire repo"
             DEF_SEARCH_PATH="."
         fi
         pushd $reporootdir
-        make -j$(nproc) def_search_path="$DEF_SEARCH_PATH" $1
+        make -j$(nproc) def_search_path="$DEF_SEARCH_PATH" $@
         popd
     fi
 }
@@ -163,7 +166,8 @@ function sbe {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         pushd $reporootdir/price_server/ps_common/sbe_messages
-        ./make_schema.sh
+        SBE_JAR=$reporootdir/price_server/ps_common/sbe_messages/sbe-all.jar
+        /opt/jre1.8.0_101/bin/java -Dsbe.target.language=cpp -jar $SBE_JAR ps_messages.xml
         popd
     fi
 }
@@ -175,6 +179,6 @@ function makehome {
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 function servethis {
-    python -m SimpleHTTPServer 8000 &
     google-chrome http://localhost:8000 &
+    python -m SimpleHTTPServer 8000
 }
