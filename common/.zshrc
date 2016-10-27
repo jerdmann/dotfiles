@@ -85,7 +85,6 @@ alias ez="vim ~/.zshrc"
 alias ev="vim ~/.vimrc"
 alias sz='source ~/.zshrc'
 alias dbd='smbclient -U jerdmann -W intad //chifs01.int.tt.local/Share'
-alias ttpy='`git rev-parse --show-toplevel`/run python'
 
 alias tnew='tmux new-session -s '
 alias tattach='tmux attach-session -t '
@@ -94,6 +93,7 @@ alias tlist='tmux list-session'
 
 # debesys stuff
 alias ttrun='`git rev-parse --show-toplevel`/run'
+alias ttpy='`git rev-parse --show-toplevel`/run python'
 alias cf='cd /etc/debesys'
 alias lg='cd /var/log/debesys'
 function mkdeb () {
@@ -111,6 +111,7 @@ export VCD_ORG=Dev_General
 
 export AWS_DEFAULT_REGION='us-east-1'
 export JENKINS_USER='jerdmann'
+export TT_EMAIL='jason.erdmann@trade.tt'
 
 # ec2 manager name
 export MGR="jerdmann"

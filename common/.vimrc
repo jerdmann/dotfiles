@@ -16,6 +16,8 @@ call vundle#end()
 
 colors Tomorrow-Night
 filetype plugin indent on
+set number
+set cursorline
 
 set autoindent
 set autoread
@@ -107,6 +109,7 @@ nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
 nnoremap <leader>l :set invrelativenumber<cr>
 nnoremap <leader>w :w<cr>
 nnoremap <leader><space> :noh<cr>
+nnoremap <leader>rs :%s/\s\+$//e<cr>
 
 nnoremap gl :b#<CR>
 nnoremap Q <nop>
