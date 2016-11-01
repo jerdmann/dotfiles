@@ -90,7 +90,6 @@ set scrolljump=8
 set laststatus=2
 
 set wildmenu
-set wildmode=list:longest,full
 set wildignore=*.swp,*.pyc
 
 set guioptions-=m
@@ -107,15 +106,15 @@ let mapleader = ","
 nnoremap <leader>a :Ag
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
 nnoremap <leader>l :set invrelativenumber<cr>
-nnoremap <leader>w :w<cr>
+nnoremap <leader>w :wa<cr>
 nnoremap <leader><space> :noh<cr>
 nnoremap <leader>rs :%s/\s\+$//e<cr>
 
-nnoremap gl :b#<CR>
+nnoremap gl :ls<CR>:b<Space>
 nnoremap Q <nop>
 nnoremap Y y$
 
-set makeprg=~/build.sh\ cme_lh
+set makeprg=~/build.py\ price_client
 
 nnoremap <silent> <F5> :silent make \| redraw!<cr>
 nnoremap <silent> <F7> :cp<cr>
