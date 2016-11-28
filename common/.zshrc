@@ -69,8 +69,7 @@ export LD_LIBRARY_PATH="/usr/local/include"
 
 # some more aliases
 alias ll='ls -alF'
-alias vcloud='~/dev-root/debesys-one/run ~/dev-root/debesys-one/deploy/chef/scripts/vcloud_server.py'
-alias newvm='~/dev-root/debesys-one/run ~/dev-root/debesys-one/deploy/chef/scripts/vcloud_server.py -a -s s --bootstrap'
+alias tempvm='~/dev-root/debesys-one/run ~/dev-root/debesys-one/deploy/chef/scripts/temp_vm.py'
 alias ec2='~/dev-root/debesys-one/run ~/dev-root/debesys-one/deploy/chef/scripts/ec2_instance.py'
 alias bump='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/bump_cookbook_version.py'
 alias checkrepo='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/check_repo.py'
