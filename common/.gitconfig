@@ -7,6 +7,7 @@
     co = checkout
     cm = commit
     st = status
+    rso = remote show origin
     up = !git pull -q && git submodule -q init && git submodule -q update && git remote prune origin && git status
     pall = !git co master && git pull -q && git co uat/current && git pull -q && git co release/current && git pull -q && git co develop && git pull -q 
 [push]

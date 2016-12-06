@@ -167,7 +167,7 @@ function sbe {
     if [[ $? -eq 0 ]]; then
         pushd $reporootdir/price_server/ps_common/sbe_messages
         SBE_JAR=$reporootdir/price_server/ps_common/sbe_messages/sbe-all.jar
-        /opt/jre1.8.0_101/bin/java -Dsbe.target.language=cpp -jar $SBE_JAR ps_messages.xml
+        ./make_schema.sh
         popd
     fi
 }
