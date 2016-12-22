@@ -16,3 +16,5 @@
 	ui = auto
 [core]
     excludesfile = ~/.githome/.gitignore
+[gc]
+	auto = 0
