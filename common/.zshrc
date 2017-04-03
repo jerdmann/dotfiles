@@ -67,8 +67,7 @@ alias egrep='egrep --color=auto'
 export LIBRARY_PATH="/usr/lib/x86_64-linux-gnu"
 export LD_LIBRARY_PATH="/usr/local/include"
 
-# some more aliases
-alias ll='ls -alF'
+# various debesys scripts
 alias tempvm='~/dev-root/debesys-one/run ~/dev-root/debesys-one/deploy/chef/scripts/temp_vm.py'
 alias ec2='~/dev-root/debesys-one/run ~/dev-root/debesys-one/deploy/chef/scripts/ec2_instance.py'
 alias bump='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/bump_cookbook_version.py'
@@ -77,7 +76,9 @@ alias deploy='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/ch
 alias build='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/request_build.py'
 alias knife-ssh='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/knife_ssh.py'
 alias oneoff='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/deploy_one_off.py'
+alias chenv='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/change_environment.py'
 
+alias ll='ls -alF'
 alias dot='cd ~/.dotfiles'
 alias gvim='gvim --remote-silent'
 alias ez="vim ~/.zshrc"
@@ -119,7 +120,8 @@ export MGR="jerdmann"
 export PYTHONSTARTUP="/home/jason/.pythonrc"
 
 export GOPATH="/home/jason/gocode"
-export PATH=/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:$PATH
+export PATH=/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:$PATH
+export JDK8_BIN=/opt/jdk/bin/java
 
 # project dirs
 alias debone='cd ~/dev-root/debesys-one'
@@ -128,16 +130,16 @@ alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
 alias cdps='cd `git rev-parse --show-toplevel`/price_server'
 alias cdlh='cd `git rev-parse --show-toplevel`/price_server/exchange/test_lh'
 alias cdsbe='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messages'
-alias cdpro='cd `git rev-parse --show-toplevel`/all_messages/source/tt/messaging'
+alias cdpro='cd `git rev-parse --show-toplevel`/the_arsenal/all_messages/source/tt/messaging'
 alias cdsmds='cd `git rev-parse --show-toplevel`/ext/linux/x86-64/release/include/smds/md-core'
-alias rr='cd `git rev-parse --show-toplevel`'
 alias pstest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client && popd'
-
-alias cov='~/cov-analysis-linux64-8.0.0/bin/cov-run-desktop'
 
 test -r ~/.keys && source ~/.keys
 test -r ~/.workstation && source ~/.workstation
 test -r ~/.vpn && source ~/.vpn
+
+# jank until I figure out how computers work
+setxkbmap -option ctrl:nocaps || :
 
 # some function definitions
 function cbup {
@@ -149,7 +151,11 @@ function external-knife_() {
 }
 alias eknife='external-knife_'
 
-export DEF_SEARCH_PATH="price_server synthetic_engine fixit misc"
+alias ksj='knife search "tags:jerdmann*"'
+alias ks='knife search'
+alias eks='eknife search'
+
+export DEF_SEARCH_PATH="price_server synthetic_engine fixit misc the_arsenal"
 function pmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
@@ -163,12 +169,23 @@ function pmake {
     fi
 }
 
+function ptmake {
+    reporootdir=$(git rev-parse --show-toplevel)
+    if [[ $? -eq 0 ]]; then
+        pushd $reporootdir
+        make -j$(nproc) def_search_path="price_server fixit misc the_arsenal" price_server test_lh price_client_test
+        popd
+    fi
+}
+
 function sbe {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         pushd $reporootdir/price_server/ps_common/sbe_messages
         SBE_JAR=$reporootdir/price_server/ps_common/sbe_messages/sbe-all.jar
         ./make_schema.sh
+        cd sbe_common
+        $reporootdir/run python make_enums.py
         popd
     fi
 }
@@ -177,9 +194,24 @@ function makehome {
     scp ~/.vimrc "$1":~ && scp -r ~/.vim "$1":~ &>/dev/null && scp ~/.tmux.conf "$1":~
 }
 
+function rr {
+    reporootdir=$(git rev-parse --show-toplevel)
+    if [[ $? -eq 0 ]]; then
+        cd $reporootdir
+        basedir=$(basename $PWD)
+        if [[ $basedir == "ext" || $basedir == "the_arsenal" ]]; then
+            cd ..
+        fi
+    fi
+}
+
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 function servethis {
     google-chrome http://localhost:8000 &
     python -m SimpleHTTPServer 8000
+}
+
+function tohex {
+    perl -e "printf (\"%x\\n\", $1)"
 }

@@ -11,10 +11,18 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
+Plugin 'elonwoo/vim-material-theme'
+Plugin 'tpope/vim-dispatch'
 
 call vundle#end()
 
-colors Tomorrow-Night
+syntax on
+set t_ut=
+set t_Co=256
+set ttyfast
+set lazyredraw
+
+colors Tomorrow-Night-Eighties
 filetype plugin indent on
 set number
 set cursorline
@@ -32,6 +40,7 @@ set tags=tags;
 set backspace=indent,eol,start
 set number
 set cursorline
+set mouse=a
 
 augroup reload_vimrc " {
     autocmd!
@@ -71,11 +80,6 @@ set clipboard=unnamedplus
 set go+=a
 set shortmess=atI
 
-syntax on
-set t_ut=
-set ttyfast
-set lazyredraw
-
 set ignorecase
 set smartcase
 set incsearch
@@ -90,6 +94,7 @@ set scrolljump=8
 set laststatus=2
 
 set wildmenu
+set wildmode=longest:list,full
 set wildignore=*.swp,*.pyc
 
 set guioptions-=m
@@ -105,16 +110,18 @@ let g:netrw_liststyle=3
 let mapleader = ","
 nnoremap <leader>a :Ag
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
-nnoremap <leader>l :set invrelativenumber<cr>
-nnoremap <leader>w :wa<cr>
+nnoremap <leader>l oTTLOG(INFO, 9999) << "
+nnoremap <leader>w :silent wa<cr>
 nnoremap <leader><space> :noh<cr>
 nnoremap <leader>rs :%s/\s\+$//e<cr>
+nnoremap <leader>h o"haproxy": {"weight": 0}, "edgeserver": {"ttprice_enabled": true},<cr><esc>
 
 nnoremap gl :ls<CR>:b<Space>
 nnoremap Q <nop>
 nnoremap Y y$
 
-set makeprg=~/build.py\ price_client
+"set makeprg=make\ -j4\ -C\ /home/jason/dev-root/debesys-two\ price_client_test
+set makeprg=/home/jason/build.sh\ one\ price_unifier_test
 
 nnoremap <silent> <F5> :silent make \| redraw!<cr>
 nnoremap <silent> <F7> :cp<cr>
@@ -129,3 +136,5 @@ nnoremap <silent> <C-l> <C-w>l
 
 nnoremap ; :
 vnoremap ; :
+
+

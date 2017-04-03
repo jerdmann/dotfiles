@@ -4,81 +4,86 @@
 						 ("marmalade" . "https://marmalade-repo.org/packages/")
 						 ("melpa" . "http://melpa.org/packages/")))
 (package-initialize)
+(setq my-packages '(auto-complete
+                    flycheck
+                    pyflakes
+                    find-file-at-point
+                    better-defaults
+                    ample-theme
+                    color-theme-sanityinc-tomorrow
+                    smex
+                    evil
+                    ivy))
 
 (defun install-my-packages ()
   (interactive)
   (when (not package-archive-contents)
     (package-refresh-contents))
-  (dolist (p '(auto-complete
-	       flycheck
-               pyflakes))
+  (dolist (p my-packages)
     (when (not (package-installed-p p))
       (package-install p))))
 
-(show-paren-mode t)
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq vc-follow-symlinks 1)
-(setq require-final-newline t)
 
 (setq custom-safe-themes t)
 (setq-default highlight-tabs t)
 (setq tab-width 2)
 (global-auto-revert-mode t)
-(setq fill-column 80)
-
-(setq auto-save-default nil)
-(setq make-backup-files nil)
-(setq backup-inhibited t)
-(setq mouse-yank-at-point t)
 
 (setq inhibit-startup-screen 1)
-;; (tool-bar-mode -1)
-;; (menu-bar-mode -1)
-;; (scroll-bar-mode -1)
 (column-number-mode)
 (xterm-mouse-mode)
+(setq visible-bell nil)
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (setq-default c-basic-offset 4 c-default-style "linux")
-(setq compile-command "g++ -std=c++11 -Wall ")
-(setq compilation-ask-about-save nil)
-(add-hook 'c++-mode-hook 'auto-complete-mode)
 
-(add-hook 'python-mode-hook 'auto-complete-mode)
 (add-hook 'python-mode-hook 'flycheck-mode)
-
 (add-hook 'ruby-mode-hook 'flycheck-mode)
 (setq ruby-indent-level 4)
-
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward)
 
 (require 'ido)
 (ido-mode t)
 (setq ido-enable-flex-matching 1)
 
-(require 'auto-complete)
-(global-auto-complete-mode)
+(require 'company)
+(global-company-mode)
 
-;; (require 'company)
-;; (require 'company-clang)
+;; (require 'auto-complete)
+;; (global-auto-complete-mode)
 
-(setq grep-command "grep -nHR -e ")
+;; (require 'evil)
+;; (evil-mode 1)
 
-(defun lame-ctrlp ()
-  """Super lame emulation of the excellent ctrlp vim plugin."""
-  (interactive)
-  (find-dired default-directory
-              (concat "-iname \"*" (read-from-minibuffer "search pattern: ") "*\"")))
+(require 'ivy)
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(setq ivy-count-format "(%d/%d) ")
+
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
 ;key bindings
-(global-set-key (kbd "<RET>") 'newline-and-indent)
 (global-set-key (kbd "C-b") 'ido-switch-buffer)
-(global-set-key (kbd "C-o") 'other-window)
-(global-set-key (kbd "<f5>") 'compile)
+(global-set-key (kbd "<f5>") 'recompile)
+(global-set-key (kbd "M-o") 'other-window)
 
-(load-theme 'ample)
+(setq compilation-environment '("LIBRARY_PATH=/usr/lib/x86_64-linux-gnu"
+                                "LD_LIBRARY_PATH=/usr/local/include"))
+(setq compile-command "make -j4 ")
+(setq compilation-ask-about-save nil)
+(setq compilation-scroll-output t)
+(setq split-width-threshold 200)
+(setq split-height-threshold 200)
+
+(add-hook 'focus-out-hook (lambda()
+                            (save-some-buffers t)))
+(delete-selection-mode t)
+
+(load-theme 'sanityinc-tomorrow-night)
 (if (display-graphic-p)
     (progn
       (set-frame-font "DejaVu Sans Mono-10.5" nil t)

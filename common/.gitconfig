@@ -3,13 +3,17 @@
 	email = jason.erdmann@tradingtechnologies.com
 [alias]
     glog = log --graph --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    logf = log -p --name-only
     br = branch
     co = checkout
     cm = commit
+    cp = cherry-pick -n
     st = status
     rso = remote show origin
-    up = !git pull -q && git submodule -q init && git submodule -q update && git remote prune origin && git status
+    sm = submodule update --init 
+    up = !git pull -q && git submodule update -q --init && git remote prune origin && git status
     pall = !git co master && git pull -q && git co uat/current && git pull -q && git co release/current && git pull -q && git co develop && git pull -q 
+    scrub = !git br --merged | grep -v -e master -e uat/current -e release/current -e develop -e '*' | xargs -n 1 git br -d
 [push]
 	default = simple
 [color]
