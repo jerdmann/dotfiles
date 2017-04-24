@@ -5,27 +5,24 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'flazz/vim-colorschemes'
+Plugin 'chriskempson/base16-vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
-Plugin 'elonwoo/vim-material-theme'
 Plugin 'tpope/vim-dispatch'
 
 call vundle#end()
 
 syntax on
 set t_ut=
-set t_Co=256
 set ttyfast
 set lazyredraw
 
-colors Tomorrow-Night-Eighties
+colors Tomorrow-Night
 filetype plugin indent on
-set number
-set cursorline
 
 set autoindent
 set autoread
@@ -38,9 +35,11 @@ set tabstop=4
 set expandtab
 set tags=tags;
 set backspace=indent,eol,start
-set number
 set cursorline
 set mouse=a
+
+set tw=120
+set formatoptions-=t
 
 augroup reload_vimrc " {
     autocmd!
@@ -107,23 +106,24 @@ imap kj <Esc>
 
 let g:netrw_liststyle=3
 
+set makeprg=/home/jason/build.sh\ two\ price_client_test
+
 let mapleader = ","
 nnoremap <leader>a :Ag
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
+nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0}, "edgeserver": {"ttprice_enabled": true},<cr><esc>
 nnoremap <leader>l oTTLOG(INFO, 9999) << "
+nnoremap <leader>m <Esc>:set makeprg=/home/jason/build.sh\ two\ 
+nnoremap <leader>rs :%s/\s\+$//e<cr>
+nnoremap <leader>v :e ~/.vimrc<cr>
 nnoremap <leader>w :silent wa<cr>
 nnoremap <leader><space> :noh<cr>
-nnoremap <leader>rs :%s/\s\+$//e<cr>
-nnoremap <leader>h o"haproxy": {"weight": 0}, "edgeserver": {"ttprice_enabled": true},<cr><esc>
 
 nnoremap gl :ls<CR>:b<Space>
 nnoremap Q <nop>
 nnoremap Y y$
 
-"set makeprg=make\ -j4\ -C\ /home/jason/dev-root/debesys-two\ price_client_test
-set makeprg=/home/jason/build.sh\ one\ price_unifier_test
-
-nnoremap <silent> <F5> :silent make \| redraw!<cr>
+nnoremap <silent> <F5> :silent wa \| silent make \| redraw! \| cw<cr>
 nnoremap <silent> <F7> :cp<cr>
 nnoremap <silent> <F8> :cn<cr>
 nnoremap <silent> <F9> :copen<cr>

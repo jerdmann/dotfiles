@@ -2,8 +2,9 @@
 	name = Jason Erdmann
 	email = jason.erdmann@tradingtechnologies.com
 [alias]
-    glog = log --graph --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-    logf = log -p --name-only
+    gl = log --graph --date-order --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    ol = log --pretty=format:"%C(yellow)%H%Creset%x09%an%x09%Cgreen(%ad)%Creset%x09%s" --date=relative
+    fl = log -p --name-only
     br = branch
     co = checkout
     cm = commit
@@ -22,3 +23,8 @@
     excludesfile = ~/.githome/.gitignore
 [gc]
 	auto = 0
+[git-tt]
+    delete-branch = true
+    validate-jira-number = true
+    include-jira-summary = true
+    jira-summary-length = 40

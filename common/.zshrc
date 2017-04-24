@@ -84,6 +84,8 @@ alias gvim='gvim --remote-silent'
 alias ez="vim ~/.zshrc"
 alias ev="vim ~/.vimrc"
 alias sz='source ~/.zshrc'
+alias v="vim"
+alias g="git"
 alias dbd='smbclient -U jerdmann -W intad //chifs01.int.tt.local/Share'
 
 alias tnew='tmux new-session -s '
@@ -153,7 +155,10 @@ alias eknife='external-knife_'
 
 alias ksj='knife search "tags:jerdmann*"'
 alias ks='knife search'
+alias ke='knife node edit'
 alias eks='eknife search'
+alias eke='eknife node edit'
+alias gfix='vim $(git diff --name-only | uniq)'
 
 export DEF_SEARCH_PATH="price_server synthetic_engine fixit misc the_arsenal"
 function pmake {
@@ -214,4 +219,21 @@ function servethis {
 
 function tohex {
     perl -e "printf (\"%x\\n\", $1)"
+}
+
+export PROJECT_DIRS="lbm price_server/ps_common price_server/price_client price_server/price_unifier synthetic_engine/composer"
+function tag {
+    reporootdir=$(git rev-parse --show-toplevel)
+    if [[ $? -eq 0 ]]; then
+        pushd $reporootdir
+        cat /dev/null > cscope.files
+        cat /dev/null > tags
+        for d in $(echo $PROJECT_DIRS | tr -s " " | tr " " "\n")
+        do {
+            find $d -name "*.cpp" -o -name "*.h" -o -name "*.hpp" >> cscope.files
+            ctags -a $d
+        }; done
+        cscope -bq
+        popd
+    fi
 }
