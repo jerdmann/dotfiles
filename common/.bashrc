@@ -40,7 +40,7 @@ PROMPT_COMMAND=_prompt_command
 function _prompt_command()
 {
     hasjobs=$(jobs -p)
-    PS1="$blue$(__git_ps1 "%s ")$green\W ${hasjobs:+$yellow(\j)}$green> $reset"
+    PS1="${SSH_CLIENT:+$yellow$HOSTNAME }$blue$(__git_ps1 "%s ")$green\W ${hasjobs:+$yellow(\j)}$green> $reset"
     PS2="$blue>$reset"
 }
 
@@ -169,9 +169,6 @@ alias pstest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.pr
 test -r ~/.keys && source ~/.keys
 test -r ~/.workstation && source ~/.workstation
 test -r ~/.vpn && source ~/.vpn
-
-# jank until I figure out how computers work
-setxkbmap -option ctrl:nocaps || :
 
 # some function definitions
 function cbup {
