@@ -29,6 +29,10 @@ HISTFILESIZE=2000
 # set term type
 export TERM=xterm-256color
 
+# pretty colors
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
 # set prompt
 source ~/.git-prompt.sh
 red="\[\e[1;31m\]"
@@ -73,6 +77,7 @@ alias debs='cd ~/debesys-scripts'
 alias dev='cd ~/dev-root'
 alias dot='cd ~/.dotfiles'
 alias gvim='gvim --remote-silent'
+alias ee='emacs -nw'
 
 alias tnew='tmux new-session -s '
 alias tattach='tmux attach-session -t '
@@ -185,7 +190,7 @@ alias ks='knife search'
 alias ke='knife node edit'
 alias eks='eknife search'
 alias eke='eknife node edit'
-alias gfix='vim $(git diff --name-only | uniq)'
+alias fuck='vim $(git diff --name-only | uniq)'
 
 function bgf {
     knife tag create $1 basegofast
@@ -252,7 +257,7 @@ function tohex {
     perl -e "printf (\"%x\\n\", $1)"
 }
 
-export PROJECT_DIRS="lbm price_server/ps_common price_server/price_client price_server/price_unifier synthetic_engine/composer"
+export PROJECT_DIRS="lbm price_server/ps_common price_server/price_client price_server/price_unifier synthetic_engine/composer test price_server/test"
 function tag {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
@@ -262,9 +267,10 @@ function tag {
         for d in $(echo $PROJECT_DIRS | tr -s " " | tr " " "\n")
         do {
             find $d -name "*.cpp" -o -name "*.h" -o -name "*.hpp" >> cscope.files
+            ctags -a -e $d
             ctags -a $d
         }; done
-        cscope -bq
+        cscope -bl
         popd
     fi
 }

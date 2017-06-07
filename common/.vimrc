@@ -21,8 +21,11 @@ set t_ut=
 set ttyfast
 set lazyredraw
 
-colors Tomorrow-Night
 filetype plugin indent on
+if filereadable(expand("~/.vimrc_background"))
+    let base16colorspace=256
+    source ~/.vimrc_background
+endif
 
 set autoindent
 set autoread
@@ -35,8 +38,6 @@ set tabstop=4
 set expandtab
 set tags=tags;
 set backspace=indent,eol,start
-set cursorline
-set mouse=a
 
 set tw=120
 set formatoptions-=t
@@ -106,14 +107,14 @@ imap kj <Esc>
 
 let g:netrw_liststyle=3
 
-set makeprg=/home/jason/build.sh\ two\ price_client_test
+set makeprg=/home/jason/build.sh
 
 let mapleader = ","
 nnoremap <leader>a :Ag
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
 nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0}, "edgeserver": {"ttprice_enabled": true},<cr><esc>
 nnoremap <leader>l oTTLOG(INFO, 9999) << "
-nnoremap <leader>m <Esc>:set makeprg=/home/jason/build.sh\ two\ 
+nnoremap <leader>m <Esc>:set makeprg=/home/jason/build.sh\ 
 nnoremap <leader>rs :%s/\s\+$//e<cr>
 nnoremap <leader>v :e ~/.vimrc<cr>
 nnoremap <leader>w :silent wa<cr>
@@ -132,8 +133,25 @@ nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-j> <C-w>j
 nnoremap <silent> <C-k> <C-w>k
 nnoremap <silent> <C-l> <C-w>l
+nnoremap <silent> <C-left> :bp<cr>
+nnoremap <silent> <C-right> :bn<cr>
 
 nnoremap ; :
 vnoremap ; :
 
+function! PyMake()
+python << EOF
+import subprocess
+import multiprocessing
+import sys
 
+targets = sys.argv[1:]
+targets = ["price_client"]
+search_path = "misc fixit price_server the_arsenal"
+rr = subprocess.check_output("git rev-parse --show-toplevel".split())
+out = subprocess.check_output("make -j{} -C {} def_search_path=\"{}\" {}".format(
+                            multiprocessing.cpu_count(), rr, search_path, " ".join(targets)),
+                            stderr=subprocess.STDOUT)
+
+EOF
+endfunc
