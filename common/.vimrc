@@ -3,29 +3,38 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
-Plugin 'davidhalter/jedi-vim'
 Plugin 'flazz/vim-colorschemes'
-Plugin 'chriskempson/base16-vim'
-Plugin 'kien/ctrlp.vim'
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
 Plugin 'tpope/vim-dispatch'
-
+Plugin 'zah/nim.vim'
 call vundle#end()
 
+set rtp+=~/.fzf
+
+" nim thing
+fun! JumpToDef()
+  if exists("*GotoDefinition_" . &filetype)
+    call GotoDefinition_{&filetype}()
+  else
+    exe "norm! \<C-]>"
+  endif
+endf
+
+" Jump to tag
+nn <M-g> :call JumpToDef()<cr>
+ino <M-g> <esc>:call JumpToDef()<cr>i
+
 syntax on
-set t_ut=
+set t_Co=256
 set ttyfast
 set lazyredraw
 
+colo Tomorrow-Night
 filetype plugin indent on
-if filereadable(expand("~/.vimrc_background"))
-    let base16colorspace=256
-    source ~/.vimrc_background
-endif
 
 set autoindent
 set autoread
@@ -38,6 +47,7 @@ set tabstop=4
 set expandtab
 set tags=tags;
 set backspace=indent,eol,start
+set mouse=a
 
 set tw=120
 set formatoptions-=t
@@ -114,10 +124,11 @@ nnoremap <leader>a :Ag
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
 nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0}, "edgeserver": {"ttprice_enabled": true},<cr><esc>
 nnoremap <leader>l oTTLOG(INFO, 9999) << "
-nnoremap <leader>m <Esc>:set makeprg=/home/jason/build.sh\ 
+nnoremap <leader>m :set makeprg=/home/jason/build.sh\ 
+nnoremap <leader>p "0p
 nnoremap <leader>rs :%s/\s\+$//e<cr>
 nnoremap <leader>v :e ~/.vimrc<cr>
-nnoremap <leader>w :silent wa<cr>
+nnoremap <leader>w :w<cr>
 nnoremap <leader><space> :noh<cr>
 
 nnoremap gl :ls<CR>:b<Space>
@@ -135,6 +146,8 @@ nnoremap <silent> <C-k> <C-w>k
 nnoremap <silent> <C-l> <C-w>l
 nnoremap <silent> <C-left> :bp<cr>
 nnoremap <silent> <C-right> :bn<cr>
+
+nnoremap <silent> <C-p> :FZF<cr>
 
 nnoremap ; :
 vnoremap ; :

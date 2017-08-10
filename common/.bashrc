@@ -20,7 +20,7 @@ shopt -s checkwinsize
 shopt -s globstar
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
+HISTSIZE=10000
 HISTFILESIZE=2000
 
 # make less more friendly for non-text input files, see lesspipe(1)
@@ -28,10 +28,6 @@ HISTFILESIZE=2000
 
 # set term type
 export TERM=xterm-256color
-
-# pretty colors
-BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 # set prompt
 source ~/.git-prompt.sh
@@ -122,6 +118,7 @@ alias sz='source ~/.zshrc'
 alias v="vim"
 alias g="git"
 alias dbd='smbclient -U jerdmann -W intad //chifs01.int.tt.local/Share'
+alias wgdl='wget --recursive --no-clobber --convert-links --html-extension --page-requisites --no-parent '
 
 alias tnew='tmux new-session -s '
 alias tattach='tmux attach-session -t '
@@ -157,7 +154,7 @@ export MGR="jerdmann"
 export PYTHONSTARTUP="/home/jason/.pythonrc"
 
 export GOPATH="/home/jason/gocode"
-export PATH=/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:$PATH
+export PATH=/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:/opt/nim-0.17.0/bin:$PATH
 export JDK8_BIN=/opt/jdk/bin/java
 
 # project dirs
@@ -169,7 +166,7 @@ alias cdlh='cd `git rev-parse --show-toplevel`/price_server/exchange/test_lh'
 alias cdsbe='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messages'
 alias cdpro='cd `git rev-parse --show-toplevel`/the_arsenal/all_messages/source/tt/messaging'
 alias cdsmds='cd `git rev-parse --show-toplevel`/ext/linux/x86-64/release/include/smds/md-core'
-alias pstest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client && popd'
+alias pstest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_basic_fix && popd'
 
 test -r ~/.keys && source ~/.keys
 test -r ~/.workstation && source ~/.workstation
@@ -188,8 +185,10 @@ alias eknife='external-knife_'
 alias ksj='knife search "tags:jerdmann*"'
 alias ks='knife search'
 alias ke='knife node edit'
+alias ksh='knife node show'
 alias eks='eknife search'
 alias eke='eknife node edit'
+alias eksh='knife node show'
 alias fuck='vim $(git diff --name-only | uniq)'
 
 function bgf {
@@ -214,7 +213,7 @@ function ptmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         pushd $reporootdir
-        make -j$(nproc) def_search_path="price_server fixit misc the_arsenal" price_server test_lh price_client_test
+        make -j$(nproc) price_server test_lh price_client_test price_sub price_unifier_test
         popd
     fi
 }
@@ -257,22 +256,23 @@ function tohex {
     perl -e "printf (\"%x\\n\", $1)"
 }
 
-export PROJECT_DIRS="lbm price_server/ps_common price_server/price_client price_server/price_unifier synthetic_engine/composer test price_server/test"
+export PROJECT_DIRS="lbm price_server/ps_common price_server/exchange/tt_price_proxy price_server/price_client price_server/price_unifier synthetic_engine/composer test price_server/test"
 function tag {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         pushd $reporootdir
-        cat /dev/null > cscope.files
         cat /dev/null > tags
         for d in $(echo $PROJECT_DIRS | tr -s " " | tr " " "\n")
         do {
-            find $d -name "*.cpp" -o -name "*.h" -o -name "*.hpp" >> cscope.files
             ctags -a -e $d
             ctags -a $d
         }; done
-        cscope -bl
         popd
     fi
+}
+
+function perf-crunch {
+    sudo chmod 644 perf.data && perf script > out.perf && stackcollapse-perf.pl out.perf > out.folded && sudo flamegraph.pl out.folded > perf.svg
 }
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

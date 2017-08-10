@@ -1,5 +1,4 @@
 # Set up the prompt
-export TERM=xterm-256color
 autoload -U colors && colors
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' formats '%b '
@@ -87,6 +86,9 @@ alias sz='source ~/.zshrc'
 alias v="vim"
 alias g="git"
 alias dbd='smbclient -U jerdmann -W intad //chifs01.int.tt.local/Share'
+alias wgdl='wget --recursive --no-clobber --convert-links --html-extension --page-requisites --no-parent '
+alias gvim='gvim --remote-silent'
+
 
 alias tnew='tmux new-session -s '
 alias tattach='tmux attach-session -t '
@@ -122,19 +124,21 @@ export MGR="jerdmann"
 export PYTHONSTARTUP="/home/jason/.pythonrc"
 
 export GOPATH="/home/jason/gocode"
-export PATH=/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:$PATH
+export PATH=/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:/opt/nim-0.17.0/bin:$PATH
 export JDK8_BIN=/opt/jdk/bin/java
 
 # project dirs
-alias debone='cd ~/dev-root/debesys-one'
-alias debtwo='cd ~/dev-root/debesys-two'
+alias r1='cd ~/dev-root/debesys-one'
+alias r2='cd ~/dev-root/debesys-two'
+alias dev='cd ~/dev-root'
+alias dot='cd ~/.dotfiles'
 alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
 alias cdps='cd `git rev-parse --show-toplevel`/price_server'
 alias cdlh='cd `git rev-parse --show-toplevel`/price_server/exchange/test_lh'
 alias cdsbe='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messages'
 alias cdpro='cd `git rev-parse --show-toplevel`/the_arsenal/all_messages/source/tt/messaging'
 alias cdsmds='cd `git rev-parse --show-toplevel`/ext/linux/x86-64/release/include/smds/md-core'
-alias pstest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client && popd'
+alias pstest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_basic_fix && popd'
 
 test -r ~/.keys && source ~/.keys
 test -r ~/.workstation && source ~/.workstation
@@ -156,9 +160,15 @@ alias eknife='external-knife_'
 alias ksj='knife search "tags:jerdmann*"'
 alias ks='knife search'
 alias ke='knife node edit'
+alias ksh='knife node show'
 alias eks='eknife search'
 alias eke='eknife node edit'
-alias gfix='vim $(git diff --name-only | uniq)'
+alias eksh='eknife node show'
+alias fuck='vim $(git diff --name-only | uniq)'
+
+function bgf {
+    knife tag create $1 basegofast
+}
 
 export DEF_SEARCH_PATH="price_server synthetic_engine fixit misc the_arsenal"
 function pmake {
@@ -178,7 +188,7 @@ function ptmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         pushd $reporootdir
-        make -j$(nproc) def_search_path="price_server fixit misc the_arsenal" price_server test_lh price_client_test
+        make -j$(nproc) price_server test_lh price_client_test price_sub price_unifier_test
         popd
     fi
 }
@@ -221,7 +231,7 @@ function tohex {
     perl -e "printf (\"%x\\n\", $1)"
 }
 
-export PROJECT_DIRS="lbm price_server/ps_common price_server/price_client price_server/price_unifier synthetic_engine/composer"
+export PROJECT_DIRS="lbm price_server/ps_common price_server/price_client price_server/price_unifier synthetic_engine/composer test price_server/test"
 function tag {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
@@ -231,9 +241,12 @@ function tag {
         for d in $(echo $PROJECT_DIRS | tr -s " " | tr " " "\n")
         do {
             find $d -name "*.cpp" -o -name "*.h" -o -name "*.hpp" >> cscope.files
+            ctags -a -e $d
             ctags -a $d
         }; done
-        cscope -bq
+        cscope -bl
         popd
     fi
 }
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
