@@ -183,13 +183,21 @@ function external-knife_() {
 alias eknife='external-knife_'
 
 alias ksj='knife search "tags:jerdmann*"'
-alias ks='knife search'
 alias ke='knife node edit'
 alias ksh='knife node show'
-alias eks='eknife search'
 alias eke='eknife node edit'
-alias eksh='knife node show'
+alias eksh='eknife node show'
 alias fuck='vim $(git diff --name-only | uniq)'
+
+function ks {
+    knife search "recipes:*$1* AND chef_environment:*$2*"
+}
+
+function eks {
+    eknife search "recipes:*$1* AND chef_environment:*$2*"
+}
+
+alias eks='eknife search'
 
 function bgf {
     knife tag create $1 basegofast

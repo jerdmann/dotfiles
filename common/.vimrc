@@ -120,7 +120,6 @@ let g:netrw_liststyle=3
 set makeprg=/home/jason/build.sh
 
 let mapleader = ","
-nnoremap <leader>a :Ag
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
 nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0}, "edgeserver": {"ttprice_enabled": true},<cr><esc>
 nnoremap <leader>l oTTLOG(INFO, 9999) << "
@@ -132,6 +131,7 @@ nnoremap <leader>w :w<cr>
 nnoremap <leader><space> :noh<cr>
 
 nnoremap gl :ls<CR>:b<Space>
+nnoremap K :Ag<CR>
 nnoremap Q <nop>
 nnoremap Y y$
 
