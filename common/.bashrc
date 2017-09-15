@@ -75,10 +75,8 @@ alias dot='cd ~/.dotfiles'
 alias gvim='gvim --remote-silent'
 alias ee='emacs -nw'
 
-alias tnew='tmux new-session -s '
-alias tattach='tmux attach-session -t '
-alias tkill='tmux kill-session -t '
-alias tlist='tmux list-session'
+alias ta='tmux attach-session -t 0'
+alias tl='tmux list-session'
 
 test -f ~/.bash_aliases && source ~/.bash_aliases
 test -f ~/.bash_functions && source ~/.bash_functions
@@ -147,6 +145,8 @@ export AWS_DEFAULT_REGION='us-east-1'
 export JENKINS_USER='jerdmann'
 export TT_EMAIL='jason.erdmann@trade.tt'
 
+export ASAN_OPTIONS="log_path=/tmp/asan"
+
 # ec2 manager name
 export MGR="jerdmann"
 
@@ -197,7 +197,6 @@ function eks {
     eknife search "recipes:*$1* AND chef_environment:*$2*"
 }
 
-alias eks='eknife search'
 
 function bgf {
     knife tag create $1 basegofast
@@ -251,6 +250,18 @@ function rr {
             cd ..
         fi
     fi
+}
+
+function lbmify {
+    rr
+    mkdir -p build/x86-64/debug/etc/debesys
+    mkdir -p build/x86-64/idebug/etc/debesys
+    mkdir -p build/x86-64/release/etc/debesys
+    mkdir -p build/x86-64/irelease/etc/debesys
+    cp ~/lbm_license_file.txt build/x86-64/debug/etc/debesys/
+    cp ~/lbm_license_file.txt build/x86-64/idebug/etc/debesys/
+    cp ~/lbm_license_file.txt build/x86-64/release/etc/debesys/
+    cp ~/lbm_license_file.txt build/x86-64/irelease/etc/debesys/
 }
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

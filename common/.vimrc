@@ -34,6 +34,7 @@ set ttyfast
 set lazyredraw
 
 colo Tomorrow-Night
+highlight Normal ctermbg=NONE
 filetype plugin indent on
 
 set autoindent
@@ -121,7 +122,7 @@ set makeprg=/home/jason/build.sh
 
 let mapleader = ","
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
-nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0}, "edgeserver": {"ttprice_enabled": true},<cr><esc>
+nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0},<cr><esc>
 nnoremap <leader>l oTTLOG(INFO, 9999) << "
 nnoremap <leader>m :set makeprg=/home/jason/build.sh\ 
 nnoremap <leader>p "0p
