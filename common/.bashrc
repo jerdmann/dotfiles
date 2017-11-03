@@ -42,6 +42,8 @@ function _prompt_command()
     hasjobs=$(jobs -p)
     PS1="${SSH_CLIENT:+$yellow$HOSTNAME }$blue$(__git_ps1 "%s ")$green\W ${hasjobs:+$yellow(\j)}$green> $reset"
     PS2="$blue>$reset"
+    history -a
+    history -n
 }
 
 # enable color support of ls and also add handy aliases
@@ -67,9 +69,6 @@ alias vcloud='~/debesys-scripts/run ~/debesys-scripts/deploy/chef/scripts/vcloud
 alias bump='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/bump_cookbook_version.py'
 alias deploy='~/debesys-scripts/run python ~/debesys-scripts/deploy/chef/scripts/request_deploy.py'
 alias deb='cd $(pwd | grep dev-root | cut -f1-5 -d\/) || echo "Not in a repo under dev-root."'
-alias r1='cd ~/dev-root/debesys-one'
-alias r2='cd ~/dev-root/debesys-two'
-alias debs='cd ~/debesys-scripts'
 alias dev='cd ~/dev-root'
 alias dot='cd ~/.dotfiles'
 alias gvim='gvim --remote-silent'
@@ -145,7 +144,7 @@ export AWS_DEFAULT_REGION='us-east-1'
 export JENKINS_USER='jerdmann'
 export TT_EMAIL='jason.erdmann@trade.tt'
 
-export ASAN_OPTIONS="log_path=/tmp/asan"
+#export ASAN_OPTIONS="log_path=/tmp/asan:detect_leaks=1"
 
 # ec2 manager name
 export MGR="jerdmann"
@@ -157,9 +156,12 @@ export GOPATH="/home/jason/gocode"
 export PATH=/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:/opt/nim-0.17.0/bin:$PATH
 export JDK8_BIN=/opt/jdk/bin/java
 
+export NODEJS_HOME=/usr/local/nodejs
+export PATH=$NODEJS_HOME/bin:$PATH
+
 # project dirs
-alias debone='cd ~/dev-root/debesys-one'
-alias debtwo='cd ~/dev-root/debesys-two'
+alias r1='cd ~/dev-root/debesys-one'
+alias r2='cd ~/dev-root/debesys-two'
 alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
 alias cdps='cd `git rev-parse --show-toplevel`/price_server'
 alias cdlh='cd `git rev-parse --show-toplevel`/price_server/exchange/test_lh'
@@ -167,6 +169,7 @@ alias cdsbe='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messa
 alias cdpro='cd `git rev-parse --show-toplevel`/the_arsenal/all_messages/source/tt/messaging'
 alias cdsmds='cd `git rev-parse --show-toplevel`/ext/linux/x86-64/release/include/smds/md-core'
 alias pstest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_basic_fix && popd'
+alias psatest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_advanced_fix && popd'
 
 test -r ~/.keys && source ~/.keys
 test -r ~/.workstation && source ~/.workstation
@@ -190,13 +193,16 @@ alias eksh='eknife node show'
 alias fuck='vim $(git diff --name-only | uniq)'
 
 function ks {
-    knife search "recipes:*$1* AND chef_environment:*$2*"
+    knife search "run_list:*$1* AND chef_environment:*$2*"
 }
 
 function eks {
-    eknife search "recipes:*$1* AND chef_environment:*$2*"
+    eknife search "run_list:*$1* AND chef_environment:*$2*"
 }
 
+function kssh {
+    knife ssh -a ipaddress "run_list:*$1* AND chef_environment:*$2*" "$3"
+}
 
 function bgf {
     knife tag create $1 basegofast
@@ -283,8 +289,8 @@ function tag {
         cat /dev/null > tags
         for d in $(echo $PROJECT_DIRS | tr -s " " | tr " " "\n")
         do {
-            ctags -a -e $d
             ctags -a $d
+            ctags -a -e $d
         }; done
         popd
     fi

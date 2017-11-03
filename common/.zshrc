@@ -16,19 +16,15 @@ setopt histignorealldups
 setopt sharehistory
 setopt promptsubst
 
-# Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
-
-# Fix the arrow keys.
 bindkey ';5D' emacs-backward-word
 bindkey ';5C' emacs-forward-word
 
 # Fix punctuation behavior for word commands.
 export WORDCHARS=''
 
-# Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=10000
+SAVEHIST=10000
 HISTFILE=~/.zsh_history
 
 # make less more friendly for non-text input files, see lesspipe(1)
@@ -87,8 +83,6 @@ alias v="vim"
 alias g="git"
 alias dbd='smbclient -U jerdmann -W intad //chifs01.int.tt.local/Share'
 alias wgdl='wget --recursive --no-clobber --convert-links --html-extension --page-requisites --no-parent '
-alias gvim='gvim --remote-silent'
-
 
 alias tnew='tmux new-session -s '
 alias tattach='tmux attach-session -t '
@@ -117,6 +111,8 @@ export AWS_DEFAULT_REGION='us-east-1'
 export JENKINS_USER='jerdmann'
 export TT_EMAIL='jason.erdmann@trade.tt'
 
+#export ASAN_OPTIONS="log_path=/tmp/asan:detect_leaks=1"
+
 # ec2 manager name
 export MGR="jerdmann"
 
@@ -127,11 +123,12 @@ export GOPATH="/home/jason/gocode"
 export PATH=/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:/opt/nim-0.17.0/bin:$PATH
 export JDK8_BIN=/opt/jdk/bin/java
 
+export NODEJS_HOME=/usr/local/nodejs
+export PATH=$NODEJS_HOME/bin:$PATH
+
 # project dirs
 alias r1='cd ~/dev-root/debesys-one'
 alias r2='cd ~/dev-root/debesys-two'
-alias dev='cd ~/dev-root'
-alias dot='cd ~/.dotfiles'
 alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
 alias cdps='cd `git rev-parse --show-toplevel`/price_server'
 alias cdlh='cd `git rev-parse --show-toplevel`/price_server/exchange/test_lh'
@@ -139,13 +136,11 @@ alias cdsbe='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messa
 alias cdpro='cd `git rev-parse --show-toplevel`/the_arsenal/all_messages/source/tt/messaging'
 alias cdsmds='cd `git rev-parse --show-toplevel`/ext/linux/x86-64/release/include/smds/md-core'
 alias pstest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_basic_fix && popd'
+alias psatest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_advanced_fix && popd'
 
 test -r ~/.keys && source ~/.keys
 test -r ~/.workstation && source ~/.workstation
 test -r ~/.vpn && source ~/.vpn
-
-# jank until I figure out how computers work
-setxkbmap -option ctrl:nocaps || :
 
 # some function definitions
 function cbup {
@@ -158,13 +153,23 @@ function external-knife_() {
 alias eknife='external-knife_'
 
 alias ksj='knife search "tags:jerdmann*"'
-alias ks='knife search'
 alias ke='knife node edit'
 alias ksh='knife node show'
-alias eks='eknife search'
 alias eke='eknife node edit'
 alias eksh='eknife node show'
 alias fuck='vim $(git diff --name-only | uniq)'
+
+function ks {
+    knife search "run_list:*$1* AND chef_environment:*$2*"
+}
+
+function eks {
+    eknife search "run_list:*$1* AND chef_environment:*$2*"
+}
+
+function kssh {
+    knife ssh -a ipaddress "run_list:*$1* AND chef_environment:*$2*" "$3"
+}
 
 function bgf {
     knife tag create $1 basegofast
@@ -220,6 +225,18 @@ function rr {
     fi
 }
 
+function lbmify {
+    rr
+    mkdir -p build/x86-64/debug/etc/debesys
+    mkdir -p build/x86-64/idebug/etc/debesys
+    mkdir -p build/x86-64/release/etc/debesys
+    mkdir -p build/x86-64/irelease/etc/debesys
+    cp ~/lbm_license_file.txt build/x86-64/debug/etc/debesys/
+    cp ~/lbm_license_file.txt build/x86-64/idebug/etc/debesys/
+    cp ~/lbm_license_file.txt build/x86-64/release/etc/debesys/
+    cp ~/lbm_license_file.txt build/x86-64/irelease/etc/debesys/
+}
+
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 function servethis {
@@ -231,22 +248,22 @@ function tohex {
     perl -e "printf (\"%x\\n\", $1)"
 }
 
-export PROJECT_DIRS="lbm price_server/ps_common price_server/price_client price_server/price_unifier synthetic_engine/composer test price_server/test"
+export PROJECT_DIRS="lbm price_server/ps_common price_server/exchange/tt_price_proxy price_server/price_client price_server/price_unifier synthetic_engine/composer test price_server/test"
 function tag {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         pushd $reporootdir
-        cat /dev/null > cscope.files
         cat /dev/null > tags
         for d in $(echo $PROJECT_DIRS | tr -s " " | tr " " "\n")
         do {
-            find $d -name "*.cpp" -o -name "*.h" -o -name "*.hpp" >> cscope.files
-            ctags -a -e $d
             ctags -a $d
         }; done
-        cscope -bl
         popd
     fi
+}
+
+function perf-crunch {
+    sudo chmod 644 perf.data && perf script > out.perf && stackcollapse-perf.pl out.perf > out.folded && sudo flamegraph.pl out.folded > perf.svg
 }
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

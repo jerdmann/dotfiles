@@ -4,6 +4,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'flazz/vim-colorschemes'
+Plugin 'roosta/srcery'
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
@@ -53,11 +54,6 @@ set mouse=a
 set tw=120
 set formatoptions-=t
 
-augroup reload_vimrc " {
-    autocmd!
-    autocmd BufWritePost $MYVIMRC source $MYVIMRC
-augroup END " }
-
 autocmd Filetype make setlocal noexpandtab
 autocmd Filetype javascript setlocal ts=2 sw=2
 autocmd Filetype html setlocal ts=2 sw=2
@@ -73,6 +69,7 @@ let g:syntastic_cursor_column = 0
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_ruby_mri_args = '-T1 -c'
+let g:syntastic_cpp_checkers = []
 let g:syntastic_cpp_compiler = "clang++"
 let g:syntastic_cpp_compiler_options = "-std=c++11 -Wall"
 
