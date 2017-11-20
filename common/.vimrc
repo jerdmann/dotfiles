@@ -4,35 +4,22 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'flazz/vim-colorschemes'
-Plugin 'roosta/srcery'
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
-Plugin 'tpope/vim-dispatch'
 Plugin 'zah/nim.vim'
+Plugin 'airblade/vim-gitgutter'
 call vundle#end()
 
 set rtp+=~/.fzf
-
-" nim thing
-fun! JumpToDef()
-  if exists("*GotoDefinition_" . &filetype)
-    call GotoDefinition_{&filetype}()
-  else
-    exe "norm! \<C-]>"
-  endif
-endf
-
-" Jump to tag
-nn <M-g> :call JumpToDef()<cr>
-ino <M-g> <esc>:call JumpToDef()<cr>i
 
 syntax on
 set t_Co=256
 set ttyfast
 set lazyredraw
+set number
 
 colo Tomorrow-Night
 highlight Normal ctermbg=NONE
@@ -57,10 +44,6 @@ set formatoptions-=t
 autocmd Filetype make setlocal noexpandtab
 autocmd Filetype javascript setlocal ts=2 sw=2
 autocmd Filetype html setlocal ts=2 sw=2
-
-let g:ctrlp_by_filename = 1
-let g:ctrlp_working_path_mode = 'a'
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
 let g:ag_prg="ag --column --nogroup --noheading --nobreak"
 
@@ -118,6 +101,7 @@ let g:netrw_liststyle=3
 set makeprg=/home/jason/build.sh
 
 let mapleader = ","
+nnoremap <leader>c :silent wa \| silent make \| redraw! \| cw<cr>
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
 nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0},<cr><esc>
 nnoremap <leader>l oTTLOG(INFO, 9999) << "
@@ -125,7 +109,7 @@ nnoremap <leader>m :set makeprg=/home/jason/build.sh\
 nnoremap <leader>p "0p
 nnoremap <leader>rs :%s/\s\+$//e<cr>
 nnoremap <leader>v :e ~/.vimrc<cr>
-nnoremap <leader>w :w<cr>
+nnoremap <leader>w :wa<cr>
 nnoremap <leader><space> :noh<cr>
 
 nnoremap gl :ls<CR>:b<Space>
@@ -133,7 +117,6 @@ nnoremap K :Ag<CR>
 nnoremap Q <nop>
 nnoremap Y y$
 
-nnoremap <silent> <F5> :silent wa \| silent make \| redraw! \| cw<cr>
 nnoremap <silent> <F7> :cp<cr>
 nnoremap <silent> <F8> :cn<cr>
 nnoremap <silent> <F9> :cw<cr>
