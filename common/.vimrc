@@ -22,8 +22,9 @@ set lazyredraw
 set number
 
 colo Tomorrow-Night
-highlight Normal ctermbg=NONE
 filetype plugin indent on
+
+autocmd! bufwritepost ~/.vimrc source ~/.vimrc
 
 set autoindent
 set autoread
@@ -63,6 +64,7 @@ let g:go_highlight_array_whitespace_error = 0
 let g:go_highlight_trailing_whitespace_error = 0
 let g:go_highlight_extra_types = 0
 let g:go_highlight_operators = 0
+let g:go_version_warning = 0
 
 let g:clang_library_path="/usr/lib/llvm-3.5/lib/libclang.so"
 
@@ -81,7 +83,7 @@ set splitright
 set ruler
 set showcmd
 set hidden
-set scrolljump=8
+set scrolloff=8
 set laststatus=2
 
 set wildmenu

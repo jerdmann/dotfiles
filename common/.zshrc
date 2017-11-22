@@ -17,8 +17,8 @@ setopt sharehistory
 setopt promptsubst
 
 bindkey -e
-bindkey ';5D' emacs-backward-word
-bindkey ';5C' emacs-forward-word
+bindkey ";5D" emacs-backward-word
+bindkey ";5C" emacs-forward-word
 
 # Fix punctuation behavior for word commands.
 export WORDCHARS=''
@@ -76,18 +76,17 @@ alias chenv='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/che
 alias ll='ls -alF'
 alias dot='cd ~/.dotfiles'
 alias gvim='gvim --remote-silent'
+alias ee='emacs -nw'
 alias ez="vim ~/.zshrc"
+alias v="vim"
 alias ev="vim ~/.vimrc"
 alias sz='source ~/.zshrc'
-alias v="vim"
 alias g="git"
 alias dbd='smbclient -U jerdmann -W intad //chifs01.int.tt.local/Share'
 alias wgdl='wget --recursive --no-clobber --convert-links --html-extension --page-requisites --no-parent '
 
-alias tnew='tmux new-session -s '
-alias tattach='tmux attach-session -t '
-alias tkill='tmux kill-session -t '
-alias tlist='tmux list-session'
+alias ta='tmux attach-session -t 0'
+alias tl='tmux list-session'
 
 # debesys stuff
 alias ttrun='`git rev-parse --show-toplevel`/run'
@@ -120,7 +119,7 @@ export MGR="jerdmann"
 export PYTHONSTARTUP="/home/jason/.pythonrc"
 
 export GOPATH="/home/jason/gocode"
-export PATH=/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:/opt/nim-0.17.0/bin:$PATH
+export PATH=~/.cargo/bin:/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:/opt/nim-0.17.0/bin:$PATH
 export JDK8_BIN=/opt/jdk/bin/java
 
 export NODEJS_HOME=/usr/local/nodejs
@@ -160,11 +159,11 @@ alias eksh='eknife node show'
 alias fuck='vim $(git diff --name-only | uniq)'
 
 function ks {
-    knife search "run_list:*$1* AND chef_environment:*$2*"
+    knife search "run_list:*$1* AND chef_environment:*$2*" -a environment -a ipaddress -a tags -a run_list
 }
 
 function eks {
-    eknife search "run_list:*$1* AND chef_environment:*$2*"
+    eknife search "run_list:*$1* AND chef_environment:*$2*" -a environment -a ipaddress -a tags -a run_list
 }
 
 function kssh {
@@ -193,7 +192,7 @@ function ptmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         pushd $reporootdir
-        make -j$(nproc) price_server test_lh price_client_test price_sub price_unifier_test
+        make -j$(nproc) price_server test_lh price_client_test price_sub price_unifier_test price_decoder psadmin
         popd
     fi
 }
