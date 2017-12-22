@@ -20,6 +20,7 @@ set t_Co=256
 set ttyfast
 set lazyredraw
 set number
+set cursorline
 
 colo Tomorrow-Night
 filetype plugin indent on

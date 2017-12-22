@@ -19,6 +19,8 @@ setopt promptsubst
 bindkey -e
 bindkey ";5D" emacs-backward-word
 bindkey ";5C" emacs-forward-word
+bindkey "5D" emacs-backward-word
+bindkey "5C" emacs-forward-word
 
 # Fix punctuation behavior for word commands.
 export WORDCHARS=''
@@ -119,7 +121,7 @@ export MGR="jerdmann"
 export PYTHONSTARTUP="/home/jason/.pythonrc"
 
 export GOPATH="/home/jason/gocode"
-export PATH=~/.cargo/bin:/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:/opt/nim-0.17.0/bin:$PATH
+export PATH=~/.cargo/bin:/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:/opt/nim-0.17.0/bin:$GOPATH/bin:$PATH
 export JDK8_BIN=/opt/jdk/bin/java
 
 export NODEJS_HOME=/usr/local/nodejs
@@ -192,7 +194,7 @@ function ptmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         pushd $reporootdir
-        make -j$(nproc) price_server test_lh price_client_test price_sub price_unifier_test price_decoder psadmin
+        make -j$(nproc) price_server test_lh price_client_test price_sub price_unifier_test psadmin
         popd
     fi
 }

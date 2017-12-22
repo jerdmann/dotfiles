@@ -1,15 +1,12 @@
 ;set up repos
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-						 ("marmalade" . "https://marmalade-repo.org/packages/")
 						 ("melpa" . "http://melpa.org/packages/")))
 (package-initialize)
-(setq my-packages '(auto-complete
-                    flycheck
+(setq my-packages '(flycheck
                     pyflakes
                     find-file-at-point
                     better-defaults
-                    color-theme-sanityinc-tomorrow
                     smex
                     evil
                     ivy))
@@ -34,6 +31,9 @@
 (setq tab-always-indent 'complete)
 
 (setq inhibit-startup-screen 1)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
 (column-number-mode)
 (xterm-mouse-mode)
 (setq visible-bell nil)
@@ -51,12 +51,6 @@
 (ido-mode t)
 (setq ido-enable-flex-matching 1)
 
-;; (require 'company)
-;; (global-company-mode)
-
-;; (require 'auto-complete)
-;; (global-auto-complete-mode)
-
 ;; (require 'evil)
 ;; (evil-mode 1)
 
@@ -65,9 +59,9 @@
 (setq ivy-use-virtual-buffers t)
 (setq ivy-count-format "(%d/%d) ")
 
-(require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+;; (require 'web-mode)
+;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
 ;key bindings
 (global-set-key (kbd "C-b") 'ido-switch-buffer)
@@ -87,7 +81,7 @@
                             (save-some-buffers t)))
 (delete-selection-mode t)
 
-(load-theme 'sanityinc-tomorrow-night)
+(load-theme 'wombat)
 (if (display-graphic-p)
     (progn
       (set-frame-font "DejaVu Sans Mono-10.5" nil t)
