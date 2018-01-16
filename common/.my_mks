@@ -1,0 +1,17 @@
+price_server/exchange/gdax_lh/build.mk
+price_server/exchange/test_lh/build.mk
+price_server/pds_uploader/build.mk
+price_server/price_client/build.mk
+price_server/price_client_SR/build.mk
+price_server/price_client_test/build.mk
+price_server/price_server/build.mk
+price_server/price_sub/build.mk
+price_server/price_unifier/build.mk
+price_server/price_unifier_test/build.mk
+price_server/psadmin/build.mk
+price_server/ps_common/common/build.mk
+price_server/ps_common/connector/build.mk
+price_server/ps_common/msg_converter/build.mk
+price_server/ps_common/sub_mgr/build.mk
+price_server/tests/price_client_merger_test/build.mk
+the_arsenal/all_messages/build.mk

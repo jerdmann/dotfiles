@@ -31,16 +31,11 @@ function bgf {
     knife tag create $1 basegofast
 }
 
-export DEF_SEARCH_PATH="price_server synthetic_engine fixit misc the_arsenal"
 function pmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
-        if [[ -z "$DEF_SEARCH_PATH" ]]; then
-            echo "warning: DEF_SEARCH_PATH is unset, defaulting to entire repo"
-            DEF_SEARCH_PATH="."
-        fi
         pushd $reporootdir
-        make -j$(nproc) def_search_path="$DEF_SEARCH_PATH" $@
+        make -j4 def_files="$(awk '{printf "%s ", $1}' ~/.my_mks)" $@
         popd
     fi
 }
