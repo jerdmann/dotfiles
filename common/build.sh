@@ -10,4 +10,4 @@ if [[ "$#" -eq 0 ]]; then
     exit -1
 fi
 
-make -j$(nproc) def_search_path="misc fixit price_server the_arsenal" -C $rr $@ 2>&1 | grep -v -e python.mk -e "setting " -e "commands for target"
+make -j$(nproc) use_distcc=0 def_files="$(awk '{printf "%s ", $1}' ~/.my_mks)" -C $rr $@ 2>&1 | grep -v -e python.mk -e "setting " -e "commands for target"

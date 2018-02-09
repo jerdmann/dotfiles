@@ -11,6 +11,7 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'fatih/vim-go'
 Plugin 'zah/nim.vim'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'benmills/vimux'
 call vundle#end()
 
 set rtp+=~/.fzf
@@ -104,11 +105,8 @@ let g:netrw_liststyle=3
 set makeprg=/home/jason/build.sh
 
 let mapleader = ","
-nnoremap <leader>c :silent wa \| silent make \| redraw! \| cw<cr>
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
 nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0},<cr><esc>
-nnoremap <leader>l oTTLOG(INFO, 9999) << "
-nnoremap <leader>m :set makeprg=/home/jason/build.sh\ 
 nnoremap <leader>p "0p
 nnoremap <leader>rs :%s/\s\+$//e<cr>
 nnoremap <leader>v :e ~/.vimrc<cr>
@@ -124,14 +122,21 @@ nnoremap <silent> <F7> :cp<cr>
 nnoremap <silent> <F8> :cn<cr>
 nnoremap <silent> <F9> :cw<cr>
 
-nnoremap <silent> <C-h> <C-w>h
-nnoremap <silent> <C-j> <C-w>j
-nnoremap <silent> <C-k> <C-w>k
-nnoremap <silent> <C-l> <C-w>l
 nnoremap <silent> <C-left> :bp<cr>
 nnoremap <silent> <C-right> :bn<cr>
 
 nnoremap <silent> <C-p> :FZF<cr>
+
+" Vimux
+let g:VimuxUseNearest = 1
+map <silent> <leader>l :wa<CR> :VimuxRunLastCommand<CR>
+map <silent> <leader>r :VimuxPromptCommand<CR>
+map <silent> <leader>t :!ctags price_server lbm<CR>
+map <silent> <LocalLeader>i :VimuxInspectRunner<CR>
+" map <silent> <LocalLeader>vk :wa<CR> :VimuxInterruptRunner<CR>
+" map <silent> <LocalLeader>vx :wa<CR> :VimuxClosePanes<CR>
+" vmap <silent> <LocalLeader>vs "vy :call VimuxRunCommand(@v)<CR>
+" nmap <silent> <LocalLeader>vs vip<LocalLeader>vs<CR>
 
 nnoremap ; :
 vnoremap ; :
