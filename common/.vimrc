@@ -12,6 +12,7 @@ Plugin 'fatih/vim-go'
 Plugin 'zah/nim.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'benmills/vimux'
+"Plugin 'tpope/vim-dispatch'
 call vundle#end()
 
 set rtp+=~/.fzf
@@ -19,7 +20,7 @@ set rtp+=~/.fzf
 syntax on
 set t_Co=256
 set ttyfast
-set lazyredraw
+"set lazyredraw
 set number
 set cursorline
 
@@ -39,7 +40,6 @@ set tabstop=4
 set expandtab
 set tags=tags;
 set backspace=indent,eol,start
-set mouse=a
 
 set tw=100
 set formatoptions-=t
@@ -129,7 +129,7 @@ nnoremap <silent> <C-p> :FZF<cr>
 
 " Vimux
 let g:VimuxUseNearest = 1
-map <silent> <leader>l :wa<CR> :VimuxRunLastCommand<CR>
+map <silent> <leader>l :wa<CR> :VimuxClearRunnerHistory<CR> :VimuxRunLastCommand<CR>
 map <silent> <leader>r :wa<CR> :VimuxPromptCommand<CR>
 map <silent> <leader>t :!ctags price_server lbm<CR>
 map <silent> <leader>i :VimuxInspectRunner<CR>

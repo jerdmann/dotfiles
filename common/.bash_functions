@@ -135,7 +135,7 @@ function tohex {
     perl -e "printf (\"%x\\n\", $1)"
 }
 
-export PROJECT_DIRS="price_server/pds_uploader price_server/ps_common price_server/exchange/gdax_lh price_server/price_client price_server/price_unifier test price_server/test"
+export PROJECT_DIRS="lbm price_server/pds_uploader price_server/ps_common price_server/exchange/gdax_lh price_server/price_client price_server/price_unifier test price_server/test"
 function tag {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
