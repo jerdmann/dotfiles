@@ -15,6 +15,7 @@ alias dot='cd ~/.dotfiles'
 alias gvim='gvim --remote-silent'
 alias ee='emacs -nw'
 
+alias tmux='tmux -2'
 alias ta='tmux attach-session -t 0'
 alias tl='tmux list-session'
 
@@ -53,12 +54,14 @@ alias lg='cd /var/log/debesys'
 # project dirs
 alias r1='cd ~/dev-root/debesys-one'
 alias r2='cd ~/dev-root/debesys-two'
+alias r3='cd ~/dev-root/debesys-three'
 alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
 alias cdps='cd `git rev-parse --show-toplevel`/price_server'
 alias cdlh='cd `git rev-parse --show-toplevel`/price_server/exchange/test_lh'
 alias cdsbe='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messages'
 alias cdpro='cd `git rev-parse --show-toplevel`/the_arsenal/all_messages/source/tt/messaging'
 alias cdsmds='cd `git rev-parse --show-toplevel`/ext/linux/x86-64/release/include/smds/md-core'
+
 alias pstest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_basic_fix && popd'
 alias psatest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_advanced_fix && popd'
 

@@ -16,11 +16,17 @@ alias eksh='eknife node show'
 alias fuck='vim $(git diff --name-only | uniq)'
 
 function ks {
-    knife search "run_list:*$1* AND chef_environment:*$2*" -a environment -a ipaddress -a tags -a run_list
+    rl="$1"
+    env="$2"
+    shift 2
+    knife search "run_list:*$rl* AND chef_environment:*$env*" $@
 }
 
 function eks {
-    eknife search "run_list:*$1* AND chef_environment:*$2*" -a environment -a ipaddress -a tags -a run_list
+    rl="$1"
+    env="$2"
+    shift 2
+    eknife search "run_list:*$rl* AND chef_environment:*$env*" $@
 }
 
 function kssh {
@@ -32,19 +38,51 @@ function bgf {
 }
 
 function pmake {
+    ~/build.sh $@
+}
+
+function lmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         pushd $reporootdir
-        make -j4 def_files="$(awk '{printf "%s ", $1}' ~/.my_mks)" $@
+        make -j16 use_distcc=0 $@
         popd
     fi
 }
 
+function dmake {
+    reporootdir=$(git rev-parse --show-toplevel)
+    if [[ $? -eq 0 ]]; then
+        pushd $reporootdir
+        make -j32 def_files="$(awk '{printf "%s ", $1}' ~/.my_mks)" $@
+        popd
+    fi
+}
+
+function isearch {
+    reporootdir=$(git rev-parse --show-toplevel)
+    if [[ $? -eq 0 ]]; then
+        pushd $reporootdir
+        ./run python price_server/tests/pds_test/tools/instrument_search.py $@
+        popd
+    fi
+}
+
+export MY_PRICE_TARGETS="price_server test_lh gdax_lh price_client_test price_decoder"
 function ptmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         pushd $reporootdir
-        make -j$(nproc) price_server test_lh price_client_test price_sub price_unifier_test psadmin
+        make -j$(nproc) def_files="$(awk '{printf "%s ", $1}' ~/.my_mks)" use_distcc=0 $MY_PRICE_TARGETS
+        popd
+    fi
+}
+
+function dptmake {
+    reporootdir=$(git rev-parse --show-toplevel)
+    if [[ $? -eq 0 ]]; then
+        pushd $reporootdir
+        make -j32 price_server $MY_PRICE_TARGETS
         popd
     fi
 }
@@ -97,7 +135,7 @@ function tohex {
     perl -e "printf (\"%x\\n\", $1)"
 }
 
-export PROJECT_DIRS="lbm price_server/ps_common price_server/exchange/tt_price_proxy price_server/price_client price_server/price_unifier synthetic_engine/composer test price_server/test"
+export PROJECT_DIRS="price_server/pds_uploader price_server/ps_common price_server/exchange/gdax_lh price_server/price_client price_server/price_unifier test price_server/test"
 function tag {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then

@@ -81,9 +81,11 @@ export VCD_ORG=Dev_General
 
 export AWS_DEFAULT_REGION='us-east-1'
 export JENKINS_USER='jerdmann'
-export TT_EMAIL='jason.erdmann@trade.tt'
+export TT_EMAIL='jason.erdmann@tradingtechnologies.com'
+export TTDIAG_USER_ID='271'
 
 #export ASAN_OPTIONS="log_path=/tmp/asan:detect_leaks=1"
+export ASAN_OPTIONS="log_path=/tmp/asan"
 
 # ec2 manager name
 export MGR="jerdmann"

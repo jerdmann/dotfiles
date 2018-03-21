@@ -41,7 +41,7 @@ set tags=tags;
 set backspace=indent,eol,start
 set mouse=a
 
-set tw=120
+set tw=100
 set formatoptions-=t
 
 autocmd Filetype make setlocal noexpandtab
@@ -104,7 +104,7 @@ let g:netrw_liststyle=3
 
 set makeprg=/home/jason/build.sh
 
-let mapleader = ","
+let mapleader = "\\"
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
 nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0},<cr><esc>
 nnoremap <leader>p "0p
@@ -130,9 +130,9 @@ nnoremap <silent> <C-p> :FZF<cr>
 " Vimux
 let g:VimuxUseNearest = 1
 map <silent> <leader>l :wa<CR> :VimuxRunLastCommand<CR>
-map <silent> <leader>r :VimuxPromptCommand<CR>
+map <silent> <leader>r :wa<CR> :VimuxPromptCommand<CR>
 map <silent> <leader>t :!ctags price_server lbm<CR>
-map <silent> <LocalLeader>i :VimuxInspectRunner<CR>
+map <silent> <leader>i :VimuxInspectRunner<CR>
 " map <silent> <LocalLeader>vk :wa<CR> :VimuxInterruptRunner<CR>
 " map <silent> <LocalLeader>vx :wa<CR> :VimuxClosePanes<CR>
 " vmap <silent> <LocalLeader>vs "vy :call VimuxRunCommand(@v)<CR>
