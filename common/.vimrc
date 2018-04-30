@@ -104,7 +104,7 @@ let g:netrw_liststyle=3
 
 set makeprg=/home/jason/build.sh
 
-let mapleader = "\\"
+let mapleader = "\<Space>"
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
 nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0},<cr><esc>
 nnoremap <leader>p "0p

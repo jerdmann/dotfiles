@@ -8,3 +8,4 @@
 --exclude=md-3rd
 --exclude=boost
 --languages=C,C++,Python
+--langmap=C++:+.inl

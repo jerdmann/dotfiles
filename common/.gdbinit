@@ -7,3 +7,4 @@ set print pretty on
 
 set auto-load safe-path /
 set exec-wrapper ~/dev-root/debesys-one/run
+#set exec-wrapper /opt/debesys/edgeserver/run
