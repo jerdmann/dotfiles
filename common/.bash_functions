@@ -19,14 +19,24 @@ function ks {
     rl="$1"
     env="$2"
     shift 2
-    knife search "run_list:*$rl* AND chef_environment:*$env*" $@
+
+    args="$@"
+    if [[ -z "$args" ]]; then
+        args="-a chef_environment -a ipaddress -a run_list -a tags"
+    fi
+    knife search "run_list:*$rl* AND chef_environment:*$env*" $args
 }
 
 function eks {
     rl="$1"
     env="$2"
     shift 2
-    eknife search "run_list:*$rl* AND chef_environment:*$env*" $@
+
+    args="$@"
+    if [[ -z "$args" ]]; then
+        args="-a chef_environment -a ipaddress -a run_list -a tags"
+    fi
+    eknife search "run_list:*$rl* AND chef_environment:*$env*" $args
 }
 
 function kssh {
