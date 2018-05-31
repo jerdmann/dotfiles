@@ -25,7 +25,7 @@ alias deploy='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/ch
 alias build='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/request_build.py'
 alias knife-ssh='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/knife_ssh.py'
 alias oneoff='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/deploy_one_off.py'
-alias chenv='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/change_environment.py'
+alias uenv='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef/scripts/update_environment.py'
 
 alias ll='ls -alF'
 alias dot='cd ~/.dotfiles'

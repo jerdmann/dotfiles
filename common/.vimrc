@@ -12,6 +12,7 @@ Plugin 'fatih/vim-go'
 Plugin 'zah/nim.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'benmills/vimux'
+Plugin 'junegunn/fzf'
 "Plugin 'tpope/vim-dispatch'
 call vundle#end()
 
@@ -20,9 +21,9 @@ set rtp+=~/.fzf
 syntax on
 set t_Co=256
 set ttyfast
-"set lazyredraw
+set lazyredraw
 set number
-set cursorline
+"set cursorline
 
 colo Tomorrow-Night
 filetype plugin indent on

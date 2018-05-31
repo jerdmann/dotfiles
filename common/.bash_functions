@@ -27,6 +27,13 @@ function ks {
     knife search "run_list:*$rl* AND chef_environment:*$env*" $args
 }
 
+function ksn {
+    rl="$1"
+    env="$2"
+
+    knife search "run_list:*$rl* AND chef_environment:*$env*" -a name | grep "name:" | awk '{printf "%s ", $2}'
+}
+
 function eks {
     rl="$1"
     env="$2"
@@ -54,27 +61,27 @@ function pmake {
 function lmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
-        pushd $reporootdir
+        pushd $reporootdir >/dev/null
         make -j16 use_distcc=0 $@
-        popd
+        popd >/dev/null
     fi
 }
 
 function dmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
-        pushd $reporootdir
+        pushd $reporootdir >/dev/null
         make -j32 def_files="$(awk '{printf "%s ", $1}' ~/.my_mks)" $@
-        popd
+        popd >/dev/null
     fi
 }
 
 function isearch {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
-        pushd $reporootdir
+        pushd $reporootdir >/dev/null
         ./run python price_server/tests/pds_test/tools/instrument_search.py $@
-        popd
+        popd >/dev/null
     fi
 }
 
@@ -82,30 +89,30 @@ export MY_PRICE_TARGETS="price_server test_lh gdax_lh price_client_test price_de
 function ptmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
-        pushd $reporootdir
+        pushd $reporootdir >/dev/null
         make -j$(nproc) def_files="$(awk '{printf "%s ", $1}' ~/.my_mks)" use_distcc=0 $MY_PRICE_TARGETS
-        popd
+        popd >/dev/null
     fi
 }
 
 function dptmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
-        pushd $reporootdir
+        pushd $reporootdir >/dev/null
         make -j32 price_server $MY_PRICE_TARGETS
-        popd
+        popd >/dev/null
     fi
 }
 
 function sbe {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
-        pushd $reporootdir/price_server/ps_common/sbe_messages
+        pushd $reporootdir/price_server/ps_common/sbe_messages >/dev/null
         SBE_JAR=$reporootdir/price_server/ps_common/sbe_messages/sbe-all.jar
         ./make_schema.sh
         cd sbe_common
         $reporootdir/run python make_enums.py
-        popd
+        popd >/dev/null
     fi
 }
 
@@ -145,15 +152,28 @@ function tohex {
     perl -e "printf (\"%x\\n\", $1)"
 }
 
-export PROJECT_DIRS="lbm price_server/pds_uploader price_server/ps_common price_server/exchange/gdax_lh price_server/price_client price_server/price_unifier test price_server/test"
+project_dirs=(
+lbm
+price_server/pds_uploader
+price_server/ps_common
+price_server/exchange/cme
+price_server/exchange/eurex_lh
+price_server/exchange/gdax_lh
+price_server/price_client
+price_server/price_unifier
+test
+price_server/test
+)
+
 function tag {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         pushd $reporootdir
         cat /dev/null > tags
-        for d in $(echo $PROJECT_DIRS | tr -s " " | tr " " "\n")
+        for d in $(echo "${project_dirs[@]}" | tr -s " " | tr " " "\n")
         do {
             ctags -a $d
+            ctags -a -e $d
         }; done
         popd
     fi
@@ -172,3 +192,19 @@ function mkdeb () {
     sudo chmod 775 /var/log/debesys
 }
 
+function wsact () {
+    if [[ -z "$WIRESHARK_DIR" ]]; then
+        echo "error: WIRESHARK_DIR is unset"
+        return
+    fi
+
+    if [[ -z "$1" ]]; then
+        echo "error: no pattern"
+        return
+    fi
+
+    pushd "$WIRESHARK_DIR"
+    sudo rename 's/.lua$/.lua.disabled/' *.lua 2>/dev/null
+    sudo rename 's/.lua.disabled$/.lua/' *$1*
+    popd
+}
