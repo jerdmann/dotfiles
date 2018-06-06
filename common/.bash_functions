@@ -71,7 +71,8 @@ function dmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         pushd $reporootdir >/dev/null
-        make -j32 def_files="$(awk '{printf "%s ", $1}' ~/.my_mks)" $@
+        my_mks="for f in $(cat ~/.my_mks); do [[ -f \"$f\" ]] && printf \"%s \"; done"
+        make -j32 def_files="$my_mks" $@
         popd >/dev/null
     fi
 }
@@ -85,12 +86,12 @@ function isearch {
     fi
 }
 
-export MY_PRICE_TARGETS="price_server test_lh gdax_lh price_client_test price_decoder"
+export MY_PRICE_TARGETS="price_server test_lh price_client_test price_decoder"
 function ptmake {
     reporootdir=$(git rev-parse --show-toplevel)
     if [[ $? -eq 0 ]]; then
         pushd $reporootdir >/dev/null
-        make -j$(nproc) def_files="$(awk '{printf "%s ", $1}' ~/.my_mks)" use_distcc=0 $MY_PRICE_TARGETS
+        ~/build.sh $MY_PRICE_TARGETS
         popd >/dev/null
     fi
 }

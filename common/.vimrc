@@ -1,20 +1,22 @@
-set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'rking/ag.vim'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/syntastic'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'fatih/vim-go'
-Plugin 'zah/nim.vim'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'benmills/vimux'
-Plugin 'junegunn/fzf'
-"Plugin 'tpope/vim-dispatch'
-call vundle#end()
+call plug#begin('~/.vim/plugged')
+
+Plug 'flazz/vim-colorschemes'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/syntastic'
+"Plug 'w0rp/ale'
+Plug 'airblade/vim-gitgutter'
+
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'mileszs/ack.vim'
+
+Plug 'fatih/vim-go'
+Plug 'zah/nim.vim'
+
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'benmills/vimux'
+
+call plug#end()
 
 set rtp+=~/.fzf
 
@@ -25,10 +27,13 @@ set lazyredraw
 set number
 "set cursorline
 
+set bg=dark
 colo Tomorrow-Night
 filetype plugin indent on
 
-autocmd! bufwritepost ~/.vimrc source ~/.vimrc
+let g:sessions_dir = '~/.vim-sessions'
+" exec 'nnoremap <Leader>ss :mks! ' . g:session_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+" exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 
 set autoindent
 set autoread
@@ -49,7 +54,12 @@ autocmd Filetype make setlocal noexpandtab
 autocmd Filetype javascript setlocal ts=2 sw=2
 autocmd Filetype html setlocal ts=2 sw=2
 
-let g:ag_prg="ag --column --nogroup --noheading --nobreak"
+autocmd! bufwritepost ~/.vimrc source ~/.vimrc
+
+"let g:ag_prg="ag --column --nogroup --noheading --nobreak"
+if executable('ag')
+    let g:ackprg = 'ag --vimgrep'
+endif
 
 let g:syntastic_python_checkers = ['pyflakes']
 let g:syntastic_cursor_column = 0
@@ -70,6 +80,7 @@ let g:go_highlight_operators = 0
 let g:go_version_warning = 0
 
 let g:clang_library_path="/usr/lib/llvm-3.5/lib/libclang.so"
+let c_space_errors = 1
 
 set history=1000
 set clipboard=unnamedplus
@@ -86,7 +97,6 @@ set splitright
 set ruler
 set showcmd
 set hidden
-set scrolloff=8
 set laststatus=2
 
 set wildmenu
@@ -99,7 +109,7 @@ set guioptions-=r
 set guioptions-=L
 
 set pastetoggle=<F2>
-imap kj <Esc>
+"imap kj <Esc>
 
 let g:netrw_liststyle=3
 
@@ -109,13 +119,12 @@ let mapleader = "\<Space>"
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
 nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0},<cr><esc>
 nnoremap <leader>p "0p
-nnoremap <leader>rs :%s/\s\+$//e<cr>
-nnoremap <leader>v :e ~/.vimrc<cr>
+nnoremap <leader>t :%s/\s\+$//e<cr>
 nnoremap <leader>w :wa<cr>
 nnoremap <leader><space> :noh<cr>
 
-nnoremap gl :ls<CR>:b<Space>
-nnoremap K :Ag<CR>
+cnoreabbrev Ack Ack!
+nnoremap K :Ack!<CR>
 nnoremap Q <nop>
 nnoremap Y y$
 
@@ -123,16 +132,16 @@ nnoremap <silent> <F7> :cp<cr>
 nnoremap <silent> <F8> :cn<cr>
 nnoremap <silent> <F9> :cw<cr>
 
-nnoremap <silent> <C-left> :bp<cr>
-nnoremap <silent> <C-right> :bn<cr>
-
 nnoremap <silent> <C-p> :FZF<cr>
+
+nnoremap <leader>b :Buffers<cr>
+nnoremap <leader>f :FZF<cr>
 
 " Vimux
 let g:VimuxUseNearest = 1
 map <silent> <leader>l :wa<CR> :VimuxClearRunnerHistory<CR> :VimuxRunLastCommand<CR>
 map <silent> <leader>r :wa<CR> :VimuxPromptCommand<CR>
-map <silent> <leader>t :!ctags price_server lbm<CR>
+"map <silent> <leader>t :!ctags price_server lbm<CR>
 map <silent> <leader>i :VimuxInspectRunner<CR>
 " map <silent> <LocalLeader>vk :wa<CR> :VimuxInterruptRunner<CR>
 " map <silent> <LocalLeader>vx :wa<CR> :VimuxClosePanes<CR>

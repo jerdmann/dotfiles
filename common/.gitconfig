@@ -8,14 +8,14 @@
     br = branch
     co = checkout
     cm = commit
-    cp = cherry-pick -n
+    cp = cherry-pick
     st = status
     rso = remote show origin
     sm = submodule update --init 
     up = !git pull -q && git submodule update -q --init && git remote prune origin && git status
     pall = !git co master && git pull -q && git co uat/current && git pull -q && git co release/current && git pull -q && git co develop && git pull -q 
-    scrub = !git br --merged | grep -v -e master -e uat/current -e release/current -e develop -e '*' | xargs -n 1 git br -d
-    stale = !git br --merged | grep -v -e master -e uat/current -e release/current -e develop -e '*' | xargs -n 1 echo
+    scrub = !git br --merged | grep -v -e master -e 'release_[0-9]*/current' -e '*' | xargs -n 1 git br -d
+    stale = !git br --merged | grep -v -e master -e 'release_[0-9]*/current' -e '*' | xargs -n 1 echo
 [push]
 	default = simple
 [color]

@@ -19,8 +19,8 @@ setopt promptsubst
 bindkey -e
 bindkey ";5D" emacs-backward-word
 bindkey ";5C" emacs-forward-word
-bindkey "5D" emacs-backward-word
-bindkey "5C" emacs-forward-word
+#bindkey "5D" emacs-backward-word
+#bindkey "5C" emacs-forward-word
 
 # Fix punctuation behavior for word commands.
 export WORDCHARS=''
