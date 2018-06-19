@@ -155,6 +155,7 @@ function tohex {
 
 project_dirs=(
 lbm
+misc/miscutils
 price_server/pds_uploader
 price_server/ps_common
 price_server/exchange/cme

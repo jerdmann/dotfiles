@@ -16,6 +16,8 @@ Plug 'zah/nim.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
 
+Plug 'elzr/vim-json'
+
 call plug#end()
 
 set rtp+=~/.fzf
@@ -61,6 +63,7 @@ if executable('ag')
     let g:ackprg = 'ag --vimgrep'
 endif
 
+let g:syntastic_json_checkers = ['jsonlint']
 let g:syntastic_python_checkers = ['pyflakes']
 let g:syntastic_cursor_column = 0
 let g:syntastic_always_populate_loc_list = 1
@@ -80,7 +83,8 @@ let g:go_highlight_operators = 0
 let g:go_version_warning = 0
 
 let g:clang_library_path="/usr/lib/llvm-3.5/lib/libclang.so"
-let c_space_errors = 1
+
+let g:vim_json_syntax_conceal = 0
 
 set history=1000
 set clipboard=unnamedplus
@@ -109,7 +113,6 @@ set guioptions-=r
 set guioptions-=L
 
 set pastetoggle=<F2>
-"imap kj <Esc>
 
 let g:netrw_liststyle=3
 
@@ -120,10 +123,11 @@ nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
 nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0},<cr><esc>
 nnoremap <leader>p "0p
 nnoremap <leader>t :%s/\s\+$//e<cr>
-nnoremap <leader>w :wa<cr>
+nnoremap <leader>w :w<cr>
 nnoremap <leader><space> :noh<cr>
 
 cnoreabbrev Ack Ack!
+cnoreabbrev Ag Ack!
 nnoremap K :Ack!<CR>
 nnoremap Q <nop>
 nnoremap Y y$
@@ -134,6 +138,7 @@ nnoremap <silent> <F9> :cw<cr>
 
 nnoremap <silent> <C-p> :FZF<cr>
 
+nnoremap <leader>a :Ack 
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>f :FZF<cr>
 

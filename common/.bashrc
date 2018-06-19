@@ -97,7 +97,7 @@ export MGR="jerdmann"
 export PYTHONSTARTUP="/home/jason/.pythonrc"
 
 export GOPATH="/home/jason/gocode"
-export PATH=~/.cargo/bin:/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:/opt/nim-0.17.0/bin:$GOPATH/bin:$PATH
+export PATH=~/.cargo/bin:/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:$GOPATH/bin:/opt/node/bin:$PATH
 export JDK8_BIN=/opt/jdk/bin/java
 
 export NODEJS_HOME=/usr/local/nodejs
