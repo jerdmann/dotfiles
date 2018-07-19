@@ -3,6 +3,16 @@ function cbup {
     knife cookbook --cookbook-path `git rev-parse --show-toplevel`/deploy/chef/cookbooks upload "$@"
 }
 
+function rr {
+    reporootdir=$(git rev-parse --show-toplevel)
+    [[ -n "$reporootdir" ]] || return
+    basedir=$(basename $reporootdir)
+    if [[ $basedir == "ext" || $basedir == "the_arsenal" ]]; then
+        reporootdir=$(dirname $reporootdir)
+    fi
+    pushd $reporootdir >/dev/null
+}
+
 function external-knife_() {
     knife "$@" -c ~/.chef/knife.external.rb
 }
@@ -59,77 +69,48 @@ function pmake {
 }
 
 function lmake {
-    reporootdir=$(git rev-parse --show-toplevel)
-    if [[ $? -eq 0 ]]; then
-        pushd $reporootdir >/dev/null
-        make -j16 use_distcc=0 $@
-        popd >/dev/null
-    fi
+    rr || return
+    make -j$(nproc) use_distcc=0 $@
+    popd >/dev/null
 }
 
 function dmake {
-    reporootdir=$(git rev-parse --show-toplevel)
-    if [[ $? -eq 0 ]]; then
-        pushd $reporootdir >/dev/null
-        my_mks="for f in $(cat ~/.my_mks); do [[ -f \"$f\" ]] && printf \"%s \"; done"
-        make -j32 def_files="$my_mks" $@
-        popd >/dev/null
-    fi
+    rr || return
+    my_mks="for f in $(cat ~/.my_mks); do [[ -f \"$f\" ]] && printf \"%s \"; done"
+    make -j50 def_files="$my_mks" $@
+    popd >/dev/null
 }
 
 function isearch {
-    reporootdir=$(git rev-parse --show-toplevel)
-    if [[ $? -eq 0 ]]; then
-        pushd $reporootdir >/dev/null
-        ./run python price_server/tests/pds_test/tools/instrument_search.py $@
-        popd >/dev/null
-    fi
+    rr || return
+    ./run python price_server/tests/pds_test/tools/instrument_search.py $@
+    popd >/dev/null
 }
 
 export MY_PRICE_TARGETS="price_server test_lh price_client_test price_decoder"
 function ptmake {
-    reporootdir=$(git rev-parse --show-toplevel)
-    if [[ $? -eq 0 ]]; then
-        pushd $reporootdir >/dev/null
-        ~/build.sh $MY_PRICE_TARGETS
-        popd >/dev/null
-    fi
+    rr || return
+    ~/build.sh $MY_PRICE_TARGETS
+    popd >/dev/null
 }
 
 function dptmake {
-    reporootdir=$(git rev-parse --show-toplevel)
-    if [[ $? -eq 0 ]]; then
-        pushd $reporootdir >/dev/null
-        make -j32 price_server $MY_PRICE_TARGETS
-        popd >/dev/null
-    fi
+    rr || return
+    make -j32 price_server $MY_PRICE_TARGETS
+    popd >/dev/null
 }
 
 function sbe {
-    reporootdir=$(git rev-parse --show-toplevel)
-    if [[ $? -eq 0 ]]; then
-        pushd $reporootdir/price_server/ps_common/sbe_messages >/dev/null
-        SBE_JAR=$reporootdir/price_server/ps_common/sbe_messages/sbe-all.jar
-        ./make_schema.sh
-        cd sbe_common
-        $reporootdir/run python make_enums.py
-        popd >/dev/null
-    fi
+    rr || return
+    SBE_JAR=$reporootdir/price_server/ps_common/sbe_messages/sbe-all.jar
+    ./make_schema.sh
+    cd sbe_common
+    $reporootdir/run python make_enums.py
+    popd >/dev/null
 }
 
 function makehome {
     scp ~/.vimrc "$1":~ && scp -r ~/.vim "$1":~ &>/dev/null && scp ~/.tmux.conf "$1":~
-}
-
-function rr {
-    reporootdir=$(git rev-parse --show-toplevel)
-    if [[ $? -eq 0 ]]; then
-        cd $reporootdir
-        basedir=$(basename $PWD)
-        if [[ $basedir == "ext" || $basedir == "the_arsenal" ]]; then
-            cd ..
-        fi
-    fi
 }
 
 function lbmify {
@@ -161,6 +142,7 @@ price_server/ps_common
 price_server/exchange/cme
 price_server/exchange/eurex_lh
 price_server/exchange/gdax_lh
+price_server/exchange/tmx_lh
 price_server/price_client
 price_server/price_unifier
 test
@@ -168,17 +150,14 @@ price_server/test
 )
 
 function tag {
-    reporootdir=$(git rev-parse --show-toplevel)
-    if [[ $? -eq 0 ]]; then
-        pushd $reporootdir
-        cat /dev/null > tags
-        for d in $(echo "${project_dirs[@]}" | tr -s " " | tr " " "\n")
-        do {
-            ctags -a $d
-            ctags -a -e $d
-        }; done
-        popd
-    fi
+    rr || return
+    cat /dev/null > tags
+    for d in $(echo "${project_dirs[@]}" | tr -s " " | tr " " "\n")
+    do {
+        ctags -a $d
+        ctags -a -e $d
+    }; done
+    popd >/dev/null
 }
 
 function perf-crunch {

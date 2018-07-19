@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# ctrl as caps
+setxkbmap -option ctrl:nocaps
+
+# ctrl by itself is esc
+xcape
+
+# faster key repeat please
+xset r rate 200 25

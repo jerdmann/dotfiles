@@ -23,6 +23,7 @@ price_server/exchange/cme/cme_mbo_mock_ppiq_lh.build.mk
 price_server/exchange/cme/cme_mbo_ppiq_lh.build.mk
 price_server/exchange/cme/cme_mbo_suppress_out_lh.build.mk
 price_server/exchange/eurex_lh/build.mk
+price_server/exchange/euronext_lh/build.mk
 price_server/exchange/gdax_lh/build.mk
 price_server/exchange/ice_lh/build.mk
 price_server/exchange/ice_lh/gateway_architecture_framework/2.0/dev/gaf/build.mk

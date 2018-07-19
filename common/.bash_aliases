@@ -57,11 +57,8 @@ alias cdps='cd `git rev-parse --show-toplevel`/price_server'
 alias cdlh='cd `git rev-parse --show-toplevel`/price_server/exchange/test_lh'
 alias cdsbe='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messages'
 alias cdpro='cd `git rev-parse --show-toplevel`/the_arsenal/all_messages/source/tt/messaging'
-alias cdsmds='cd `git rev-parse --show-toplevel`/ext/linux/x86-64/release/include/smds/md-core'
 
 alias cdws='cd /usr/lib/x86_64-linux-gnu/wireshark/plugins/1.12.1'
 
 alias pstest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_basic_fix && popd'
 alias psatest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_advanced_fix && popd'
-
-alias gdaxws="google-chrome https://trade-dev.trade.tt/sim/workspaces/21576?esHost=gla1vm177-edge-int-dev-sim.debesys.net"

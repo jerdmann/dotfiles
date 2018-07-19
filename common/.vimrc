@@ -30,7 +30,7 @@ set number
 "set cursorline
 
 set bg=dark
-colo Tomorrow-Night
+"colo Tomorrow-Night
 filetype plugin indent on
 
 let g:sessions_dir = '~/.vim-sessions'
@@ -55,6 +55,7 @@ set formatoptions-=t
 autocmd Filetype make setlocal noexpandtab
 autocmd Filetype javascript setlocal ts=2 sw=2
 autocmd Filetype html setlocal ts=2 sw=2
+autocmd Filetype lua setlocal ts=2 sw=2
 
 autocmd! bufwritepost ~/.vimrc source ~/.vimrc
 
@@ -142,6 +143,9 @@ nnoremap <leader>a :Ack
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>f :FZF<cr>
 
+nnoremap <leader>m :set makeprg=/home/jason/build.sh\
+nnoremap <leader>c :silent wa \| silent make \| redraw! \| cw<cr>
+ 
 " Vimux
 let g:VimuxUseNearest = 1
 map <silent> <leader>l :wa<CR> :VimuxClearRunnerHistory<CR> :VimuxRunLastCommand<CR>

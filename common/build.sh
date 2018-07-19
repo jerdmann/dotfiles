@@ -10,8 +10,9 @@ if [[ "$#" -eq 0 ]]; then
     exit -1
 fi
 
-#export GCC_COLORS="error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01"
 pushd $rr >/dev/null
 my_mks=$(for f in $(cat ~/.my_mks); do [[ -f "$f" ]] && printf "%s " $f; done)
 make -j$(nproc) use_distcc=0 def_files="$my_mks" $@ 2>&1
+rc=$?
 popd >/dev/null
+exit $rc
