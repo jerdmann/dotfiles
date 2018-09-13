@@ -142,6 +142,7 @@ nnoremap <silent> <C-p> :FZF<cr>
 nnoremap <leader>a :Ack 
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>f :FZF<cr>
+nnoremap <silent> <leader>d <esc>OTTLOG(INFO, 9999) << "";<esc>hi
 
 nnoremap <leader>m :set makeprg=/home/jason/build.sh\
 nnoremap <leader>c :silent wa \| silent make \| redraw! \| cw<cr>

@@ -87,7 +87,7 @@ function isearch {
     popd >/dev/null
 }
 
-export MY_PRICE_TARGETS="price_server test_lh price_client_test price_decoder"
+export MY_PRICE_TARGETS="price_server test_lh price_client_test price_unifier_test price_decoder"
 function ptmake {
     rr || return
     ~/build.sh $MY_PRICE_TARGETS
@@ -141,7 +141,9 @@ price_server/pds_uploader
 price_server/ps_common
 price_server/exchange/cme
 price_server/exchange/eurex_lh
+price_server/exchange/euronext_lh/optiq
 price_server/exchange/gdax_lh
+price_server/exchange/lme_lh
 price_server/exchange/tmx_lh
 price_server/price_client
 price_server/price_unifier

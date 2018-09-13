@@ -38,7 +38,7 @@ PROMPT_COMMAND=_prompt_command
 function _prompt_command()
 {
     hasjobs=$(jobs -p)
-    PS1="${SSH_CLIENT:+$yellow$HOSTNAME }$blue$(__git_ps1 "%s ")$green\W ${hasjobs:+$yellow(\j)}$green> $reset"
+    PS1="${SSH_CLIENT:+$yellow$HOSTNAME }$blue$(__git_ps1 "%s ")$green\w\n${hasjobs:+$yellow(\j)}$green> $reset"
     PS2="$blue>$reset"
     history -a
     history -n

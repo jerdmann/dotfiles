@@ -23,12 +23,14 @@ price_server/exchange/cme/cme_mbo_mock_ppiq_lh.build.mk
 price_server/exchange/cme/cme_mbo_ppiq_lh.build.mk
 price_server/exchange/cme/cme_mbo_suppress_out_lh.build.mk
 price_server/exchange/eurex_lh/build.mk
-price_server/exchange/euronext_lh/build.mk
+price_server/exchange/euronext_lh/optiq/build.mk
 price_server/exchange/gdax_lh/build.mk
 price_server/exchange/ice_lh/build.mk
 price_server/exchange/ice_lh/gateway_architecture_framework/2.0/dev/gaf/build.mk
 price_server/exchange/lme_lh/lme_lh.build.mk
+price_server/exchange/ose_lh/itch/build.mk
 price_server/exchange/test_lh/build.mk
+price_server/exchange/tmx_lh/build.mk
 price_server/pds_uploader/build.mk
 price_server/pds_uploader/uploader_service/build.mk
 price_server/price_client/build.mk

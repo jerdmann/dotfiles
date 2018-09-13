@@ -62,3 +62,5 @@ alias cdws='cd /usr/lib/x86_64-linux-gnu/wireshark/plugins/1.12.1'
 
 alias pstest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_basic_fix && popd'
 alias psatest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_advanced_fix && popd'
+
+alias decode='`git rev-parse --show-toplevel`/run price_decoder --dedup'
