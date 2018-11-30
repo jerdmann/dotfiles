@@ -34,7 +34,7 @@ function ks {
     if [[ -z "$args" ]]; then
         args="-a chef_environment -a ipaddress -a run_list -a tags"
     fi
-    knife search "run_list:*$rl* AND chef_environment:*$env*" $args
+    knife search "run_list:*$rl* AND chef_environment:*$env*" ${=args}
 }
 
 function ksn {
@@ -53,7 +53,7 @@ function eks {
     if [[ -z "$args" ]]; then
         args="-a chef_environment -a ipaddress -a run_list -a tags"
     fi
-    eknife search "run_list:*$rl* AND chef_environment:*$env*" $args
+    eknife search "run_list:*$rl* AND chef_environment:*$env*" ${=args}
 }
 
 function kssh {
@@ -74,13 +74,6 @@ function lmake {
     popd >/dev/null
 }
 
-function dmake {
-    rr || return
-    my_mks="for f in $(cat ~/.my_mks); do [[ -f \"$f\" ]] && printf \"%s \"; done"
-    make -j50 def_files="$my_mks" $@
-    popd >/dev/null
-}
-
 function isearch {
     rr || return
     ./run python price_server/tests/pds_test/tools/instrument_search.py $@
@@ -94,15 +87,11 @@ function ptmake {
     popd >/dev/null
 }
 
-function dptmake {
-    rr || return
-    make -j32 price_server $MY_PRICE_TARGETS
-    popd >/dev/null
-}
-
 function sbe {
     rr || return
-    SBE_JAR=$reporootdir/price_server/ps_common/sbe_messages/sbe-all.jar
+    sbe_dir=price_server/ps_common/sbe_messages
+    cd $sbe_dir
+    SBE_JAR=$reporootdir/$sbe_dir/sbe-all.jar
     ./make_schema.sh
     cd sbe_common
     $reporootdir/run python make_enums.py
@@ -156,8 +145,7 @@ function tag {
     cat /dev/null > tags
     for d in $(echo "${project_dirs[@]}" | tr -s " " | tr " " "\n")
     do {
-        ctags -a $d
-        ctags -a -e $d
+        ctags -Ra $d
     }; done
     popd >/dev/null
 }
@@ -175,19 +163,9 @@ function mkdeb () {
     sudo chmod 775 /var/log/debesys
 }
 
-function wsact () {
-    if [[ -z "$WIRESHARK_DIR" ]]; then
-        echo "error: WIRESHARK_DIR is unset"
-        return
-    fi
-
-    if [[ -z "$1" ]]; then
-        echo "error: no pattern"
-        return
-    fi
-
-    pushd "$WIRESHARK_DIR"
-    sudo rename 's/.lua$/.lua.disabled/' *.lua 2>/dev/null
-    sudo rename 's/.lua.disabled$/.lua/' *$1*
-    popd
+function testify () {
+    reporootdir=$(git rev-parse --show-toplevel)
+    [[ -n "$reporootdir" ]] || return
+    rm -rf build/x86-64/debug/python/tt/price_server
+    ln -sf $reporootdir/price_server/test/tt/price_server build/x86-64/debug/python/tt
 }

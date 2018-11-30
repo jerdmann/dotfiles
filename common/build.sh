@@ -12,7 +12,8 @@ fi
 
 pushd $rr >/dev/null
 my_mks=$(for f in $(cat ~/.my_mks); do [[ -f "$f" ]] && printf "%s " $f; done)
-make -j$(nproc) use_distcc=0 def_files="$my_mks" $@ 2>&1
+#make -j$(nproc) use_distcc=0 def_files="$my_mks" $@ 2>&1 | grep -E --color=never ":[0-9]+:[0-9]+: \w+:"
+make -j$(nproc) use_distcc=0 def_files="$my_mks" $@ 2>&1 | grep -E --color=never -v -e "more than once" -e "^setting"
 rc=$?
 popd >/dev/null
 exit $rc

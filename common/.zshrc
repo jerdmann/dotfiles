@@ -19,8 +19,8 @@ setopt promptsubst
 bindkey -e
 bindkey ";5D" emacs-backward-word
 bindkey ";5C" emacs-forward-word
-#bindkey "5D" emacs-backward-word
-#bindkey "5C" emacs-forward-word
+bindkey "5D" emacs-backward-word
+bindkey "5C" emacs-forward-word
 
 # Fix punctuation behavior for word commands.
 export WORDCHARS=''
@@ -59,7 +59,7 @@ zstyle ':completion:*' verbose true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
-export EDITOR='vim'
+export EDITOR='nvim'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -74,7 +74,7 @@ test -f ~/.bash_functions && source ~/.bash_functions
 test -f ~/.keys && source ~/.keys
 
 export LIBRARY_PATH="/usr/lib/x86_64-linux-gnu"
-export LD_LIBRARY_PATH="/usr/local/include"
+export LD_LIBRARY_PATH="/usr/local/lib"
 
 # vcd stuff
 export INTAD_USER=jerdmann

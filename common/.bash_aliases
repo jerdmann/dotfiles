@@ -5,11 +5,10 @@ alias l='ls -CF'
 
 alias fixdns='sudo resolvconf -u'
 alias sb='source ~/.bashrc'
-alias eb='vim ~/.bashrc'
+alias eb='$EDITOR ~/.bashrc'
 alias deb='cd $(pwd | grep dev-root | cut -f1-5 -d\/) || echo "Not in a repo under dev-root."'
 alias dev='cd ~/dev-root'
 alias dot='cd ~/.dotfiles'
-alias gvim='gvim --remote-silent'
 alias ee='emacs -nw'
 
 alias tmux='tmux -2'
@@ -29,15 +28,15 @@ alias uenv='~/dev-root/debesys-one/run python ~/dev-root/debesys-one/deploy/chef
 
 alias ll='ls -alF'
 alias dot='cd ~/.dotfiles'
-alias gvim='gvim --remote-silent'
 alias ee='emacs -nw'
-alias ez="vim ~/.zshrc"
-alias v="vim"
-alias ev="vim ~/.vimrc"
+alias ez="$EDITOR ~/.zshrc"
+alias v="$EDITOR"
+alias vim="$EDITOR"
 alias sz='source ~/.zshrc'
 alias g="git"
 alias dbd='smbclient -U jerdmann -W intad //chifs01.int.tt.local/Share'
 alias wgdl='wget --recursive --no-clobber --convert-links --html-extension --page-requisites --no-parent '
+alias pdc='price_decoder --dedup -f'
 
 alias ta='tmux attach-session -t 0'
 alias tl='tmux list-session'
@@ -60,7 +59,6 @@ alias cdpro='cd `git rev-parse --show-toplevel`/the_arsenal/all_messages/source/
 
 alias cdws='cd /usr/lib/x86_64-linux-gnu/wireshark/plugins/1.12.1'
 
+alias mktest='pushd `git rev-parse --show-toplevel` && pmake price_server_tests'
 alias pstest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_basic_fix && popd'
 alias psatest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_advanced_fix && popd'
-
-alias decode='`git rev-parse --show-toplevel`/run price_decoder --dedup'

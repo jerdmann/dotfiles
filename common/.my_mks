@@ -7,6 +7,7 @@ misc/messagestore/build.mk
 misc/osabstraction/build.mk
 misc/price_compressor/build.mk
 misc/timer/build.mk
+misc/ttmetrics/build.mk
 misc/webclient/build.mk
 pds/source/api/build.mk
 pds/source/config/build.mk
@@ -29,6 +30,7 @@ price_server/exchange/ice_lh/build.mk
 price_server/exchange/ice_lh/gateway_architecture_framework/2.0/dev/gaf/build.mk
 price_server/exchange/lme_lh/lme_lh.build.mk
 price_server/exchange/ose_lh/itch/build.mk
+price_server/exchange/py_lh/build.mk
 price_server/exchange/test_lh/build.mk
 price_server/exchange/tmx_lh/build.mk
 price_server/pds_uploader/build.mk

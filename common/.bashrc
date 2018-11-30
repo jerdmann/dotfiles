@@ -8,7 +8,7 @@ case $- in
       *) return;;
 esac
 
-export EDITOR='vim'
+export EDITOR='nvim'
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -88,7 +88,7 @@ export TT_EMAIL='jason.erdmann@tradingtechnologies.com'
 export TTDIAG_USER_ID='271'
 
 #export ASAN_OPTIONS="log_path=/tmp/asan:detect_leaks=1"
-export ASAN_OPTIONS="log_path=/tmp/asan"
+#export ASAN_OPTIONS="log_path=/tmp/asan"
 
 # ec2 manager name
 export MGR="jerdmann"

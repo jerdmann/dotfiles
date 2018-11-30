@@ -1,6 +1,6 @@
 call plug#begin('~/.vim/plugged')
 
-Plug 'flazz/vim-colorschemes'
+Plug 'rafi/awesome-vim-colorschemes'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/syntastic'
 "Plug 'w0rp/ale'
@@ -12,6 +12,7 @@ Plug 'mileszs/ack.vim'
 
 Plug 'fatih/vim-go'
 Plug 'zah/nim.vim'
+Plug 'elixir-editors/vim-elixir'
 
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
@@ -30,7 +31,9 @@ set number
 "set cursorline
 
 set bg=dark
-"colo Tomorrow-Night
+if has("gui_running")
+    colo gruvbox
+endif
 filetype plugin indent on
 
 let g:sessions_dir = '~/.vim-sessions'
@@ -56,6 +59,9 @@ autocmd Filetype make setlocal noexpandtab
 autocmd Filetype javascript setlocal ts=2 sw=2
 autocmd Filetype html setlocal ts=2 sw=2
 autocmd Filetype lua setlocal ts=2 sw=2
+augroup filetype
+  au! BufRead,BufNewFile *.log setfiletype ttlog
+augroup end
 
 autocmd! bufwritepost ~/.vimrc source ~/.vimrc
 
@@ -117,8 +123,6 @@ set pastetoggle=<F2>
 
 let g:netrw_liststyle=3
 
-set makeprg=/home/jason/build.sh
-
 let mapleader = "\<Space>"
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<CR>
 nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0},<cr><esc>
@@ -142,9 +146,9 @@ nnoremap <silent> <C-p> :FZF<cr>
 nnoremap <leader>a :Ack 
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>f :FZF<cr>
-nnoremap <silent> <leader>d <esc>OTTLOG(INFO, 9999) << "";<esc>hi
+nnoremap <silent> <leader>d <esc>OTTLOG(INFO, 9999) << __FUNCTION__ << " 
 
-nnoremap <leader>m :set makeprg=/home/jason/build.sh\
+nnoremap <leader>m :set makeprg=
 nnoremap <leader>c :silent wa \| silent make \| redraw! \| cw<cr>
  
 " Vimux
