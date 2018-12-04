@@ -21,7 +21,7 @@
 [color]
 	ui = auto
 [core]
-    excludesfile = ~/.githome/.gitignore
+    excludesfile = ~/.gitignore
 [gc]
 	auto = 0
 [git-tt]

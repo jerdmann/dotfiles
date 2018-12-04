@@ -1,0 +1,7 @@
+CMakeLists.txt
+debesys.*
+*.autosave
+TAGS
+cscope.*
+.idea
+test/pyrate/tt/pyrate/debesys/clients/*

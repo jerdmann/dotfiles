@@ -17,6 +17,7 @@ pds/source/login/build.mk
 pds/source/pdsapi_shared.build.mk
 pds/source/repo/build.mk
 pds/source/wire/build.mk
+price_server/exchange/bvmf/bvmf_lh.build.mk
 price_server/exchange/cme/cme_lh.build.mk
 price_server/exchange/cme/cme_mbo_check_vs_mbp_lh.build.mk
 price_server/exchange/cme/cme_mbo_lh.build.mk

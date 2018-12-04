@@ -23,7 +23,7 @@ alias ke='knife node edit'
 alias ksh='knife node show'
 alias eke='eknife node edit'
 alias eksh='eknife node show'
-alias fuck='vim $(git diff --name-only | uniq)'
+alias fuck='$EDITOR $(git diff --name-only | uniq)'
 
 function ks {
     rl="$1"
@@ -34,15 +34,16 @@ function ks {
     if [[ -z "$args" ]]; then
         args="-a chef_environment -a ipaddress -a run_list -a tags"
     fi
-    knife search "run_list:*$rl* AND chef_environment:*$env*" ${=args}
+    knife search "run_list:*$rl* AND chef_environment:*$env* NOT chef_environment:*-delayed" ${=args}
 }
 
 function ksn {
     rl="$1"
     env="$2"
 
-    knife search "run_list:*$rl* AND chef_environment:*$env*" -a name | grep "name:" | awk '{printf "%s ", $2}'
+    knife search "run_list:*$rl* AND chef_environment:*$env* NOT chef_environment:*-delayed" -a name | grep "name:" | awk '{printf "%s ", $2}'
 }
+
 
 function eks {
     rl="$1"
@@ -53,7 +54,7 @@ function eks {
     if [[ -z "$args" ]]; then
         args="-a chef_environment -a ipaddress -a run_list -a tags"
     fi
-    eknife search "run_list:*$rl* AND chef_environment:*$env*" ${=args}
+    eknife search "run_list:*$rl* AND chef_environment:*$env* NOT chef_environment:*-delayed" ${=args}
 }
 
 function kssh {
@@ -96,10 +97,6 @@ function sbe {
     cd sbe_common
     $reporootdir/run python make_enums.py
     popd >/dev/null
-}
-
-function makehome {
-    scp ~/.vimrc "$1":~ && scp -r ~/.vim "$1":~ &>/dev/null && scp ~/.tmux.conf "$1":~
 }
 
 function lbmify {
