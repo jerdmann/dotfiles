@@ -1,0 +1,32 @@
+export DEVWS_REPO="/home/jason/dev-root/debesys-one"
+
+if [ -f $DEVWS_REPO/deploy/chef/scripts/bashrc/devws.bash ]; then
+   # Skip this step if devws.bash isn't found where it's expected.
+   source $DEVWS_REPO/deploy/chef/scripts/bashrc/devws.bash
+fi
+
+# devws.bash contains an alias deploy, you might want to change the name to an alias you already use.
+# alias dpl="devws_request_deploy"
+
+# devws.bash contains an alias build, you might overwrite it if you only build one component
+# alias build="devws_request_build -t all_edge"
+
+alias ttrun='`git rev-parse --show-toplevel`/run'
+alias cf='cd /etc/debesys'
+alias lg='cd /var/log/debesys'
+
+# project dirs
+alias r1='cd ~/dev-root/debesys-one'
+alias r2='cd ~/dev-root/debesys-two'
+alias r3='cd ~/dev-root/debesys-three'
+alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
+alias cdps='cd `git rev-parse --show-toplevel`/price_server'
+alias cdlh='cd `git rev-parse --show-toplevel`/price_server/exchange/test_lh'
+alias cdsbe='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messages'
+alias cdpro='cd `git rev-parse --show-toplevel`/the_arsenal/all_messages/source/tt/messaging'
+
+# tests
+alias mktest='pushd `git rev-parse --show-toplevel` && pmake price_server_tests'
+alias pstest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_basic_fix && popd'
+alias psatest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_advanced_fix && popd'
+

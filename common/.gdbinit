@@ -13,6 +13,7 @@ set auto-load safe-path /
 python
 import sys
 sys.path.insert(0, '~jason/gdb_printers/python')
+sys.path.append("/usr/share/gdb/python");
 from libstdcxx.v6.printers import register_libstdcxx_printers
 register_libstdcxx_printers (None)
 end

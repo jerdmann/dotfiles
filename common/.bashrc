@@ -93,9 +93,6 @@ export TTDIAG_USER_ID='271'
 # ec2 manager name
 export MGR="jerdmann"
 
-# enable autocomplete in interactive python shells
-export PYTHONSTARTUP="/home/jason/.pythonrc"
-
 export GOPATH="/home/jason/gocode"
 export PATH=~/.cargo/bin:/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:$GOPATH/bin:/opt/node/bin:$PATH
 export JDK8_BIN=/opt/jdk/bin/java
@@ -106,5 +103,6 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 test -r ~/.keys && source ~/.keys
 test -r ~/.workstation && source ~/.workstation
+test -r ~/.debesys && source ~/.debesys
 test -r ~/.vpn && source ~/.vpn
 

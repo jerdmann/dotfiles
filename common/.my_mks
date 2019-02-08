@@ -54,5 +54,6 @@ price_server/py_price_unifier/build.mk
 price_server/test/build.mk
 price_server/test/fw/build.mk
 price_server/utils/pulse/build.mk
+price_server/udp_price_util/build.mk
 the_arsenal/all_messages/build.mk
 the_arsenal/pycommon/build.mk
