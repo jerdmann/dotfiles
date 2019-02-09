@@ -17,10 +17,8 @@ setopt sharehistory
 setopt promptsubst
 
 bindkey -e
-bindkey ";5D" emacs-backward-word
-bindkey ";5C" emacs-forward-word
-bindkey "5D" emacs-backward-word
-bindkey "5C" emacs-forward-word
+bindkey "^[[1;5D" emacs-backward-word
+bindkey "^[[1;5C" emacs-forward-word
 
 # Fix punctuation behavior for word commands.
 export WORDCHARS=''
@@ -103,3 +101,8 @@ test -r ~/.keys && source ~/.keys
 test -r ~/.workstation && source ~/.workstation
 test -r ~/.debesys && source ~/.debesys
 test -r ~/.vpn && source ~/.vpn
+
+# try keyboard settings, ignore failures
+setxkbmap -option ctrl:nocaps || :
+xcape || :
+xset r rate 200 25 || :
