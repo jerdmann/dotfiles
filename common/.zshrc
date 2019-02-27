@@ -103,6 +103,6 @@ test -r ~/.debesys && source ~/.debesys
 test -r ~/.vpn && source ~/.vpn
 
 # try keyboard settings, ignore failures
-setxkbmap -option ctrl:nocaps || :
-xcape || :
-xset r rate 200 25 || :
+setxkbmap -option ctrl:nocaps 2>/dev/null || :
+xcape 2>/dev/null || :
+xset r rate 200 25 2>/dev/null || :

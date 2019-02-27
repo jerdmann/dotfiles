@@ -18,7 +18,7 @@
     peek  = !git br | grep \"$1\" && :
     done  = !git br | grep \"$1\" | xargs -n 1 git br -D && :
 [push]
-    default = simple
+    default = current
 [color]
     ui = auto
 [core]
