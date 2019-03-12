@@ -2,9 +2,11 @@ call plug#begin('~/.vim/plugged')
 
 " baseline nice things
 Plug 'rafi/awesome-vim-colorschemes'
+Plug 'chriskempson/base16-vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'w0rp/ale'
 Plug 'neomake/neomake'
+Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
@@ -21,7 +23,10 @@ Plug 'benmills/vimux'
 Plug 'fatih/vim-go'
 Plug 'zah/nim.vim'
 Plug 'elzr/vim-json'
+Plug 'rhysd/vim-clang-format'
 
+" shenanigans
+Plug 'triglav/vim-visual-increment'
 call plug#end()
 
 set rtp+=~/.fzf
@@ -32,8 +37,12 @@ if has('nvim')
     set guicursor=
 endif
 colo gruvbox
+let base16colorspace=256
 
-let g:sessions_dir = '~/.vim-sessions'
+"regrettably living in a world with heaps of legacy code.  revisit
+"let g:clang_format#auto_format = 1
+"let g:clang_format#auto_formatexpr = 1
+"let g:clang_format#auto_format_on_insert_leave = 1
 
 set nobackup
 set autowrite
@@ -49,6 +58,15 @@ set tw=100
 set formatoptions-=t
 set mouse=a
 
+function! OnTabEnter(path)
+    if isdirectory(a:path)
+        let dirname = a:path
+    else
+        let dirname = fnamemodify(a:path, ":h")
+    endif
+    execute "tcd ". dirname
+endfunction()
+
 augroup vimrc
     autocmd!
     autocmd Filetype make       setlocal noexpandtab
@@ -57,6 +75,8 @@ augroup vimrc
     autocmd Filetype lua        setlocal ts=2 sw=2
 
     autocmd BufWritePost ~/.config/nvim/init.vim source ~/.config/nvim/init.vim 
+    autocmd TabNewEntered * call OnTabEnter(expand("<amatch>"))
+    autocmd InsertLeave * update
 augroup END
 
 if executable('ag')
@@ -65,6 +85,7 @@ endif
 let g:ack_qhandler = "botright copen"
 
 let g:ale_cpp_gcc_options = '-std=c++11 -Wall'
+let g:ale_open_list = 0
 
 let g:neomake_logfile = '/tmp/neomake.log'
 let g:neomake_open_list = 2
@@ -140,7 +161,6 @@ nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<cr>
 nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0},<cr><esc>
 nnoremap <leader>p "0p
 nnoremap <leader>t :%s/\s\+$//e<cr>
-nnoremap <leader>w :w<cr>
 nnoremap <leader><space> :noh<cr>
 
 cnoreabbrev Ack Ack!
@@ -160,10 +180,16 @@ nnoremap <silent> <leader>d <esc>OTTLOG(INFO, 9999) << __FUNCTION__ << "
 nnoremap <leader>m :set makeprg=/home/jason/build.sh\ 
 nnoremap <leader>c :silent wa!<cr> :Neomake! makeprg<cr>
 
-"nnoremap <Left>  :cprev<cr>
-"nnoremap <Right> :cnext<cr>
-"nnoremap <Up>    :botr copen<cr>
-"nnoremap <Down>  :cclose<cr>
+nnoremap <C-Left>  :cprev<cr>
+nnoremap <C-Right> :cnext<cr>
+nnoremap <C-Up>    :botr copen<cr>
+nnoremap <C-Down>  :cclose<cr>
+
+" sessions
+let g:sessions_dir = '/home/jason/.vim-sessions'
+call mkdir(g:sessions_dir, "p")
+exec 'nnoremap <leader>ss :mks! ' . g:sessions_dir . '/'
+exec 'nnoremap <leader>sr :so ' . g:sessions_dir . '/<C-D>'
 
 " Vimux
 let g:VimuxUseNearest = 1

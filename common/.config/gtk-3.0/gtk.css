@@ -1,0 +1,66 @@
+@define-color bg-grey #222;
+@define-color active-grey #333;
+@define-color border-grey #555;
+
+TerminalWindow .notebook {
+    border: 0;
+    padding: 0;
+    color: #eee;
+    background-color: shade(@active-grey, 1);
+}
+
+TerminalWindow .notebook tab:active {
+    border: 1px solid @border-grey;
+    background-color: shade(@active-grey, 1);
+}
+
+TerminalWindow .notebook tab {
+    background-color: shade(@bg-grey, 1);
+}
+
+TerminalWindow .notebook .button,
+TerminalWindow .notebook .button:active {
+    padding: 2 2 2 10;
+    background-image: none;
+    border: 0;
+}
+
+.terminator-terminal-window .notebook tab {
+    background-color: #222;
+    padding: 0.2em;
+    border: 0;
+    border-color: #444;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.terminator-terminal-window .notebook tab:active {
+    background-color: #000;
+}
+
+.terminator-terminal-window .notebook tab .label {
+    color: #ddd;
+}
+
+.terminator-terminal-window .notebook tab .active-page .label {
+    color: #76C802;
+    font-weight: 500;
+}
+
+.terminator-terminal-window .notebook tab .button {
+    padding: 0;
+    background-color: transparent;
+    color: #ccc;
+}
+
+.terminator-terminal-window .notebook.header {
+    background-color: #444;
+}
+
+.terminator-terminal-window .notebook tab .button:hover {
+    background-image: linear-gradient(to bottom, #000);
+    border: 0;
+    border-color: #444;
+    border-style: solid;
+    border-width: 1px;
+}

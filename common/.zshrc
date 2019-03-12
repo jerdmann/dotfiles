@@ -97,10 +97,15 @@ export NODEJS_HOME=/usr/local/nodejs
 export PATH=$NODEJS_HOME/bin:$PATH
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
-test -r ~/.keys && source ~/.keys
-test -r ~/.workstation && source ~/.workstation
-test -r ~/.debesys && source ~/.debesys
-test -r ~/.vpn && source ~/.vpn
+my_dotfiles=(
+~/.debesys
+~/.keys
+~/.vpn
+~/.workstation
+)
+for f in $my_dotfiles; do
+    test -r $f && source $f
+done
 
 # try keyboard settings, ignore failures
 setxkbmap -option ctrl:nocaps 2>/dev/null || :

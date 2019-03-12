@@ -33,3 +33,5 @@ alias tl='tmux list-session'
 
 alias cdws='cd /usr/lib/x86_64-linux-gnu/wireshark/plugins/1.12.1'
 
+alias drun='docker run -it --rm --network host'
+
