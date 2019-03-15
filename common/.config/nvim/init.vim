@@ -12,7 +12,6 @@ Plug 'airblade/vim-gitgutter'
 
 " finding stuff
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
 Plug 'mileszs/ack.vim'
 
 " tmux
@@ -30,6 +29,7 @@ Plug 'triglav/vim-visual-increment'
 call plug#end()
 
 set rtp+=~/.fzf
+set shell=/bin/bash
 
 set number
 set bg=dark
@@ -76,7 +76,7 @@ augroup vimrc
 
     autocmd BufWritePost ~/.config/nvim/init.vim source ~/.config/nvim/init.vim 
     autocmd TabNewEntered * call OnTabEnter(expand("<amatch>"))
-    autocmd InsertLeave * update
+    autocmd InsertLeave * silent! :update
 augroup END
 
 if executable('ag')
