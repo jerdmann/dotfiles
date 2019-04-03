@@ -13,10 +13,10 @@ function rr {
     pushd $reporootdir >/dev/null
 }
 
-function external-knife_() {
+function external_knife_() {
     knife "$@" -c ~/.chef/knife.external.rb
 }
-alias eknife='external-knife_'
+alias eknife='external_knife_'
 
 alias ksj='knife search "tags:jerdmann*"'
 alias ke='knife node edit'
@@ -25,36 +25,67 @@ alias eke='eknife node edit'
 alias eksh='eknife node show'
 alias fuck='$EDITOR $(git diff --name-only | uniq)'
 
-function ks {
-    rl="$1"
-    env="$2"
-    shift 2
+filter_genpop="NOT chef_environment:*-delayed NOT run_list:*ps_server\:\:loopback* NOT run_list:*depth_coll*"
 
-    args="$@"
-    if [[ -z "$args" ]]; then
-        args="-a chef_environment -a ipaddress -a run_list -a tags"
-    fi
-    knife search "run_list:*$rl* AND chef_environment:*$env* NOT chef_environment:*-delayed" ${=args}
+# has to be a better way to do this.  hilarious noop filter for now
+filter_none="NOT chef_environment:*fffffff*"
+
+# various "nice" front-ends
+function ks {
+    _knife_search knife "$filter_genpop" "$@"
+}
+
+function eks {
+    _knife_search external_knife_ "$filter_genpop" "$@"
+}
+
+function kps {
+    _knife_search knife "$filter_genpop" "$@"
+}
+
+function ekps {
+    _knife_search external_knife_ "$filter_genpop" "$@"
 }
 
 function ksn {
-    rl="$1"
-    env="$2"
-
-    knife search "run_list:*$rl* AND chef_environment:*$env* NOT chef_environment:*-delayed" -a name | grep "name:" | awk '{printf "%s ", $2}'
+    _knife_flat_search knife "$1" "$2"
 }
 
+function eksn {
+    _knife_flat_search external_knife_ "$1" "$2"
+}
 
-function eks {
-    rl="$1"
-    env="$2"
-    shift 2
+function kpdsu {
+    _knife_search knife "$filter_none" "pds_uploader_$1" "$2"
+}
 
+function ekpdsu {
+    _knife_search external_knife_ "$filter_none" "pds_uploader_$1" "$2"
+}
+
+# single entrypoint for knife searches
+function _knife_search {
+    cmd="$1"
+    filter="$2"
+    rl="$3"
+    env="$4"
+    shift 4
     args="$@"
+
     if [[ -z "$args" ]]; then
         args="-a chef_environment -a ipaddress -a run_list -a tags"
     fi
-    eknife search "run_list:*$rl* AND chef_environment:*$env* NOT chef_environment:*-delayed" ${=args}
+    $cmd search "run_list:*$rl* AND chef_environment:*$env* $filter" ${=args}
+}
+
+# similar, but one-line server names output
+# handy for populating CLI args to other tools
+function _knife_flat_search {
+    cmd="$1"
+    rl="$2"
+    env="$3"
+
+    $cmd search "run_list:*$rl* AND chef_environment:*$env*" -a name | grep "name:" | awk '{printf "%s ", $2}'
 }
 
 function kssh {
@@ -123,18 +154,13 @@ function tohex {
 project_dirs=(
 lbm
 misc/miscutils
-price_server/pds_uploader
 price_server/ps_common
-price_server/exchange/cme
-price_server/exchange/eurex_lh
-price_server/exchange/euronext_lh/optiq
-price_server/exchange/gdax_lh
-price_server/exchange/lme_lh
-price_server/exchange/tmx_lh
+price_server/exchange_adapter
 price_server/price_client
 price_server/price_unifier
 test
 price_server/test
+the_arsenal/all_messages/source/tt/messaging
 )
 
 function tag {
