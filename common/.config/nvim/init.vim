@@ -2,16 +2,18 @@ call plug#begin('~/.vim/plugged')
 
 " baseline nice things
 Plug 'rafi/awesome-vim-colorschemes'
-Plug 'chriskempson/base16-vim'
-Plug 'scrooloose/nerdcommenter'
 Plug 'w0rp/ale'
 Plug 'neomake/neomake'
 Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
+" Plug 'xolox/vim-misc'
+" Plug 'xolox/vim-session'
 
 " finding stuff
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'mileszs/ack.vim'
 
 " tmux
@@ -20,7 +22,6 @@ Plug 'benmills/vimux'
 
 " langauge specific
 Plug 'fatih/vim-go'
-Plug 'zah/nim.vim'
 Plug 'elzr/vim-json'
 Plug 'rhysd/vim-clang-format'
 
@@ -37,7 +38,6 @@ if has('nvim')
     set guicursor=
 endif
 colo gruvbox
-let base16colorspace=256
 
 "regrettably living in a world with heaps of legacy code.  revisit
 "let g:clang_format#auto_format = 1
@@ -73,6 +73,8 @@ augroup vimrc
     autocmd Filetype javascript setlocal ts=2 sw=2
     autocmd Filetype html       setlocal ts=2 sw=2
     autocmd Filetype lua        setlocal ts=2 sw=2
+
+    autocmd Filetype cpp        let b:commentary_format = '// %s'
 
     autocmd BufWritePost ~/.config/nvim/init.vim source ~/.config/nvim/init.vim 
     autocmd TabNewEntered * call OnTabEnter(expand("<amatch>"))
@@ -113,6 +115,12 @@ let g:go_highlight_operators = 0
 let g:go_version_warning = 0
 
 let g:vim_json_syntax_conceal = 0
+
+let g:sessions_dir = '/home/jason/.vim-sessions'
+call mkdir(g:sessions_dir, "p")
+let g:session_autosave        = 'yes'
+let g:session_default_to_last = 'yes'
+let g:session_directory       = g:sessions_dir
 
 set history=1000
 set clipboard=unnamedplus
@@ -177,19 +185,12 @@ nnoremap <leader>f :FZF<cr>
 nnoremap <leader>g :AckWindow! 
 nnoremap <silent> <leader>d <esc>OTTLOG(INFO, 9999) << __FUNCTION__ << " 
 
-nnoremap <leader>m :set makeprg=/home/jason/build.sh\ 
-nnoremap <leader>c :silent wa!<cr> :Neomake! makeprg<cr>
+nnoremap <leader>m :silent wa!<cr> :Neomake! makeprg<cr>
 
 nnoremap <C-Left>  :cprev<cr>
 nnoremap <C-Right> :cnext<cr>
 nnoremap <C-Up>    :botr copen<cr>
 nnoremap <C-Down>  :cclose<cr>
-
-" sessions
-let g:sessions_dir = '/home/jason/.vim-sessions'
-call mkdir(g:sessions_dir, "p")
-exec 'nnoremap <leader>ss :mks! ' . g:sessions_dir . '/'
-exec 'nnoremap <leader>sr :so ' . g:sessions_dir . '/<C-D>'
 
 " Vimux
 let g:VimuxUseNearest = 1
