@@ -26,7 +26,6 @@ alias sz='source ~/.zshrc'
 alias g="git"
 alias dbd='smbclient -U jerdmann -W intad //chifs01.int.tt.local/Share'
 alias wgdl='wget --recursive --no-clobber --convert-links --html-extension --page-requisites --no-parent '
-alias pdc='price_decoder --dedup -f'
 
 alias ta='tmux attach-session -t 0'
 alias tl='tmux list-session'

@@ -13,6 +13,7 @@ fi
 # alias build="devws_request_build -t all_edge"
 
 alias ttrun='`git rev-parse --show-toplevel`/run'
+alias suttrun='sudo `git rev-parse --show-toplevel`/run'
 alias cf='cd /etc/debesys'
 alias lg='cd /var/log/debesys'
 
@@ -203,3 +204,15 @@ function lbmify {
     cp ~/lbm_license_file.txt build/x86-64/irelease/etc/debesys/
 }
 
+function _pdc {
+    file="$1"
+    shift 1
+    iid=$(basename "$file" | grep -Eo "[0-9]{8,}")
+    iidfilter=""
+    if [[ ! -z "$iid" ]]; then
+        price_decoder -f $file --iid $iid --dedup $@
+    else
+        price_decoder -f $file --dedup $@
+    fi
+}
+alias pdc=_pdc
