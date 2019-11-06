@@ -31,7 +31,7 @@ call plug#end()
 set rtp+=~/.fzf
 set shell=/bin/bash
 
-set number
+" set number
 set bg=dark
 if has('nvim')
     set guicursor=
@@ -72,10 +72,15 @@ augroup vimrc
 
     autocmd Filetype cpp        let b:commentary_format = '// %s'
 
+    autocmd BufWritePre *.cpp,*.h,*.inl :%s/\s\+$//e
+
     autocmd BufWritePost ~/.config/nvim/init.vim source ~/.config/nvim/init.vim 
 
     autocmd QuickFixCmdPre build.sh RepoRoot()
     autocmd QuickFixCmdPost [^l]* cwindow
+
+    " When editing a file, always jump to the last cursor position
+    autocmd BufReadPost * if line("'\"") | exe "'\"" | endif
 augroup END
 
 let g:ale_cpp_gcc_options = '-std=c++14 -Wall'
@@ -88,15 +93,19 @@ call neomake#configure#automake('w')
 
 function! MyOnNeomakeJobFinished() abort
     let context = g:neomake_hook_context
-    if context.jobinfo.exit_code == 0
-        echom printf('maker %s successful',
-                    \ context.jobinfo.maker.name)
-    endif
+    " if context.jobinfo.exit_code == 0
+    echom printf('maker %s complete',
+                \ context.jobinfo.maker.name)
+    " endif
 endfunction
 augroup my_neomake_hooks
     au!
     autocmd User NeomakeJobFinished call MyOnNeomakeJobFinished()
 augroup END
+
+silent !mkdir ~/.vim/undodir > /dev/null 2>&1
+set undofile
+set undodir=~/.vim/undodir
 
 let g:go_fmt_fail_silently = 0
 let g:go_autodetect_gopath = 1
@@ -118,6 +127,7 @@ set ignorecase
 set smartcase
 set incsearch
 set hlsearch
+set scrolljump=-50
 
   "if has('nvim')
       "tnoremap <Esc> <C-\><C-n>
@@ -149,6 +159,7 @@ set guioptions-=L
 
 set pastetoggle=<F2>
 
+let g:netrw_banner = 0
 let g:netrw_liststyle=3
 
 let mapleader = "\<Space>"
@@ -156,6 +167,7 @@ nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<cr>
 nnoremap <leader>g :grep! 
 nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0},<cr><esc>
 nnoremap <leader>p "0p
+nnoremap <leader>q :bp\|bd \#<cr>
 nnoremap <leader>t :%s/\s\+$//e<cr>
 nnoremap <leader><space> :noh<cr>
 
@@ -170,8 +182,8 @@ nnoremap Y y$
 nnoremap <silent> <C-p> :FZF<cr>
 
 nnoremap <leader>b :Buffers<cr>
+nnoremap <silent> <leader>d <esc>Oprintf("TRACE ===> %s: \n", __func__);<esc>BBi
 nnoremap <leader>f :FZF<cr>
-nnoremap <silent> <leader>d <esc>Oprintf("%s: \n", __func__);<esc>BBi
 
 nnoremap <leader>m :silent wa!<cr> :Neomake! makeprg<cr>
 

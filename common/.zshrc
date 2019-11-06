@@ -16,6 +16,8 @@ setopt histignorealldups
 setopt sharehistory
 setopt promptsubst
 
+unsetopt equals
+
 bindkey -e
 bindkey "^[[1;5D" emacs-backward-word
 bindkey "^[[1;5C" emacs-forward-word

@@ -36,9 +36,9 @@ export DEVWS_SKIP_VALIDATE_REQUIREMENTS=1
 
 project_dirs=(
 lbm
+mds
 misc/miscutils
 price_server/ps_common
-price_server/exchange_adapter
 price_server/price_client
 price_server/price_unifier
 test
@@ -170,9 +170,11 @@ function lmake {
 
 function isearch {
     rr || return
-    ./run python price_server/tests/pds_test/tools/instrument_search.py $@
+    ./run python price_server/scripts/instrument_search.py $@
     popd >/dev/null
 }
+
+export MDS_COOKBOOKS="price_server market_data_server market_data_cme"
 
 export MY_PRICE_TARGETS="price_server test_lh price_client_test price_unifier_test price_decoder"
 function ptmake {
@@ -216,3 +218,14 @@ function _pdc {
     fi
 }
 alias pdc=_pdc
+
+function cbdevup {
+    for cb in $@; do
+        sed -i "s/\(version\s\+\)'1.0.0'/\1'1000000.0.0'/" "$cb/metadata.rb"
+    done
+    knife cookbook --cookbook-path `git rev-parse --show-toplevel`/deploy/chef/cookbooks upload "$@"
+}
+
+function cbhash {
+    for cb in $(ls -d "$@"); do tip=$(git rev-parse HEAD); sed -i "s/\"\w\+\"$/\"$tip\"/" $cb/attributes/debesys_repo_hash.rb; done
+}

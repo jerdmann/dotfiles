@@ -5,3 +5,6 @@ TAGS
 cscope.*
 .idea
 test/pyrate/tt/pyrate/debesys/clients/*
+
+cmake_*
+Session.vim
