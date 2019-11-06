@@ -51,7 +51,7 @@
                             (save-some-buffers t)))
 (delete-selection-mode t)
 
-(load-theme 'hc-zenburn)
+(load-theme 'gruvbox-dark-medium)
 (global-hl-line-mode)
 (if (display-graphic-p)
     (progn
@@ -69,18 +69,18 @@
 ;; (ido-mode t)
 ;; (setq ido-enable-flex-matching 1)
 
-(require 'evil)
-(evil-mode 1)
-(evil-add-hjkl-bindings occur-mode-map 'emacs
-    (kbd "/")       'evil-search-forward
-    (kbd "n")       'evil-search-next
-    (kbd "N")       'evil-search-previous
-    (kbd "0")       'evil-digit-argument-or-evil-beginning-of-line
-    (kbd "^")       'evil-first-non-blank
-    (kbd "$")       'evil-end-of-line
-    (kbd "C-d")     'evil-scroll-down
-    (kbd "C-u")     'evil-scroll-up
-    (kbd "C-w C-w") 'other-window)
+;(require 'evil)
+;(evil-mode 1)
+;(evil-add-hjkl-bindings occur-mode-map 'emacs
+    ;(kbd "/")       'evil-search-forward
+    ;(kbd "n")       'evil-search-next
+    ;(kbd "N")       'evil-search-previous
+    ;(kbd "0")       'evil-digit-argument-or-evil-beginning-of-line
+    ;(kbd "^")       'evil-first-non-blank
+    ;(kbd "$")       'evil-end-of-line
+    ;(kbd "C-d")     'evil-scroll-down
+    ;(kbd "C-u")     'evil-scroll-up
+    ;(kbd "C-w C-w") 'other-window)
 
  ;; (general-define-key
  ;;  :states '(normal visual insert emacs)
@@ -122,10 +122,10 @@
  ;;  "'" 'my/compilation-popup
  ;;  )
 
-(require 'ivy)
-(ivy-mode 1)
-(setq ivy-use-virtual-buffers t)
-(setq ivy-count-format "(%d/%d) ")
+;; (require 'ivy)
+;; (ivy-mode 1)
+;; (setq ivy-use-virtual-buffers t)
+;; (setq ivy-count-format "(%d/%d) ")
 
 ;; (require 'web-mode)
 ;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
@@ -139,7 +139,7 @@
 (setq compilation-environment '("LIBRARY_PATH=/usr/lib/x86_64-linux-gnu"
                                 "LD_LIBRARY_PATH=/usr/local/include"))
 
-(setq compile-command "make -j4 ")
+;; (setq compile-command "~/build.sh ")
 
 ;; (setq compile-command "make -j4 price_server_tests && sudo ./run helmsman tt.price_server.test.test_price_client_advanced_fix")
 (custom-set-variables
@@ -148,8 +148,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-	 (quote
-		(use-package zenburn-theme magit lua-mode ivy hc-zenburn-theme go-mode fzf flycheck evil))))
+   (quote
+    (gruvbox-theme use-package zenburn-theme magit lua-mode ivy hc-zenburn-theme go-mode fzf flycheck evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

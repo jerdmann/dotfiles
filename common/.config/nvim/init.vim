@@ -11,7 +11,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'airblade/vim-gitgutter'
 " Plug 'xolox/vim-misc'
 
-" fzf
+" finding stuff
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
@@ -23,6 +23,7 @@ Plug 'benmills/vimux'
 Plug 'fatih/vim-go'
 Plug 'elzr/vim-json'
 Plug 'rhysd/vim-clang-format'
+Plug 'zah/nim.vim'
 
 " shenanigans
 Plug 'triglav/vim-visual-increment'
@@ -56,12 +57,22 @@ set tags=tags;
 set tw=100
 set formatoptions-=t
 set mouse=a
+set scrolljump=-50
 
-function! RepoRoot()
-    let dir = system("git rev-parse --show-toplevel")
-    echo dir
-    cd dir
+function! OnTabEnter(path)
+    if isdirectory(a:path)
+        let dirname = a:path
+    else
+        let dirname = fnamemodify(a:path, ":h")
+    endif
+    execute "tcd ". dirname
 endfunction()
+
+function! TrimTrailingWhitespace()
+    let l:winview = winsaveview()
+    silent! %s/\s\+$//
+    call winrestview(l:winview)
+endfunction
 
 augroup vimrc
     autocmd!
@@ -70,7 +81,10 @@ augroup vimrc
     autocmd Filetype html       setlocal ts=2 sw=2
     autocmd Filetype lua        setlocal ts=2 sw=2
 
-    autocmd Filetype cpp        let b:commentary_format = '// %s'
+    autocmd Filetype      cpp   let b:commentary_format = '// %s'
+    " TODO.  weird paranoid cpp-only trimming. The random filetype actually has significant
+    " trailing whitespace so be a wuss for now.
+    autocmd BufWritePre *.cpp,*.h,*.inl,*.md     :call TrimTrailingWhitespace()
 
     autocmd BufWritePre *.cpp,*.h,*.inl :%s/\s\+$//e
 
@@ -89,14 +103,13 @@ let g:ale_open_list = 0
 let g:ale_enabled = 0
 
 let g:neomake_logfile = '/tmp/neomake.log'
+let g:neomake_open_list = 2
 call neomake#configure#automake('w')
 
 function! MyOnNeomakeJobFinished() abort
     let context = g:neomake_hook_context
-    " if context.jobinfo.exit_code == 0
-    echom printf('maker %s complete',
-                \ context.jobinfo.maker.name)
-    " endif
+    echom printf('maker %s complete rc=%i',
+                \ context.jobinfo.maker.name, context.jobinfo.exit_code)
 endfunction
 augroup my_neomake_hooks
     au!
@@ -129,9 +142,6 @@ set incsearch
 set hlsearch
 set scrolljump=-50
 
-  "if has('nvim')
-      "tnoremap <Esc> <C-\><C-n>
-  "endif
   "'cpoptions' flags: |cpo-_|
   "'display' flag `msgsep` to minimize scrolling when showing messages
   "'guicursor' works in the terminal
@@ -165,25 +175,25 @@ let g:netrw_liststyle=3
 let mapleader = "\<Space>"
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<cr>
 nnoremap <leader>g :grep! 
-nnoremap <leader>h /"tags"<cr>O"haproxy": {"weight": 0},<cr><esc>
-nnoremap <leader>p "0p
 nnoremap <leader>q :bp\|bd \#<cr>
-nnoremap <leader>t :%s/\s\+$//e<cr>
 nnoremap <leader><space> :noh<cr>
 
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
 endif
 
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:botright copen<CR> 
+nnoremap K :grep! <cword><cr>:botright cw<cr> 
 nnoremap Q <nop>
 nnoremap Y y$
 
+" FZF is life changing
 nnoremap <silent> <C-p> :FZF<cr>
-
 nnoremap <leader>b :Buffers<cr>
-nnoremap <silent> <leader>d <esc>Oprintf("TRACE ===> %s: \n", __func__);<esc>BBi
 nnoremap <leader>f :FZF<cr>
+nnoremap <leader>l :Lines<cr>
+
+" lame debug
+nnoremap <silent> <leader>d <esc>Oprintf("TRACE ===> %s: \n", __func__);<esc>BBi
 
 nnoremap <leader>m :silent wa!<cr> :Neomake! makeprg<cr>
 
@@ -194,21 +204,24 @@ nnoremap <C-Down>  :cclose<cr>:lclose<cr>
 
 " Vimux
 let g:VimuxUseNearest = 1
-map <silent> <leader>l :wa<cr> :VimuxClearRunnerHistory<cr> :VimuxRunLastCommand<cr>
-map <silent> <leader>r :wa<cr> :VimuxPromptCommand<cr>
-"map <silent> <leader>t :!ctags price_server lbm<cr>
-map <silent> <leader>i :VimuxInspectRunner<cr>
-" map <silent> <LocalLeader>vk :wa<cr> :VimuxInterruptRunner<cr>
+map <silent> <leader>vr :wa<cr> :VimuxPromptCommand<cr>
+map <silent> <leader>vl :wa<cr> :VimuxClearRunnerHistory<cr> :VimuxRunLastCommand<cr>
+map <silent> <leader>vi :VimuxInspectRunner<cr>
+map <silent> <leader>vk :VimuxInterruptRunner<cr>
+
 " map <silent> <LocalLeader>vx :wa<cr> :VimuxClosePanes<cr>
 " vmap <silent> <LocalLeader>vs "vy :call VimuxRunCommand(@v)<cr>
 " nmap <silent> <LocalLeader>vs vip<LocalLeader>vs<cr>
-"
-tnoremap <Esc> <C-\><C-n>
 
-tnoremap <A-h> <C-\><C-N><C-w>h
-tnoremap <A-j> <C-\><C-N><C-w>j
-tnoremap <A-k> <C-\><C-N><C-w>k
-tnoremap <A-l> <C-\><C-N><C-w>l
+if has('nvim')
+    tnoremap <Esc> <C-\><C-n>
+    tnoremap <Esc> <C-\><C-n>
+
+    tnoremap <A-h> <C-\><C-N><C-w>h
+    tnoremap <A-j> <C-\><C-N><C-w>j
+    tnoremap <A-k> <C-\><C-N><C-w>k
+    tnoremap <A-l> <C-\><C-N><C-w>l
+endif
 
 nnoremap ; :
 vnoremap ; :

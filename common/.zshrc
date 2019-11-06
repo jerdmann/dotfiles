@@ -16,6 +16,7 @@ setopt histignorealldups
 setopt sharehistory
 setopt promptsubst
 
+# how on earth is this not the default
 unsetopt equals
 
 bindkey -e
@@ -92,7 +93,7 @@ export TTDIAG_USER_ID='271'
 export MGR="jerdmann"
 
 export GOPATH="/home/jason/gocode"
-export PATH=~/.cargo/bin:/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:/opt/nim-0.17.0/bin:$GOPATH/bin:$PATH
+export PATH=~/.cargo/bin:/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:/opt/nim-1.0.0/bin:$GOPATH/bin:$PATH
 export JDK8_BIN=/opt/jdk/bin/java
 
 export NODEJS_HOME=/usr/local/nodejs
@@ -112,4 +113,4 @@ done
 # try keyboard settings, ignore failures
 setxkbmap -option ctrl:nocaps 2>/dev/null || :
 xcape 2>/dev/null || :
-xset r rate 200 25 2>/dev/null || :
+xset r rate 200 30 2>/dev/null || :

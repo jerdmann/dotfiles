@@ -22,10 +22,10 @@ alias r1='cd ~/dev-root/debesys-one'
 alias r2='cd ~/dev-root/debesys-two'
 alias r3='cd ~/dev-root/debesys-three'
 alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
-alias cdps='cd `git rev-parse --show-toplevel`/price_server'
-alias cdlh='cd `git rev-parse --show-toplevel`/price_server/exchange/test_lh'
 alias cdsbe='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messages'
 alias cdpro='cd `git rev-parse --show-toplevel`/the_arsenal/all_messages/source/tt/messaging'
+
+alias cdscrap='cd ~/projects/scrap'
 
 # tests
 alias mktest='pushd `git rev-parse --show-toplevel` && pmake price_server_tests'
