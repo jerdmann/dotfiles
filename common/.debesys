@@ -221,7 +221,7 @@ alias pdc=_pdc
 
 function cbdevup {
     for cb in $@; do
-        sed -i "s/\(version\s\+\)'1.0.0'/\1'1000000.0.0'/" "$cb/metadata.rb"
+        sed -i "s/\(version\s\+\)'.\+'/\1'1000000.0.0'/" "$cb/metadata.rb"
     done
     knife cookbook --cookbook-path `git rev-parse --show-toplevel`/deploy/chef/cookbooks upload "$@"
 }

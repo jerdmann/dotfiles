@@ -116,7 +116,7 @@ augroup my_neomake_hooks
     autocmd User NeomakeJobFinished call MyOnNeomakeJobFinished()
 augroup END
 
-silent !mkdir ~/.vim/undodir > /dev/null 2>&1
+silent! mkdir ~/.vim/undodir > /dev/null 2>&1
 set undofile
 set undodir=~/.vim/undodir
 
