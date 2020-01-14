@@ -13,6 +13,22 @@ function rr {
     pushd $reporootdir >/dev/null
 }
 
+export _wk_container_name=rusty_manticore
+    
+function dwork {
+    docker start $_wk_container_name 2>/dev/null
+    docker attach $_wk_container_name
+}
+
+function dworkbuild {
+    docker run -it --network=host --name=$_wk_container_name \
+        --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
+        --mount src=/home/jason/dev-root,target=/home/jason/dev-root,type=bind \
+        --mount src=/etc/debesys,target=/etc/debesys,type=bind \
+        --mount src=/home/jason/.dotfiles,target=/home/jason/.dotfiles,type=bind \
+        debesys:latest
+}
+
 function servethis {
     google-chrome http://localhost:8000 &
     python -m SimpleHTTPServer 8000
@@ -47,4 +63,3 @@ function wsdisable {
     rm enabled.lua || :
     popd
 }
-    

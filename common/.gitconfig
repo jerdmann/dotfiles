@@ -17,6 +17,7 @@
     stale = !git br --merged | grep -v -e master -e 'release_[0-9]+/current' -e '*' | xargs -n 1 echo
     peek  = !git br | grep \"$1\" && :
     done  = !git br | grep \"$1\" | xargs -n 1 git br -D && :
+    sup =   !git br --set-upstream-to=origin/$(git rev-parse --abbrev-ref HEAD) $(git rev-parse --abbrev-ref HEAD)
 [push]
     default = current
 [color]

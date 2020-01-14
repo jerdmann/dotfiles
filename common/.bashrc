@@ -94,7 +94,7 @@ export TTDIAG_USER_ID='271'
 export MGR="jerdmann"
 
 export GOPATH="/home/jason/gocode"
-export PATH=~/.cargo/bin:/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:$GOPATH/bin:/opt/node/bin:$PATH
+export PATH=~/.cargo/bin:/usr/local/go/bin:/opt/jdk/bin:$GOPATH/bin:$PATH
 export JDK8_BIN=/opt/jdk/bin/java
 
 export NODEJS_HOME=/usr/local/nodejs

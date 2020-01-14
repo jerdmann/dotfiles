@@ -11,6 +11,9 @@ PROMPT='%{$fg_bold[blue]%}${vcs_info_msg_0_}%{$fg_bold[green]%}%1~ %1(j.%{$fg_bo
 if [[ -n "$SSH_CLIENT" ]]; then
     PROMPT="%{$fg_bold[yellow]%}ssh@$HOST $PROMPT"
 fi
+if [[ -n "$_DOCKER" ]]; then
+    PROMPT="%{$fg_bold[yellow]%}docker $PROMPT"
+fi
 
 setopt histignorealldups
 setopt sharehistory
@@ -69,38 +72,18 @@ alias egrep='egrep --color=auto'
 # stole this from default raspberry pi bashrc
 export GCC_COLORS="error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01"
 
-# some more aliases
-test -f ~/.bash_aliases && source ~/.bash_aliases
-test -f ~/.bash_functions && source ~/.bash_functions
-test -f ~/.keys && source ~/.keys
-
-export LIBRARY_PATH="/usr/lib/x86_64-linux-gnu"
-export LD_LIBRARY_PATH="/usr/local/lib"
-
-# vcd stuff
-export INTAD_USER=jerdmann
-export VCD_ORG=Dev_General
-
-export AWS_DEFAULT_REGION='us-east-1'
-export JENKINS_USER='jerdmann'
-export TT_EMAIL='jason.erdmann@tradingtechnologies.com'
-export TTDIAG_USER_ID='271'
-
 #export ASAN_OPTIONS="log_path=/tmp/asan:detect_leaks=1"
 #export ASAN_OPTIONS="log_path=/tmp/asan"
-
-# ec2 manager name
-export MGR="jerdmann"
 
 export GOPATH="/home/jason/gocode"
 export PATH=~/.cargo/bin:/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:/opt/nim-1.0.0/bin:$GOPATH/bin:$PATH
 export JDK8_BIN=/opt/jdk/bin/java
 
-export NODEJS_HOME=/usr/local/nodejs
-export PATH=$NODEJS_HOME/bin:$PATH
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+export RIPGREP_CONFIG_PATH=~/.rgrc
 
 my_dotfiles=(
+~/.bash_aliases
+~/.bash_functions
 ~/.debesys
 ~/.keys
 ~/.vpn

@@ -27,6 +27,7 @@ price_server/exchange/test_lh/build.mk
 price_server/pds_uploader/build.mk
 price_server/pds_uploader/uploader_service/build.mk
 price_server/price_client/build.mk
+price_server/price_client_mds/build.mk
 price_server/price_client_test/build.mk
 price_server/price_decoder/build.mk
 price_server/price_server/build.mk

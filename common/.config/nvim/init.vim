@@ -180,6 +180,9 @@ nnoremap <leader><space> :noh<cr>
 
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
+else
+  set grepprg=git\ --no-pager\ grep\ --no-color\ -n\ $*
+  set grepformat=%f:%l:%m,%m\ %f\ match%ts,%f
 endif
 
 nnoremap K :grep! <cword><cr>:botright cw<cr> 
