@@ -207,10 +207,10 @@ nnoremap <C-Down>  :cclose<cr>:lclose<cr>
 
 " Vimux
 let g:VimuxUseNearest = 1
-map <silent> <leader>vr :wa<cr> :VimuxPromptCommand<cr>
-map <silent> <leader>vl :wa<cr> :VimuxClearRunnerHistory<cr> :VimuxRunLastCommand<cr>
-map <silent> <leader>vi :VimuxInspectRunner<cr>
-map <silent> <leader>vk :VimuxInterruptRunner<cr>
+map <silent> <leader>r :wa<cr> :VimuxPromptCommand<cr>
+map <silent> <leader>l :wa<cr> :VimuxClearRunnerHistory<cr> :VimuxRunLastCommand<cr>
+map <silent> <leader>i :VimuxInspectRunner<cr>
+" map <silent> <leader>vk :VimuxInterruptRunner<cr>
 
 " map <silent> <LocalLeader>vx :wa<cr> :VimuxClosePanes<cr>
 " vmap <silent> <LocalLeader>vs "vy :call VimuxRunCommand(@v)<cr>

@@ -241,3 +241,42 @@ function cbdevup {
 function cbhash {
     for cb in $(ls -d "$@"); do tip=$(git rev-parse HEAD); sed -i "s/\"\w\+\"$/\"$tip\"/" $cb/attributes/debesys_repo_hash.rb; done
 }
+
+function ttw {
+    env="$1"
+    eshost="$2"
+
+    url=""
+    baseenv=""
+    fullenv=""
+
+    echo "$env"
+    echo "$eshost"
+    if [[ "$env" = "dev-cert" ]]; then
+        fullenv="int-dev-cert"
+        url="trade-dev.trade.tt"
+        baseenv="cert"
+    elif [[ "$env" = "dev-sim" ]]; then
+        fullenv="int-dev-sim"
+        url="trade-dev.trade.tt"
+        baseenv="sim"
+    elif [[ "$env" = "uat" ]]; then
+        fullenv="ext-uat-cert"
+        url="uat.trade.tt"
+        baseenv="cert"
+    elif [[ "$env" = "sim" ]]; then
+        fullenv="ext-prod-sim"
+        url="trade.tt"
+        baseenv="sim"
+    elif [[ "$env" = "live" ]]; then
+        fullenv="ext-prod-live"
+        url="trade.tt"
+        baseenv="live"
+    else
+        echo "unknown environment $env"
+        return
+    fi
+
+    url="https://$url/$baseenv/home?esHost=$eshost-edge-$fullenv.debesys.net"
+    google-chrome $url
+}
