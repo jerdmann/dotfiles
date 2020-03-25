@@ -57,7 +57,6 @@ set tags=tags;
 set tw=100
 set formatoptions-=t
 set mouse=a
-set scrolljump=-50
 
 function! OnTabEnter(path)
     if isdirectory(a:path)
@@ -81,10 +80,12 @@ augroup vimrc
     autocmd Filetype html       setlocal ts=2 sw=2
     autocmd Filetype lua        setlocal ts=2 sw=2
 
+    autocmd Filetype ruby       setlocal ts=4 sw=4
+
     autocmd Filetype      cpp   let b:commentary_format = '// %s'
     " TODO.  weird paranoid cpp-only trimming. The random filetype actually has significant
     " trailing whitespace so be a wuss for now.
-    autocmd BufWritePre *.cpp,*.h,*.inl,*.md     :call TrimTrailingWhitespace()
+    autocmd BufWritePre *.cpp,*.h,*.inl,*.md,*.py,*.rb  :call TrimTrailingWhitespace()
 
     autocmd BufWritePre *.cpp,*.h,*.inl :%s/\s\+$//e
 
@@ -116,6 +117,8 @@ augroup my_neomake_hooks
     autocmd User NeomakeJobFinished call MyOnNeomakeJobFinished()
 augroup END
 
+let g:neomake_cpp_enabled_makers = []
+
 silent! mkdir ~/.vim/undodir > /dev/null 2>&1
 set undofile
 set undodir=~/.vim/undodir
@@ -140,7 +143,7 @@ set ignorecase
 set smartcase
 set incsearch
 set hlsearch
-set scrolljump=-50
+" set scrolljump=-50
 
   "'cpoptions' flags: |cpo-_|
   "'display' flag `msgsep` to minimize scrolling when showing messages
@@ -178,8 +181,8 @@ nnoremap <leader>g :grep!
 nnoremap <leader>q :bp\|bd \#<cr>
 nnoremap <leader><space> :noh<cr>
 
-if executable('ag')
-  set grepprg=ag\ --nogroup\ --nocolor
+if executable('rg')
+  set grepprg=rg\ --vimgrep
 else
   set grepprg=git\ --no-pager\ grep\ --no-color\ -n\ $*
   set grepformat=%f:%l:%m,%m\ %f\ match%ts,%f

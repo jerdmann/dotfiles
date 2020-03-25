@@ -26,10 +26,10 @@ fi
 
 my_mks=$(for f in $(cat ~/.my_mks); do [[ -f "$rr/$f" ]] && printf "%s " $f; done)
 if [[ -z "$terse" ]]; then
-    make -C $rr -j$(nproc) use_distcc=0 def_files="$my_mks" $@ 2>&1
+    make -C $rr -j$(nproc --ignore 1) use_distcc=0 def_files="$my_mks" $@ 2>&1
 else
-    # make -C $rr -j$(nproc) use_distcc=0 def_files="$my_mks" $@ 2>&1 | grep --line-buffered --color=never error:
-    make -C $rr -j$(nproc) use_distcc=0 $@ 2>&1 | grep --line-buffered --color=never error:
+    # make -C $rr -j$(nproc --ignore 1) use_distcc=0 def_files="$my_mks" $@ 2>&1 | grep --line-buffered --color=never error:
+    make -C $rr -j$(nproc --ignore 1) use_distcc=0 $@ 2>&1 | grep --line-buffered --color=never error:
 fi
 rc=$?
 exit $rc

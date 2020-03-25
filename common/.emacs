@@ -1,21 +1,24 @@
 ;set up repos
 (require 'package)
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-						 ("melpa" . "http://melpa.org/packages/")))
+;; tells emacs not to load any packages before starting up
+(setq package-enable-at-startup nil
+      package-user-dir "~/.emacs.d/elpa/")
+(setq package-archives '(("melpa"     . "http://melpa.org/packages/")
+                         ("gnu"      . "http://elpa.gnu.org/packages/")
+                         ))
 (package-initialize)
-(setq my-packages '(flycheck
-                    pyflakes
-                    find-file-at-point
-                    better-defaults
-                    smex
-                    evil
-                    ivy))
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
+
+(use-package better-defaults :ensure t)
 
 (setq	custom-safe-themes t
 	inhibit-startup-screen 1
 	ruby-indent-level 4
 	tab-always-indent 'complete
-	tab-width 2
 	vc-follow-symlinks 1
 	visible-bell nil
 	compilation-ask-about-save nil
@@ -24,38 +27,10 @@
 	split-height-threshold 200
 	split-width-threshold 300)
 
-(defun install-my-packages ()
-  (interactive)
-  (when (not package-archive-contents)
-    (package-refresh-contents))
-  (dolist (p my-packages)
-    (when (not (package-installed-p p))
-      (package-install p))))
-
-(fset 'yes-or-no-p 'y-or-n-p)
-(global-auto-revert-mode t)
-(desktop-save-mode 1)
-(savehist-mode 1)
-
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-(setq scroll-step 1
-      scroll-conservatively 10000
-      auto-window-vscroll nil)
-
-(column-number-mode)
-(xterm-mouse-mode)
-
-(add-hook 'focus-out-hook (lambda()
-                            (save-some-buffers t)))
-(delete-selection-mode t)
-
-(load-theme 'gruvbox-dark-medium)
 (global-hl-line-mode)
 (if (display-graphic-p)
     (progn
-      (set-frame-font "DejaVu Sans Mono-10.5" nil t)
+      (set-frame-font "DejaVu Sans Mono-11" nil t)
       ))
 
 (setq-default c-basic-offset 4 c-default-style "linux")
@@ -65,9 +40,48 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-hook 'python-mode-hook 'flycheck-mode)
 
-;; (require 'ido)
-;; (ido-mode t)
-;; (setq ido-enable-flex-matching 1)
+(use-package gruvbox-theme :ensure t)
+
+(use-package evil :ensure t
+  :config
+  (evil-mode))
+
+(use-package evil-collection
+    :after evil
+    :ensure t
+    :config
+    (evil-collection-init))
+
+(use-package evil-commentary
+    :ensure t
+    :bind (:map evil-normal-state-map
+                ("gc" . evil-commentary)))
+(use-package evil-goggles
+    :ensure t
+    :config
+    (evil-goggles-use-diff-faces)
+    (evil-goggles-mode))
+
+(use-package evil-surround
+  :ensure t
+  :commands
+  (evil-surround-edit
+   evil-Surround-edit
+   evil-surround-region
+   evil-Surround-region)
+  :init
+  (evil-define-key 'operator global-map "s" 'evil-surround-edit)
+  (evil-define-key 'operator global-map "S" 'evil-Surround-edit)
+  (evil-define-key 'visual global-map "S" 'evil-surround-region)
+  (evil-define-key 'visual global-map "gS" 'evil-Surround-region))
+
+(use-package evil-leader :ensure t
+  :init
+  (setq evil-want-keybinding nil)
+  (global-evil-leader-mode))
+
+(use-package rust-mode :ensure t)
+
 
 ;(require 'evil)
 ;(evil-mode 1)
@@ -136,9 +150,6 @@
 ;; (global-set-key (kbd "<f5>") 'recompile)
 ;; (global-set-key (kbd "M-<left>") 'pop-global-mark)
 
-(setq compilation-environment '("LIBRARY_PATH=/usr/lib/x86_64-linux-gnu"
-                                "LD_LIBRARY_PATH=/usr/local/include"))
-
 ;; (setq compile-command "~/build.sh ")
 
 ;; (setq compile-command "make -j4 price_server_tests && sudo ./run helmsman tt.price_server.test.test_price_client_advanced_fix")
@@ -149,10 +160,17 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (gruvbox-theme use-package zenburn-theme magit lua-mode ivy hc-zenburn-theme go-mode fzf flycheck evil))))
+    (evil flycheck-rust rust-mode use-package gruvbox-theme flycheck evil-surround evil-leader evil-goggles evil-commentary evil-collection better-defaults))))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(evil-goggles-change-face ((t (:inherit diff-removed))))
+ '(evil-goggles-delete-face ((t (:inherit diff-removed))))
+ '(evil-goggles-paste-face ((t (:inherit diff-added))))
+ '(evil-goggles-undo-redo-add-face ((t (:inherit diff-added))))
+ '(evil-goggles-undo-redo-change-face ((t (:inherit diff-changed))))
+ '(evil-goggles-undo-redo-remove-face ((t (:inherit diff-removed))))
+ '(evil-goggles-yank-face ((t (:inherit diff-changed)))))

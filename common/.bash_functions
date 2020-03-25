@@ -13,7 +13,7 @@ function rr {
     pushd $reporootdir >/dev/null
 }
 
-export _wk_container_name=rusty_manticore
+export _wk_container_name=trusty_manticore
     
 function dwork {
     docker start $_wk_container_name 2>/dev/null

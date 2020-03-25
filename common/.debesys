@@ -103,7 +103,7 @@ alias ksh='knife node show'
 alias eke='eknife node edit'
 alias eksh='eknife node show'
 
-filter_genpop="NOT chef_environment:*-delayed NOT run_list:*ps_server\:\:loopback* NOT run_list:*depth_coll*"
+filter_genpop="NOT run_list:*ps_server\:\:loopback* NOT run_list:*depth_coll*"
 
 # has to be a better way to do this.  hilarious noop filter for now
 filter_none="NOT chef_environment:*fffffff*"
@@ -141,19 +141,38 @@ function ekpdsu {
     _knife_search external_knife_ "$filter_none" "pds_uploader_$1" "$2"
 }
 
+# split up a runlist (rl) filter param like:
+# "app1 app2"
+# into an actual chef solr run_list filter like:
+# "run_list:*app1* AND run_list:*app2*"
+function _make_rl_filter {
+    rl_tokens="$1"
+    sep=""
+    rl_filter=""
+    IFS=' ' read -rA rl_tokens <<< "$rl"
+    for tok in "${rl_tokens[@]}"; do
+        rl_filter="${rl_filter}${sep}run_list:*$tok*"
+        sep=" AND "
+    done
+    echo $rl_filter
+}
+
 # single entrypoint for knife searches
 function _knife_search {
     cmd="$1"
-    filter="$2"
+    top_filter="$2"
+
     rl="$3"
     env="$4"
     shift 4
     args="$@"
 
+    rl_filter=$(_make_rl_filter "$rl" )
+
     if [[ -z "$args" ]]; then
         args="-a chef_environment -a ipaddress -a run_list -a tags"
     fi
-    $cmd search "run_list:*$rl* AND chef_environment:*$env* $filter" ${=args}
+    $cmd search "$rl_filter AND chef_environment:*$env* $top_filter" ${=args}
 }
 
 # similar, but one-line server names output
@@ -163,11 +182,18 @@ function _knife_flat_search {
     rl="$2"
     env="$3"
 
-    $cmd search "run_list:*$rl* AND chef_environment:*$env*" -a name | grep "name:" | awk '{printf "%s ", $2}'
+    rl_filter=$(_make_rl_filter "$rl" )
+    echo $rl_filter
+
+    $cmd search "$rl_filter AND chef_environment:*$env*" -a name | grep "name:" | awk '{printf "%s ", $2}'
 }
 
 function kssh {
-    knife ssh -a ipaddress "run_list:*$1* AND chef_environment:*$2*" "$3"
+    knife ssh -a ipaddress "$1" "$2"
+}
+
+function ekssh {
+    eknife ssh -a ipaddress "$1" "$2"
 }
 
 function bgf {
@@ -180,7 +206,7 @@ function pmake {
 
 function lmake {
     rr || return
-    make -j$(nproc) use_distcc=0 $@
+    make -j$(nproc --ignore 1) use_distcc=0 $@
     popd >/dev/null
 }
 
@@ -238,8 +264,19 @@ function cbdevup {
     knife cookbook --cookbook-path `git rev-parse --show-toplevel`/deploy/chef/cookbooks upload "$@"
 }
 
+function cboneoff {
+    version=$1
+    shift 1
+    for cb in $@; do
+        sed -i "s/\(version\s\+\)'.\+'/\1'0.0.$version'/" "$cb/metadata.rb"
+    done
+    knife cookbook --cookbook-path `git rev-parse --show-toplevel`/deploy/chef/cookbooks upload "$@"
+}
+
 function cbhash {
-    for cb in $(ls -d "$@"); do tip=$(git rev-parse HEAD); sed -i "s/\"\w\+\"$/\"$tip\"/" $cb/attributes/debesys_repo_hash.rb; done
+    tip=$1
+    shift 1
+    for cb in $(ls -d "$@"); do sed -i "s/\"\w\+\"$/\"$tip\"/" $cb/attributes/debesys_repo_hash.rb; done
 }
 
 function ttw {
@@ -260,6 +297,18 @@ function ttw {
         fullenv="int-dev-sim"
         url="trade-dev.trade.tt"
         baseenv="sim"
+    elif [[ "$env" = "stage-cert" ]]; then
+        fullenv="int-stage-cert"
+        url="trade-stage.trade.tt"
+        baseenv="cert"
+    elif [[ "$env" = "stage-sim" ]]; then
+        fullenv="int-stage-sim"
+        url="trade-stage.trade.tt"
+        baseenv="sim"
+    elif [[ "$env" = "perf" ]]; then
+        fullenv="int-dev-perf"
+        url="trade-dev.trade.tt"
+        baseenv="cert"
     elif [[ "$env" = "uat" ]]; then
         fullenv="ext-uat-cert"
         url="uat.trade.tt"

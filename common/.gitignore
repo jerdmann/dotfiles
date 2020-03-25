@@ -1,10 +1,16 @@
-CMakeLists.txt
 debesys.*
 *.autosave
 TAGS
 cscope.*
-.idea
-test/pyrate/tt/pyrate/debesys/clients/*
+*.creator
+*.files
+*.includes
+*.vim
+*.tags.*
+*.pcap*
 
-cmake_*
-Session.vim
+cmake_install.cmake
+CMakeFiles
+CMakeCache.txt
+
+ext
