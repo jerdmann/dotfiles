@@ -63,3 +63,29 @@ function wsdisable {
     rm enabled.lua || :
     popd
 }
+
+fin()  { grep --line-buffered -Pi "$1"; }  # Filter In
+fout() { grep --line-buffered -v -Pi "$1"; }  # Filter Out
+
+# Highlight matching regex in file or pipe
+function hly {  # yellow
+    GREP_COLORS="ne:mt=03;33" grep --line-buffered --color=always -Pi "($1|$)"
+}
+function hlb {  # blue
+    GREP_COLORS="ne:mt=03;36" grep --line-buffered --color=always -Pi "($1|$)"
+}
+function hlg {  # green
+    GREP_COLORS="ne:mt=03;32" grep --line-buffered --color=always -Pi "($1|$)"
+}
+function hlp {  # pink
+    GREP_COLORS="ne:mt=03;35" grep --line-buffered --color=always -Pi "($1|$)"
+}
+alias hl=hly
+
+# Versions of highlighters that work with k=v fields
+FIELD_VALS="[\"[:alnum:]_\-:.]"
+function hlf()  { hl  "$1=$FIELD_VALS+";}
+function hlyf() { hly "$1=$FIELD_VALS+";}
+function hlbf() { hlb "$1=$FIELD_VALS+";}
+function hlgf() { hlg "$1=$FIELD_VALS+";}
+function hlpf() { hlp "$1=$FIELD_VALS+";}

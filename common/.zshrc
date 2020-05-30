@@ -7,8 +7,7 @@ precmd() {
     vcs_info
 }
 
-PROMPT='%{$fg_bold[green]%}%~ %{$fg_bold[blue]%}${vcs_info_msg_0_}%{$fg_bold[green]%}
-%1(j.%{$fg_bold[yellow]%}(%j%).)%{$fg_bold[green]%}>%{$reset_color%} '
+PROMPT='%{$fg_bold[blue]%}${vcs_info_msg_0_}%{$fg_bold[green]%}%1~ %1(j.%{$fg_bold[yellow]%}(%j%).)%{$fg_bold[green]%}>%{$reset_color%} '
 if [[ -n "$SSH_CLIENT" ]]; then
     PROMPT="%{$fg_bold[yellow]%}ssh@$HOST $PROMPT"
 fi
@@ -77,7 +76,7 @@ export GCC_COLORS="error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 #export ASAN_OPTIONS="log_path=/tmp/asan"
 
 export GOPATH="/home/jason/gocode"
-export PATH=~/.cargo/bin:/usr/local/go/bin:/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/opt/jdk/bin:/opt/gradle/bin:/opt/nim-1.0.0/bin:$GOPATH/bin:$PATH
+export PATH=~/.cargo/bin:/usr/local/go/bin:/opt/jdk/bin:/opt/nim-1.0.0/bin:$GOPATH/bin:~/node/bin:$PATH
 export JDK8_BIN=/opt/jdk/bin/java
 
 export RIPGREP_CONFIG_PATH=~/.rgrc
@@ -96,5 +95,7 @@ done
 
 # try keyboard settings, ignore failures
 setxkbmap -option ctrl:nocaps 2>/dev/null || :
-xcape 2>/dev/null || :
 xset r rate 200 30 2>/dev/null || :
+
+# only one xcape
+pidof xcape >/dev/null || xcape -t 200 2>/dev/null

@@ -37,16 +37,12 @@ alias lg='cd /var/log/debesys'
 alias r1='cd ~/dev-root/debesys-one'
 alias r2='cd ~/dev-root/debesys-two'
 alias r3='cd ~/dev-root/debesys-three'
+alias cdcap='cd ~/dev-root/captures'
 alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
 alias cdsbe='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messages'
 alias cdpro='cd `git rev-parse --show-toplevel`/the_arsenal/all_messages/source/tt/messaging'
 
 alias cdscrap='cd ~/projects/scrap'
-
-# tests
-alias mktest='pushd `git rev-parse --show-toplevel` && pmake price_server_tests'
-alias pstest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_basic_fix && popd'
-alias psatest='pushd `git rev-parse --show-toplevel` && sudo ./run helmsman tt.price_server.test.suites.test_price_client_advanced_fix && popd'
 
 export DEVWS_SKIP_VALIDATE_REQUIREMENTS=1
 
@@ -110,11 +106,11 @@ filter_none="NOT chef_environment:*fffffff*"
 
 # various "nice" front-ends
 function ks {
-    _knife_search knife "$filter_genpop" "$@"
+    _knife_search knife "$filter_none" "$@"
 }
 
 function eks {
-    _knife_search external_knife_ "$filter_genpop" "$@"
+    _knife_search external_knife_ "$filter_none" "$@"
 }
 
 function kps {
@@ -287,8 +283,6 @@ function ttw {
     baseenv=""
     fullenv=""
 
-    echo "$env"
-    echo "$eshost"
     if [[ "$env" = "dev-cert" ]]; then
         fullenv="int-dev-cert"
         url="trade-dev.trade.tt"
@@ -328,4 +322,42 @@ function ttw {
 
     url="https://$url/$baseenv/home?esHost=$eshost-edge-$fullenv.debesys.net"
     google-chrome $url
+}
+
+function pdsi {
+    env="$1"
+    iid="$2"
+    url=""
+
+    if [[ "$env" = "dev-cert" ]]; then
+        url="int-dev-cert.trade.tt"
+    elif [[ "$env" = "dev-sim" ]]; then
+        url="int-dev-sim.trade.tt"
+    elif [[ "$env" = "stage-cert" ]]; then
+        url="int-stage-cert.trade.tt"
+    elif [[ "$env" = "stage-sim" ]]; then
+        url="int-stage-sim.trade.tt"
+    elif [[ "$env" = "uat" ]]; then
+        url="ext-uat-cert.trade.tt"
+    elif [[ "$env" = "live" ]]; then
+        url="ext-prod-live.trade.tt"
+    else
+        echo "unknown environment $env"
+        return
+    fi
+
+    url="https://pds-$url/api/1/instruments/$iid"
+    google-chrome $url
+}
+
+function get_adapter_conf {
+    scp "$1:/etc/debesys/mds_adapter_*.conf" /tmp/
+}
+
+function pullcap {
+    link=$1
+    file=$(basename $link)
+
+    wget -nc -P /tmp $link
+    unzip -j -d ~/dev-root/captures /tmp/$file
 }

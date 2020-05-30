@@ -3,13 +3,11 @@ call plug#begin('~/.vim/plugged')
 " baseline nice things
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'w0rp/ale'
-Plug 'neomake/neomake'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'airblade/vim-gitgutter'
-" Plug 'xolox/vim-misc'
 
 " finding stuff
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -20,19 +18,21 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
 
 " langauge specific
-Plug 'fatih/vim-go'
 Plug 'elzr/vim-json'
+Plug 'fatih/vim-go'
 Plug 'rhysd/vim-clang-format'
+Plug 'rust-lang/rust.vim'
 Plug 'zah/nim.vim'
 
 " shenanigans
 Plug 'triglav/vim-visual-increment'
+
 call plug#end()
 
 set rtp+=~/.fzf
 set shell=/bin/bash
 
-" set number
+set number
 set bg=dark
 if has('nvim')
     set guicursor=
@@ -85,7 +85,7 @@ augroup vimrc
     autocmd Filetype      cpp   let b:commentary_format = '// %s'
     " TODO.  weird paranoid cpp-only trimming. The random filetype actually has significant
     " trailing whitespace so be a wuss for now.
-    autocmd BufWritePre *.cpp,*.h,*.inl,*.md,*.py,*.rb  :call TrimTrailingWhitespace()
+    autocmd BufWritePre *.cpp,*.h,*.inl,*.md,*.py,*.rb,*.rs  :call TrimTrailingWhitespace()
 
     autocmd BufWritePre *.cpp,*.h,*.inl :%s/\s\+$//e
 
@@ -98,26 +98,8 @@ augroup vimrc
     autocmd BufReadPost * if line("'\"") | exe "'\"" | endif
 augroup END
 
+let g:ale_linters = {'python': ['pyflakes']}
 let g:ale_cpp_gcc_options = '-std=c++14 -Wall'
-let g:ale_open_list = 0
-" debesys env is annoying, revisit
-let g:ale_enabled = 0
-
-let g:neomake_logfile = '/tmp/neomake.log'
-let g:neomake_open_list = 2
-call neomake#configure#automake('w')
-
-function! MyOnNeomakeJobFinished() abort
-    let context = g:neomake_hook_context
-    echom printf('maker %s complete rc=%i',
-                \ context.jobinfo.maker.name, context.jobinfo.exit_code)
-endfunction
-augroup my_neomake_hooks
-    au!
-    autocmd User NeomakeJobFinished call MyOnNeomakeJobFinished()
-augroup END
-
-let g:neomake_cpp_enabled_makers = []
 
 silent! mkdir ~/.vim/undodir > /dev/null 2>&1
 set undofile
@@ -134,32 +116,24 @@ let g:go_version_warning = 0
 
 let g:vim_json_syntax_conceal = 0
 
-set history=1000
+set history=10000
 set clipboard=unnamedplus
 set go+=a
-set shortmess=atI
+set shortmess=actI
 
 set ignorecase
 set smartcase
 set incsearch
 set hlsearch
-" set scrolljump=-50
 
-  "'cpoptions' flags: |cpo-_|
-  "'display' flag `msgsep` to minimize scrolling when showing messages
-  "'guicursor' works in the terminal
-  "'fillchars' flag `msgsep` (see 'display' above)
-  "'inccommand' shows interactive results for |:substitute|-like commands
-  "'scrollback'
-  "'statusline' supports unlimited alignment sections
-  "'tabline' %@Func@foo%X can call any function on mouse-click
-  "'winhighlight' window-local highlights
+set scrolloff=2
 
 set inccommand=nosplit
 
 set splitbelow
 set splitright
 set hidden
+set diffopt+=vertical
 
 set wildmenu
 set wildmode=longest:list,full
@@ -178,8 +152,8 @@ let g:netrw_liststyle=3
 let mapleader = "\<Space>"
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<cr>
 nnoremap <leader>g :grep! 
-nnoremap <leader>q :bp\|bd \#<cr>
-nnoremap <leader><space> :noh<cr>
+nnoremap <leader>q :bp \| bd #<cr>
+nnoremap <leader><leader> :b#<cr>
 
 if executable('rg')
   set grepprg=rg\ --vimgrep
@@ -201,7 +175,7 @@ nnoremap <leader>l :Lines<cr>
 " lame debug
 nnoremap <silent> <leader>d <esc>Oprintf("TRACE ===> %s: \n", __func__);<esc>BBi
 
-nnoremap <leader>m :silent wa!<cr> :Neomake! makeprg<cr>
+nnoremap <leader>m :make<cr>:cw<cr>
 
 nnoremap <C-Left>  :cprev<cr>
 nnoremap <C-Right> :cnext<cr>
@@ -231,4 +205,3 @@ endif
 
 nnoremap ; :
 vnoremap ; :
-
