@@ -31,5 +31,36 @@ alias drun='docker run -it --rm --network host'
 # incantation every time I needed to use it :)
 alias fuck='$EDITOR $(git diff --name-only | uniq)'
 
+# full branch name, eg release_v123/current
 alias gname='git symbolic-ref --short HEAD'
+# hash of branch tip
 alias ghash='git rev-parse HEAD'
+
+# just the release part, eg release_v123
+function grname {
+    tmp=$(gname)
+    if [[ "$tmp" == "master" ]]; then
+        echo "topic"
+        return 0
+    fi
+
+    echo $tmp | cut -f1 -d/
+}
+
+# checkout a release branch
+function gbr {
+    release=$(grname)
+    if [[ "$release" == "" ]]; then
+        echo "error: no release" >&2
+    fi
+    git checkout -b "$release/$1"
+}
+
+# rebase to tip of release
+function grebase {
+    release=$(grname)
+    if [[ $? -ne 0 ]]; then
+        echo "error: no release" >&2
+    fi
+    git rebase "$release/current"
+}
