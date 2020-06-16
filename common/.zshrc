@@ -11,9 +11,6 @@ PROMPT='%{$fg_bold[blue]%}${vcs_info_msg_0_}%{$fg_bold[green]%}%1~ %1(j.%{$fg_bo
 if [[ -n "$SSH_CLIENT" ]]; then
     PROMPT="%{$fg_bold[yellow]%}ssh@$HOST $PROMPT"
 fi
-if [[ -n "$_DOCKER" ]]; then
-    PROMPT="%{$fg_bold[yellow]%}docker $PROMPT"
-fi
 
 setopt histignorealldups
 setopt sharehistory

@@ -179,7 +179,6 @@ function _knife_flat_search {
     env="$3"
 
     rl_filter=$(_make_rl_filter "$rl" )
-    echo $rl_filter
 
     $cmd search "$rl_filter AND chef_environment:*$env*" -a name | grep "name:" | awk '{printf "%s ", $2}'
 }
