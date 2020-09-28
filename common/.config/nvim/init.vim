@@ -99,7 +99,8 @@ augroup vimrc
 augroup END
 
 let g:ale_linters = {'python': ['pyflakes']}
-let g:ale_cpp_gcc_options = '-std=c++14 -Wall'
+let g:ale_cpp_cc_executable = 'clang++-9'
+let g:ale_cpp_gcc_options = '-std=c++17 -Wall'
 
 silent! mkdir ~/.vim/undodir > /dev/null 2>&1
 set undofile
@@ -171,6 +172,7 @@ nnoremap <silent> <C-p> :FZF<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>f :FZF<cr>
 nnoremap <leader>l :Lines<cr>
+nnoremap <leader>r :Rg<cr>
 
 " lame debug
 nnoremap <silent> <leader>d <esc>Oprintf("TRACE ===> %s: \n", __func__);<esc>BBi
@@ -184,9 +186,9 @@ nnoremap <C-Down>  :cclose<cr>:lclose<cr>
 
 " Vimux
 let g:VimuxUseNearest = 1
-map <silent> <leader>r :wa<cr> :VimuxPromptCommand<cr>
-map <silent> <leader>l :wa<cr> :VimuxClearRunnerHistory<cr> :VimuxRunLastCommand<cr>
-map <silent> <leader>i :VimuxInspectRunner<cr>
+map <silent> <leader>vr :wa<cr> :VimuxPromptCommand<cr>
+map <silent> <leader>vl :wa<cr> :VimuxClearRunnerHistory<cr> :VimuxRunLastCommand<cr>
+map <silent> <leader>vi :VimuxInspectRunner<cr>
 " map <silent> <leader>vk :VimuxInterruptRunner<cr>
 
 " map <silent> <LocalLeader>vx :wa<cr> :VimuxClosePanes<cr>
@@ -202,6 +204,17 @@ if has('nvim')
     tnoremap <A-k> <C-\><C-N><C-w>k
     tnoremap <A-l> <C-\><C-N><C-w>l
 endif
+
+" lame node migrate thing
+function FlipNode()
+    " grab the exchange name
+    call search('mds_adapter_', 'e')
+    normal l"eyw
+    " smash the old-style runlist entries to the new ones
+    execute "%s/mds_price_server::/mds_adapter_" . @e . "::price_server_"
+    execute "%s/mds_ppiq::/mds_adapter_" . @e . "::ppiq"
+    execute 'wq'
+endfunction
 
 nnoremap ; :
 vnoremap ; :

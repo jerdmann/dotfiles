@@ -2,6 +2,7 @@ darwin/cpp/build.mk
 fixit/compiler/build.mk
 mds/consumer/cloud_uploader/build.mk
 mds/consumer/event_logger/build.mk
+mds/consumer/mds_mem/build.mk
 mds/consumer/ppiq_server_engine/build.mk
 mds/consumer/price_server_engine/build.mk
 mds/exchange_adapter/athex/build.mk
@@ -17,6 +18,7 @@ mds/exchange_adapter/jump_trading/build.mk
 mds/exchange_adapter/meff/build.mk
 mds/exchange_adapter/mexder/build.mk
 mds/market_data_server/build.mk
+mds/mcast_proxy/build.mk
 mds/replay_driver/build.mk
 mds/targets.build.mk
 mds/test/fw/build.mk

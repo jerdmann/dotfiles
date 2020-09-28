@@ -64,8 +64,8 @@ function wsdisable {
     popd
 }
 
-fin()  { grep --line-buffered -Pi "$1"; }  # Filter In
-fout() { grep --line-buffered -v -Pi "$1"; }  # Filter Out
+fin()  { grep --line-buffered --color=always "$@"; }  # Filter In
+fout() { grep --line-buffered -v "$@"; }  # Filter Out
 
 # Highlight matching regex in file or pipe
 function hly {  # yellow

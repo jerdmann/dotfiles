@@ -14,6 +14,7 @@ RUN yum install -y --nogpgcheck \
         gdb \
         git \
         glibc-devel \
+        htop \
         iproute \
         libevent-devel \
         libstdc++-devel \
@@ -25,12 +26,14 @@ RUN yum install -y --nogpgcheck \
         # debesys builds. Just live without it for now. \
         # openldap-devel \
         openssh-server \
+        procps-ng \
         python3 \
         python3-pip \
         ruby \
         rubygem-erubis \
         stow \
         sudo \
+        sysvinit-tools \
         tcpdump \
         wget \
         xclip \

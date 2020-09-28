@@ -36,6 +36,9 @@ alias gname='git symbolic-ref --short HEAD'
 # hash of branch tip
 alias ghash='git rev-parse HEAD'
 
+# rg is now muscle memory
+# command rg >/dev/null 2>&1 || alias rg="grep -ri"
+
 # just the release part, eg release_v123
 function grname {
     tmp=$(gname)

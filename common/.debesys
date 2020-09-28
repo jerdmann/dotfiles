@@ -100,6 +100,7 @@ alias eke='eknife node edit'
 alias eksh='eknife node show'
 
 filter_genpop="NOT run_list:*ps_server\:\:loopback* NOT run_list:*depth_coll*"
+filter_irelease="NOT tags:*irelease*"
 
 # has to be a better way to do this.  hilarious noop filter for now
 filter_none="NOT chef_environment:*fffffff*"
@@ -135,6 +136,10 @@ function kpdsu {
 
 function ekpdsu {
     _knife_search external_knife_ "$filter_none" "pds_uploader_$1" "$2"
+}
+
+function ksedge {
+    _knife_search knife "$filter_irelease" "edgeserver" "$1"
 }
 
 # split up a runlist (rl) filter param like:
@@ -181,6 +186,10 @@ function _knife_flat_search {
     rl_filter=$(_make_rl_filter "$rl" )
 
     $cmd search "$rl_filter AND chef_environment:*$env*" -a name | grep "name:" | awk '{printf "%s ", $2}'
+}
+
+function ekjuno {
+    eknife search "juno_up_market-ids:*_$1* AND chef_environment:ext-prod-live" -a ipaddress
 }
 
 function kssh {
@@ -358,5 +367,14 @@ function pullcap {
     file=$(basename $link)
 
     wget -nc -P /tmp $link
-    unzip -j -d ~/dev-root/captures /tmp/$file
+    unzip -o -j -d ~/dev-root/captures /tmp/$file
 }
+
+function rerun {
+    app=$1
+    shift 1
+    pmake $app && ttrun $app $@
+}
+
+alias logstrip=sed 's/ \s* \| \s* \| \s* \| \s* \| \s* //'
+ # INFO | SPLUNK_IGNORE | 0010001 | 010 |  | 
