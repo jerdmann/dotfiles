@@ -19,23 +19,44 @@ if [[ "$#" -eq 0 ]]; then
 fi
 
 terse=""
-if [[ "$1" == "--terse" ]]; then
-    terse="yes"
-    shift 1
+mks_file=""
+while true; do
+    if [[ "$1" == "--terse" ]]; then
+        terse="yes"
+        shift 1
+    elif [[ "$1" == "--mks-file" ]]; then
+        mks_file="$2"
+        shift 2
+    else 
+        break
+    fi
+done
+
+# baseline params, plus gcc8 if present
+params="use_distcc=0 -C $rr -j$(nproc --ignore 1)"
+has_gcc8=""
+$(gcc --version | grep -P '8\.\d+\.\d+' >/dev/null)
+if [[ $? -eq 0 ]]; then 
+    has_gcc8="yes"
+fi
+gcc8_mkvars="$rr/mds/all_mds_gcc8.mkvars"
+
+if [[ "$has_gcc8" == "yes" && "$gcc8_mkvars" != "" ]]; then
+    params="$params var_file_name=$gcc8_mkvars"
 fi
 
 # build the mks list based on a union of what mks the user cares about and which ones are actually
 # present in the tree
-my_mks=$(for f in $(cat ~/.my_mks); do [[ -f "$rr/$f" ]] && printf "%s " $f; done)
-
-# baseline params, plus gcc8 if present
-params="use_distcc=0 -C $rr -j$(nproc --ignore 1) def_files=\"$my_mks\""
-gcc8_mkvars="$rr/mds/all_mds_gcc8.mkvars"
-[[ -f "$gcc8_mkvars" ]] && params="$params var_file_name=$gcc8_mkvars"
+if [[ "$mks_file" != "" ]]; then
+    my_mks=$(for f in $(cat "$mks_file"); do [[ -f "$rr/$f" ]] && printf "%s " $f; done)
+    params="$params def_files=\"$my_mks\""
+fi
 
 # terse mode if present
-cmd="make $params $@"
-[[ -z "$terse" ]] || cmd="$cmd | grep --line-buffered --color=never error:"
+cmd="make $params $@ 2>&1"
+if [[ "$terse" == "yes" ]]; then
+    cmd="$cmd | grep --line-buffered -v 'given more than once' | grep --line-buffered --color=never error:"
+fi
 
 # execute the command and pass through its return code
 eval $cmd

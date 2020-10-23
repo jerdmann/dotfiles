@@ -15,6 +15,7 @@ mds/exchange_adapter/fenics/build.mk
 mds/exchange_adapter/ice/build.mk
 mds/exchange_adapter/jpx/build.mk
 mds/exchange_adapter/jump_trading/build.mk
+mds/exchange_adapter/lme/build.mk
 mds/exchange_adapter/meff/build.mk
 mds/exchange_adapter/mexder/build.mk
 mds/market_data_server/build.mk
@@ -34,8 +35,8 @@ misc/timer/build.mk
 misc/ttmetrics/build.mk
 misc/webclient/build.mk
 price_server/exchange/cme/cme_lh.build.mk
-price_server/exchange/eurex/decoder/build.mk
 price_server/exchange/gdax_lh/build.mk
+price_server/exchange/lme_lh/lme_lh.build.mk
 price_server/exchange/ose_lh/itch/build.mk
 price_server/exchange/test_lh/build.mk
 price_server/pds_uploader/build.mk

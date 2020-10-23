@@ -50,6 +50,7 @@ project_dirs=(
 lbm
 mds
 misc/miscutils
+misc/ttmetrics
 price_server/ps_common
 price_server/price_client
 price_server/price_unifier
@@ -205,13 +206,11 @@ function bgf {
 }
 
 function pmake {
-    ~/build.sh $@
+    ~/build.sh --mks-file ~/.my_mks $@
 }
 
 function lmake {
-    rr || return
-    make -j$(nproc --ignore 1) use_distcc=0 $@
-    popd >/dev/null
+    ~/build.sh $@
 }
 
 function isearch {
