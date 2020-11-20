@@ -42,8 +42,6 @@ alias cb='cd `git rev-parse --show-toplevel`/deploy/chef/cookbooks'
 alias cdsbe='cd `git rev-parse --show-toplevel`/price_server/ps_common/sbe_messages'
 alias cdpro='cd `git rev-parse --show-toplevel`/the_arsenal/all_messages/source/tt/messaging'
 
-alias cdscrap='cd ~/projects/scrap'
-
 export DEVWS_SKIP_VALIDATE_REQUIREMENTS=1
 
 project_dirs=(
@@ -249,13 +247,14 @@ function lbmify {
 
 function _pdc {
     file="$1"
+    cmd="ttrun price_decoder -f $file"
     shift 1
     iid=$(basename "$file" | grep -Eo "[0-9]{8,}")
     iidfilter=""
     if [[ ! -z "$iid" ]]; then
-        price_decoder -f $file --iid $iid --dedup $@
+        eval $cmd --iid $iid --dedup $@
     else
-        price_decoder -f $file --dedup $@
+        eval $cmd --dedup $@
     fi
 }
 alias pdc=_pdc
@@ -366,7 +365,7 @@ function pullcap {
     file=$(basename $link)
 
     wget -nc -P /tmp $link
-    unzip -o -j -d ~/dev-root/captures /tmp/$file
+    unzip -o -j -d /tmp /tmp/$file
 }
 
 function rerun {

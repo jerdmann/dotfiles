@@ -89,3 +89,12 @@ function hlyf() { hly "$1=$FIELD_VALS+";}
 function hlbf() { hlb "$1=$FIELD_VALS+";}
 function hlgf() { hlg "$1=$FIELD_VALS+";}
 function hlpf() { hlp "$1=$FIELD_VALS+";}
+
+function _tmux_scrap {
+    tmux split-window -h
+    tmux send-keys 'cd ~/projects/scrap' C-m
+    tmux select-pane -L
+    tmux send-keys 'cd ~/projects/scrap' C-m
+    tmux send-keys 'v src/scrap.cpp' C-m
+}
+alias scrap=_tmux_scrap

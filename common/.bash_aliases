@@ -44,7 +44,7 @@ function grname {
     tmp=$(gname)
     if [[ "$tmp" == "master" ]]; then
         echo "topic"
-        return 0
+        return
     fi
 
     echo $tmp | cut -f1 -d/
@@ -55,6 +55,7 @@ function gbr {
     release=$(grname)
     if [[ "$release" == "" ]]; then
         echo "error: no release" >&2
+        return
     fi
     git checkout -b "$release/$1"
 }
@@ -64,6 +65,23 @@ function grebase {
     release=$(grname)
     if [[ $? -ne 0 ]]; then
         echo "error: no release" >&2
+        return
     fi
     git rebase "$release/current"
+}
+
+function gbump {
+    python -c '
+import sys, re, subprocess
+r = re.search(r"(\S+)\.v(\d+)", sys.stdin.read())
+if not r:
+    sys.stderr.write("error: branch missing .v[number]")
+    sys.exit(-1)
+
+base = r.group(1)
+tag = int(r.group(2)) + 1
+
+branch = "{}.v{}".format(r.group(1), int(r.group(2)) + 1)
+subprocess.check_call("git checkout -b {}".format(branch).split())
+' < <(gname)
 }

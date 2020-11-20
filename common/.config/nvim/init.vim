@@ -1,7 +1,7 @@
 call plug#begin('~/.vim/plugged')
 
 " baseline nice things
-Plug 'rafi/awesome-vim-colorschemes'
+Plug 'gruvbox-community/gruvbox'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
@@ -163,7 +163,7 @@ else
   set grepformat=%f:%l:%m,%m\ %f\ match%ts,%f
 endif
 
-nnoremap K :grep! <cword><cr>:botright cw<cr> 
+nnoremap K :grep! <cword><cr>:vert copen 80<cr> 
 nnoremap Q <nop>
 nnoremap Y y$
 
@@ -171,13 +171,15 @@ nnoremap Y y$
 nnoremap <silent> <C-p> :FZF<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>f :FZF<cr>
-nnoremap <leader>l :Lines<cr>
-nnoremap <leader>r :Rg<cr>
+nnoremap <leader>t :Tags<cr>
+nnoremap <leader>w :w<cr>
+nnoremap <leader>fl :Lines<cr>
+nnoremap <leader>fr :Rg<cr>
 
 " lame debug
 nnoremap <silent> <leader>d <esc>Oprintf("TRACE ===> %s: \n", __func__);<esc>BBi
 
-nnoremap <leader>m :make<cr>:cw<cr>
+nnoremap <leader>m :make<cr>:botright cw<cr>
 
 nnoremap <C-Left>  :cprev<cr>
 nnoremap <C-Right> :cnext<cr>
@@ -186,9 +188,9 @@ nnoremap <C-Down>  :cclose<cr>:lclose<cr>
 
 " Vimux
 let g:VimuxUseNearest = 1
-map <silent> <leader>vr :wa<cr> :VimuxPromptCommand<cr>
-map <silent> <leader>vl :wa<cr> :VimuxClearRunnerHistory<cr> :VimuxRunLastCommand<cr>
-map <silent> <leader>vi :VimuxInspectRunner<cr>
+map <silent> <leader>r :wa<cr> :VimuxPromptCommand<cr>
+map <silent> <leader>l :wa<cr> :VimuxClearRunnerHistory<cr> :VimuxRunLastCommand<cr>
+map <silent> <leader>i :VimuxInspectRunner<cr>
 " map <silent> <leader>vk :VimuxInterruptRunner<cr>
 
 " map <silent> <LocalLeader>vx :wa<cr> :VimuxClosePanes<cr>
