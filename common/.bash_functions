@@ -96,5 +96,6 @@ function _tmux_scrap {
     tmux select-pane -L
     tmux send-keys 'cd ~/projects/scrap' C-m
     tmux send-keys 'v src/scrap.cpp' C-m
+    tmux rename-window scrap
 }
 alias scrap=_tmux_scrap

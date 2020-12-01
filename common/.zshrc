@@ -34,6 +34,16 @@ HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=~/.zsh_history
 
+setopt auto_cd
+CDPATH=""
+for n in one two three; do
+    dev="/home/jason/dev-root"
+    CDPATH="$CDPATH:$dev/debesys-$n/mds/exchange_adapter"
+    CDPATH="$CDPATH:$dev/debesys-$n/mds/consumer"
+done
+# remove the first colon
+export CDPATH=$(echo $CDPATH | sed 's/://')
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
 

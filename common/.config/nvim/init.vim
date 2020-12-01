@@ -1,33 +1,39 @@
-call plug#begin('~/.vim/plugged')
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+    sh -c 'curl -fLo "~/.local/share"/nvim/site/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+endif
 
-" baseline nice things
-Plug 'gruvbox-community/gruvbox'
-Plug 'w0rp/ale'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-unimpaired'
-Plug 'airblade/vim-gitgutter'
+if filereadable(expand('~/.local/share/nvim/site/autoload/plug.vim'))
+    call plug#begin('~/.vim/plugged')
 
-" finding stuff
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+    " baseline nice things
+    Plug 'airblade/vim-gitgutter'
+    Plug 'gruvbox-community/gruvbox'
+    Plug 'tpope/vim-abolish'
+    Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-unimpaired'
+    Plug 'w0rp/ale'
 
-" tmux
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'benmills/vimux'
+    " finding stuff
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
 
-" langauge specific
-Plug 'elzr/vim-json'
-Plug 'fatih/vim-go'
-Plug 'rhysd/vim-clang-format'
-Plug 'rust-lang/rust.vim'
-Plug 'zah/nim.vim'
+    " tmux
+    Plug 'benmills/vimux'
+    Plug 'christoomey/vim-tmux-navigator'
 
-" shenanigans
-Plug 'triglav/vim-visual-increment'
+    " langauge specific
+    Plug 'elzr/vim-json'
+    Plug 'fatih/vim-go'
+    Plug 'rhysd/vim-clang-format'
+    Plug 'rust-lang/rust.vim'
 
-call plug#end()
+    " shenanigans
+    Plug 'triglav/vim-visual-increment'
+
+    call plug#end()
+endif
 
 set rtp+=~/.fzf
 set shell=/bin/bash
@@ -54,7 +60,7 @@ set softtabstop=4
 set expandtab
 set tags=tags;
 
-set tw=100
+set tw=80
 set formatoptions-=t
 set mouse=a
 
@@ -140,11 +146,6 @@ set wildmenu
 set wildmode=longest:list,full
 set wildignore=*.swp,*.pyc
 
-set guioptions-=m
-set guioptions-=T
-set guioptions-=r
-set guioptions-=L
-
 set pastetoggle=<F2>
 
 let g:netrw_banner = 0
@@ -163,7 +164,7 @@ else
   set grepformat=%f:%l:%m,%m\ %f\ match%ts,%f
 endif
 
-nnoremap K :grep! <cword><cr>:vert copen 80<cr> 
+nnoremap K :grep! -w <cword><cr>:vert copen 80<cr> 
 nnoremap Q <nop>
 nnoremap Y y$
 
