@@ -19,6 +19,7 @@ fi
 setopt histignorealldups
 setopt sharehistory
 setopt promptsubst
+setopt aliases
 
 # how on earth is this not the default
 unsetopt equals

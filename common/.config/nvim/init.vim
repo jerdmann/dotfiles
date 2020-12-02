@@ -44,6 +44,7 @@ if has('nvim')
     set guicursor=
 endif
 colo gruvbox
+hi Normal guibg=NONE ctermbg=NONE
 
 "regrettably living in a world with heaps of legacy code.  revisit
 "let g:clang_format#auto_format = 1

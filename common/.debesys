@@ -44,7 +44,6 @@ function _cb {
 
     dest="$cbr/mds_adapter_$1"
     [[ -d "$cbr/mds_adapter_$1" ]] || dest="$cbr"
-    echo hello there
     pushd "$dest" >/dev/null
 }
 alias cb=_cb
@@ -225,11 +224,11 @@ function bgf {
     knife tag create $1 basegofast
 }
 
-function pmake {
+function mk {
     ~/build.sh --mks-file ~/.my_mks $@
 }
 
-function lmake {
+function lmk {
     ~/build.sh $@
 }
 
@@ -397,5 +396,5 @@ function rerun {
     pmake $app && ttrun $app $@
 }
 
-alias logstrip=sed 's/ \s* \| \s* \| \s* \| \s* \| \s* //'
+alias logstrip='sed "s/ \s* \| \s* \| \s* \| \s* \| \s* //"'
  # INFO | SPLUNK_IGNORE | 0010001 | 010 |  | 

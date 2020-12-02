@@ -28,7 +28,7 @@ HISTFILESIZE=2000
 
 
 # set prompt
-source ~/.git-prompt.sh
+[[ -r ~/.git-prompt.sh ]] && source ~/.git-prompt.sh
 red="\[\e[1;31m\]"
 green="\[\e[1;32m\]"
 yellow="\[\e[1;33m\]"
@@ -105,5 +105,3 @@ test -r ~/.keys && source ~/.keys
 test -r ~/.workstation && source ~/.workstation
 test -r ~/.debesys && source ~/.debesys
 test -r ~/.vpn && source ~/.vpn
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash

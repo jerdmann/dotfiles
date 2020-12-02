@@ -34,36 +34,6 @@ function servethis {
     python -m SimpleHTTPServer 8000
 }
 
-export WIRESHARK_DIR='/usr/lib/x86_64-linux-gnu/wireshark/plugins/1.12.1'
-alias cdws='cd $WIRESHARK_DIR'
-
-function wsenable {
-    if [[ -z "$1" ]]; then
-        printf "arg needed\n"
-        return
-    fi
-    pushd $WIRESHARK_DIR
-    rm enabled.lua 2>/dev/null || :
-
-    plugins=$(ls *$1*.lua* 2>/dev/null)
-    if [[ -z "$plugins" ]]; then
-        printf "no matches\n"
-        popd
-        return
-    fi
-
-    plugin=$(echo $plugins | head -n1)
-    printf "enabling %s\n" $plugin
-    ln -sf $plugin enabled.lua
-    popd
-}
-    
-function wsdisable {
-    pushd $WIRESHARK_DIR
-    rm enabled.lua || :
-    popd
-}
-
 fin()  { grep --line-buffered --color=always "$@"; }  # Filter In
 fout() { grep --line-buffered -v "$@"; }  # Filter Out
 
