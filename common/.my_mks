@@ -39,6 +39,7 @@ price_server/exchange/gdax_lh/build.mk
 price_server/exchange/lme_lh/lme_lh.build.mk
 price_server/exchange/ose_lh/itch/build.mk
 price_server/exchange/test_lh/build.mk
+price_server/exchange/unit-test_lh/unit_test_lh.build.mk
 price_server/pds_uploader/build.mk
 price_server/pds_uploader/uploader_service/build.mk
 price_server/price_client/build.mk
@@ -58,5 +59,7 @@ price_server/targets.build.mk
 price_server/test/build.mk
 price_server/test/fw/build.mk
 price_server/utils/pulse/build.mk
+price_server/py_price_client/build.mk
+price_server/py_price_unifier/build.mk
 the_arsenal/all_messages/build.mk
 the_arsenal/pycommon/build.mk

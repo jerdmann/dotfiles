@@ -18,8 +18,13 @@ if [[ "$#" -eq 0 ]]; then
     exit -1
 fi
 
+# non-terse by default
 terse=""
-mks_file=""
+# my mks list by default
+mks_file="/home/jason/.my_mks"
+# no rebuilding all_messages by default
+proto="proto_files=\"\""
+
 while true; do
     if [[ "$1" == "--terse" ]]; then
         terse="yes"
@@ -27,6 +32,9 @@ while true; do
     elif [[ "$1" == "--mks-file" ]]; then
         mks_file="$2"
         shift 2
+    elif [[ "$1" == "--proto" ]]; then
+        proto=""
+        shift 1
     else 
         break
     fi
@@ -34,6 +42,7 @@ done
 
 # baseline params, plus gcc8 if present
 params="use_distcc=0 -C $rr -j$(nproc --ignore 1)"
+
 has_gcc8=""
 $(gcc --version | grep -P '8\.\d+\.\d+' >/dev/null)
 if [[ $? -eq 0 ]]; then 
@@ -43,6 +52,10 @@ gcc8_mkvars="$rr/mds/all_mds_gcc8.mkvars"
 
 if [[ "$has_gcc8" == "yes" && "$gcc8_mkvars" != "" ]]; then
     params="$params var_file_name=$gcc8_mkvars"
+fi
+
+if [[ "$proto" != "" ]]; then
+    params="$params $proto"
 fi
 
 # build the mks list based on a union of what mks the user cares about and which ones are actually

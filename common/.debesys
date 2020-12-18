@@ -229,7 +229,7 @@ function mk {
 }
 
 function lmk {
-    ~/build.sh $@
+    ~/build.sh --mks-file "" --proto $@
 }
 
 function isearch {
@@ -264,7 +264,7 @@ function lbmify {
     done
 }
 
-function _pdc {
+function _pdci {
     file="$1"
     cmd="ttrun price_decoder -f $file"
     shift 1
@@ -276,7 +276,8 @@ function _pdc {
         eval $cmd --dedup $@
     fi
 }
-alias pdc=_pdc
+alias pdci=_pdci
+alias pdc="sudo ./run price_decoder"
 
 function cbdevup {
     for cb in $@; do
