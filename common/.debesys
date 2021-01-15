@@ -213,11 +213,11 @@ function ekjuno {
 }
 
 function kssh {
-    knife ssh -a ipaddress "$1" "$2"
+    knife ssh --no-host-key-verify -a ipaddress "$1" "$2"
 }
 
 function ekssh {
-    eknife ssh -a ipaddress "$1" "$2"
+    eknife ssh --no-host-key-verify -a ipaddress "$1" "$2"
 }
 
 function bgf {
@@ -225,11 +225,11 @@ function bgf {
 }
 
 function mk {
-    ~/build.sh --mks-file ~/.my_mks $@
+    ~/build.sh --mks-file ~/.my_mks --no-proto $@
 }
 
 function lmk {
-    ~/build.sh --mks-file "" --proto $@
+    ~/build.sh --mks-file "" $@
 }
 
 function isearch {
@@ -350,6 +350,19 @@ function ttw {
 
     url="https://$url/$baseenv/home?esHost=$eshost-edge-$fullenv.debesys.net"
     google-chrome $url
+}
+
+function edge {
+    env="$1"
+    query="run_list:*edgeserver* AND chef_environment:*$env*"
+    query+=" NOT chef_environment:*delayed* NOT extract_package_overrides_edgeserver_config:irelease" 
+    host=$(knife search "$query" -a name 2>/dev/null | grep name: | awk '{ print $2 }' | head -n 1)
+    if [[ "$host" == "" ]]; then
+        echo "error: no host found"
+        return
+    fi
+
+    ttw $env $host
 }
 
 function pdsi {

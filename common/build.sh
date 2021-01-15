@@ -20,10 +20,10 @@ fi
 
 # non-terse by default
 terse=""
-# my mks list by default
-mks_file="/home/jason/.my_mks"
-# no rebuilding all_messages by default
-proto="proto_files=\"\""
+# no mks list by default
+mks_file=""
+# rebuild all_messages by default
+proto=""
 
 while true; do
     if [[ "$1" == "--terse" ]]; then
@@ -32,8 +32,8 @@ while true; do
     elif [[ "$1" == "--mks-file" ]]; then
         mks_file="$2"
         shift 2
-    elif [[ "$1" == "--proto" ]]; then
-        proto=""
+    elif [[ "$1" == "--no-proto" ]]; then
+        proto="proto_files=\"\""
         shift 1
     else 
         break

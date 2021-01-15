@@ -1,5 +1,7 @@
 darwin/cpp/build.mk
 fixit/compiler/build.mk
+fixit/cpp/build.mk
+fixit/targets.build.mk
 mds/consumer/cloud_uploader/build.mk
 mds/consumer/event_logger/build.mk
 mds/consumer/mds_mem/build.mk
@@ -40,6 +42,8 @@ price_server/exchange/lme_lh/lme_lh.build.mk
 price_server/exchange/ose_lh/itch/build.mk
 price_server/exchange/test_lh/build.mk
 price_server/exchange/unit-test_lh/unit_test_lh.build.mk
+price_server/lbm_connect/build.mk
+price_server/lbm_price_listener/build.mk
 price_server/pds_uploader/build.mk
 price_server/pds_uploader/uploader_service/build.mk
 price_server/price_client/build.mk
@@ -55,11 +59,11 @@ price_server/ps_common/connector/build.mk
 price_server/ps_common/msg_converter/build.mk
 price_server/ps_common/sub_mgr/build.mk
 price_server/psadmin/build.mk
+price_server/py_price_client/build.mk
+price_server/py_price_unifier/build.mk
 price_server/targets.build.mk
 price_server/test/build.mk
 price_server/test/fw/build.mk
 price_server/utils/pulse/build.mk
-price_server/py_price_client/build.mk
-price_server/py_price_unifier/build.mk
 the_arsenal/all_messages/build.mk
 the_arsenal/pycommon/build.mk
