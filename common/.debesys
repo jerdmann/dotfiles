@@ -120,7 +120,7 @@ alias eke='eknife node edit'
 alias eksh='eknife node show'
 
 filter_genpop="NOT run_list:*ps_server\:\:loopback* NOT run_list:*depth_coll*"
-filter_irelease="NOT tags:*irelease*"
+filter_irelease="NOT extract_package_overrides_edgeserver_config:irelease"
 
 # has to be a better way to do this.  hilarious noop filter for now
 filter_none="NOT chef_environment:*fffffff*"
@@ -266,7 +266,7 @@ function lbmify {
 
 function _pdci {
     file="$1"
-    cmd="ttrun price_decoder -f $file"
+    cmd="ttrun price_decoder --dedup -f $file"
     shift 1
     iid=$(basename "$file" | grep -Eo "[0-9]{8,}")
     iidfilter=""

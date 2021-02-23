@@ -91,6 +91,7 @@ export GCC_COLORS="error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 
 export GOPATH="/home/jason/gocode"
 export PATH=~/.cargo/bin:/usr/local/go/bin:/opt/jdk/bin:/opt/nim-1.0.0/bin:$GOPATH/bin:~/node/bin:$PATH
+export PATH=~/projects/python:$PATH
 export JDK8_BIN=/opt/jdk/bin/java
 
 export RIPGREP_CONFIG_PATH=~/.rgrc

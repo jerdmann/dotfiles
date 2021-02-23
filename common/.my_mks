@@ -5,6 +5,7 @@ fixit/targets.build.mk
 mds/consumer/cloud_uploader/build.mk
 mds/consumer/event_logger/build.mk
 mds/consumer/mds_mem/build.mk
+mds/consumer/pdsu_engine/build.mk
 mds/consumer/ppiq_server_engine/build.mk
 mds/consumer/price_server_engine/build.mk
 mds/exchange_adapter/athex/build.mk
@@ -13,6 +14,7 @@ mds/exchange_adapter/cfe/build.mk
 mds/exchange_adapter/cme/build.mk
 mds/exchange_adapter/demo/build.mk
 mds/exchange_adapter/deribit/build.mk
+mds/exchange_adapter/eurex/build.mk
 mds/exchange_adapter/fenics/build.mk
 mds/exchange_adapter/ice/build.mk
 mds/exchange_adapter/jpx/build.mk

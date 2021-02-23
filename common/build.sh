@@ -41,7 +41,7 @@ while true; do
 done
 
 # baseline params, plus gcc8 if present
-params="use_distcc=0 -C $rr -j$(nproc --ignore 1)"
+params="use_distcc=0 -C $rr -j$(nproc --ignore 2)"
 
 has_gcc8=""
 $(gcc --version | grep -P '8\.\d+\.\d+' >/dev/null)
