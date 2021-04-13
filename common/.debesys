@@ -1,17 +1,7 @@
 # vim: set ft=sh
 #
-export INTAD_USER=jerdmann
-
 export LIBRARY_PATH="/usr/lib/x86_64-linux-gnu"
 export LD_LIBRARY_PATH="/usr/local/lib"
-
-export AWS_DEFAULT_REGION='us-east-1'
-export JENKINS_USER='jerdmann'
-export TT_EMAIL='jason.erdmann@tradingtechnologies.com'
-export TTDIAG_USER_ID='271'
-
-# ec2 manager name
-export MGR="jerdmann"
 
 export DEVWS_REPO="/home/jason/dev-root/debesys-one"
 
@@ -113,7 +103,6 @@ function external_knife_() {
 }
 alias eknife='external_knife_'
 
-alias ksj='knife search "tags:jerdmann*"'
 alias ke='knife node edit'
 alias ksh='knife node show'
 alias eke='eknife node edit'
@@ -238,10 +227,16 @@ function isearch {
     popd >/dev/null
 }
 
-export MY_PRICE_TARGETS="price_server test_lh price_client_test price_unifier_test price_decoder"
-function ptmake {
+export MY_TARGETS="mds demo_adapter price_server_engine price_unifier_test price_decoder"
+function mkmds {
     rr || return
-    ~/build.sh $MY_PRICE_TARGETS
+    ~/build.sh --mks-file "" $MY_TARGETS
+    popd >/dev/null
+}
+
+function imkmds {
+    rr || return
+    ~/build.sh --idebug --mks-file "" $MY_TARGETS
     popd >/dev/null
 }
 
@@ -412,3 +407,7 @@ function rerun {
 
 alias logstrip='sed "s/ \s* \| \s* \| \s* \| \s* \| \s* //"'
  # INFO | SPLUNK_IGNORE | 0010001 | 010 |  | 
+
+function nid {
+    ~/projects/nid.rb $1
+}

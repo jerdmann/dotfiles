@@ -9,6 +9,7 @@ mds/consumer/pdsu_engine/build.mk
 mds/consumer/ppiq_server_engine/build.mk
 mds/consumer/price_server_engine/build.mk
 mds/exchange_adapter/athex/build.mk
+mds/exchange_adapter/b3/build.mk
 mds/exchange_adapter/bist/build.mk
 mds/exchange_adapter/cfe/build.mk
 mds/exchange_adapter/cme/build.mk

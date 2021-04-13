@@ -1,7 +1,5 @@
 FROM centos:7.4.1708
 
-MAINTAINER "Jason Erdmann" <jerdmann83@gmail.com>
-
 RUN yum install -y --nogpgcheck \
         https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
