@@ -44,6 +44,7 @@ for n in one two three; do
 done
 # remove the first colon
 export CDPATH=$(echo $CDPATH | sed 's/://')
+CDPATH="/home/jason/projects:$CDPATH"
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"

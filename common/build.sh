@@ -25,6 +25,7 @@ mks_file=""
 # rebuild all_messages by default
 proto=""
 config="debug"
+cache=""
 
 while true; do
     if [[ "$1" == "--terse" ]]; then
@@ -39,13 +40,16 @@ while true; do
     elif [[ "$1" == "--idebug" ]]; then
         config="idebug"
         shift 1
+    elif [[ "$1" == "--use-cache" ]]; then
+        cache="use_cache=1"
+        shift 1
     else 
         break
     fi
 done
 
 # baseline params, plus gcc8 if present
-params="config=$config use_distcc=0 -C $rr -j$(nproc --ignore 2)"
+params="config=$config use_distcc=0 $cache -C $rr -j$(nproc --ignore 2)"
 
 has_gcc8=""
 $(gcc --version | grep -P '8\.\d+\.\d+' >/dev/null)

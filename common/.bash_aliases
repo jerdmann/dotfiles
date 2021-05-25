@@ -2,6 +2,8 @@
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias xsel='xsel -b'
+alias xclip='xclip -sel clip'
 
 alias sb='source ~/.bashrc'
 alias eb='$EDITOR ~/.bashrc'
@@ -38,6 +40,7 @@ alias ghash='git rev-parse HEAD'
 
 # rg is now muscle memory
 # command rg >/dev/null 2>&1 || alias rg="grep -ri"
+alias mkrg='rg -g \*.mk'
 
 # just the release part, eg release_v123
 function grname {

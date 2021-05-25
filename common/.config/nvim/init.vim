@@ -19,9 +19,6 @@ if filereadable(expand('~/.local/share/nvim/site/autoload/plug.vim'))
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
 
-    " tmux
-    Plug 'christoomey/vim-tmux-navigator'
-
     " langauge specific
     Plug 'elzr/vim-json'
     Plug 'fatih/vim-go'
@@ -44,7 +41,6 @@ if has('nvim')
 endif
 colo gruvbox
 hi Normal guibg=NONE ctermbg=NONE
-
 "regrettably living in a world with heaps of legacy code.  revisit
 "let g:clang_format#auto_format = 1
 "let g:clang_format#auto_formatexpr = 1
@@ -93,12 +89,12 @@ augroup vimrc
     " trailing whitespace so be a wuss for now.
     autocmd BufWritePre *.cpp,*.h,*.inl,*.md,*.py,*.rb,*.rs  :call TrimTrailingWhitespace()
 
-    autocmd BufWritePre *.cpp,*.h,*.inl :%s/\s\+$//e
-
     autocmd BufWritePost ~/.config/nvim/init.vim source ~/.config/nvim/init.vim 
 
-    autocmd QuickFixCmdPre build.sh RepoRoot()
+    " autocmd QuickFixCmdPre build.sh RepoRoot()
+    " autocmd QuickFixCmdPost [^l]* cwindow
     autocmd QuickFixCmdPost [^l]* cwindow
+    autocmd QuickFixCmdPost l* lwindow
 
     " When editing a file, always jump to the last cursor position
     autocmd BufReadPost * if line("'\"") | exe "'\"" | endif
@@ -107,10 +103,6 @@ augroup END
 let g:ale_linters = {'python': ['pyflakes']}
 let g:ale_cpp_cc_executable = 'clang++-9'
 let g:ale_cpp_gcc_options = '-std=c++17 -Wall'
-
-silent! mkdir ~/.vim/undodir > /dev/null 2>&1
-set undofile
-set undodir=~/.vim/undodir
 
 let g:go_fmt_fail_silently = 0
 let g:go_autodetect_gopath = 1
@@ -122,6 +114,10 @@ let g:go_highlight_operators = 0
 let g:go_version_warning = 0
 
 let g:vim_json_syntax_conceal = 0
+
+silent! mkdir ~/.vim/undodir > /dev/null 2>&1
+set undofile
+set undodir=~/.vim/undodir
 
 set history=10000
 set clipboard=unnamedplus
@@ -137,8 +133,8 @@ set scrolloff=2
 
 set inccommand=nosplit
 
-set splitbelow
-set splitright
+" set splitbelow
+" set splitright
 set hidden
 set diffopt+=vertical
 
@@ -148,12 +144,9 @@ set wildignore=*.swp,*.pyc
 
 set pastetoggle=<F2>
 
-let g:netrw_banner = 0
-let g:netrw_liststyle=3
-
 let mapleader = "\<Space>"
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<cr>
-nnoremap <leader>g :grep! 
+nnoremap <leader>g :silent grep! 
 nnoremap <leader>q :bp \| bd #<cr>
 nnoremap <leader><leader> :b#<cr>
 
@@ -164,14 +157,13 @@ else
   set grepformat=%f:%l:%m,%m\ %f\ match%ts,%f
 endif
 
-nnoremap K :grep! -w <cword><cr>
+nnoremap K :silent grep! -w <cword><cr>
 nnoremap Q <nop>
 nnoremap Y y$
 
 " FZF is life changing
 nnoremap <silent> <C-p> :FZF<cr>
 nnoremap <leader>b :Buffers<cr>
-nnoremap <leader>f :FZF<cr>
 nnoremap <leader>t :Tags<cr>
 nnoremap <leader>w :w<cr>
 nnoremap <leader>fl :Lines<cr>
@@ -182,33 +174,13 @@ nnoremap <silent> <leader>d <esc>Oprintf("TRACE ===> %s: \n", __func__);<esc>BBi
 
 nnoremap <leader>m :make<cr>:botright cw<cr>
 
-nnoremap <C-Left>  :cprev<cr>
-nnoremap <C-Right> :cnext<cr>
-nnoremap <C-Up>    :botr cwin<cr>
-nnoremap <C-Down>  :cclose<cr>:lclose<cr>
+nnoremap <leader>j :cnext<cr>
+nnoremap <leader>k :cprev<cr>
 
-" Vimux
-" let g:VimuxUseNearest = 1
-" map <silent> <leader>r :wa<cr> :VimuxPromptCommand<cr>
-" map <silent> <leader>l :wa<cr> :VimuxClearRunnerHistory<cr> :VimuxRunLastCommand<cr>
-" map <silent> <leader>i :VimuxInspectRunner<cr>
-" map <silent> <leader>vk :VimuxInterruptRunner<cr>
-
-" map <silent> <LocalLeader>vx :wa<cr> :VimuxClosePanes<cr>
-" vmap <silent> <LocalLeader>vs "vy :call VimuxRunCommand(@v)<cr>
-" nmap <silent> <LocalLeader>vs vip<LocalLeader>vs<cr>
+noremap <leader>p :read !xsel --clip --output<cr>
+noremap <leader>c :w !xsel -ib<cr><cr>
 
 map <silent> <leader>l :wa<cr> :silent !tmux send-keys -Rt \! Up Enter<cr>
-
-if has('nvim')
-    tnoremap <Esc> <C-\><C-n>
-    tnoremap <Esc> <C-\><C-n>
-
-    tnoremap <A-h> <C-\><C-N><C-w>h
-    tnoremap <A-j> <C-\><C-N><C-w>j
-    tnoremap <A-k> <C-\><C-N><C-w>k
-    tnoremap <A-l> <C-\><C-N><C-w>l
-endif
 
 " lame node migrate thing
 function FlipNode()
@@ -221,5 +193,13 @@ function FlipNode()
     execute 'wq'
 endfunction
 
+vnoremap <C-h> :nohlsearch<cr>
+nnoremap <C-h> :nohlsearch<cr>
+
 nnoremap ; :
 vnoremap ; :
+
+map H ^
+map L $
+map <F1> <Esc>
+imap <F1> <Esc>

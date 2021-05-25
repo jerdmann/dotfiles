@@ -114,13 +114,16 @@ filter_irelease="NOT extract_package_overrides_edgeserver_config:irelease"
 # has to be a better way to do this.  hilarious noop filter for now
 filter_none="NOT chef_environment:*fffffff*"
 
+# basically never want delayed nodes in my results
+filter_delayed="NOT chef_environment:*delayed*"
+
 # various "nice" front-ends
 function ks {
-    _knife_search knife "$filter_none" "$@"
+    _knife_search knife "$filter_delayed" "$@"
 }
 
 function eks {
-    _knife_search external_knife_ "$filter_none" "$@"
+    _knife_search external_knife_ "$filter_delayed" "$@"
 }
 
 function kps {
@@ -193,8 +196,9 @@ function _knife_flat_search {
     env="$3"
 
     rl_filter=$(_make_rl_filter "$rl" )
+    rl_filter="$rl_filter "
 
-    $cmd search "$rl_filter AND chef_environment:*$env*" -a name | grep "name:" | awk '{printf "%s ", $2}'
+    $cmd search "$rl_filter AND chef_environment:*$env* NOT chef_environment:*delayed*" -a name | grep "name:" | awk '{printf "%s ", $2}'
 }
 
 function ekjuno {
@@ -213,12 +217,12 @@ function bgf {
     knife tag create $1 basegofast
 }
 
-function mk {
-    ~/build.sh --mks-file ~/.my_mks --no-proto $@
-}
-
 function lmk {
     ~/build.sh --mks-file "" $@
+}
+
+function mk {
+    ~/build.sh --mks-file ~/.my_mks --no-proto --use-cache $@
 }
 
 function isearch {
@@ -227,7 +231,7 @@ function isearch {
     popd >/dev/null
 }
 
-export MY_TARGETS="mds demo_adapter price_server_engine price_unifier_test price_decoder"
+export MY_TARGETS="mds demo_adapter price_server_engine"
 function mkmds {
     rr || return
     ~/build.sh --mks-file "" $MY_TARGETS
@@ -272,7 +276,7 @@ function _pdci {
     fi
 }
 alias pdci=_pdci
-alias pdc="sudo ./run price_decoder"
+alias pdc="suttrun price_decoder"
 
 function cbdevup {
     for cb in $@; do
@@ -410,4 +414,8 @@ alias logstrip='sed "s/ \s* \| \s* \| \s* \| \s* \| \s* //"'
 
 function nid {
     ~/projects/nid.rb $1
+}
+
+function selnode {
+    echo 'pse beacon 0' | sudo tee /tmp/mds_demo_commands.1.$1 && echo 'pse beacon 2' | sudo tee /tmp/mds_demo_commands.1.$1
 }
