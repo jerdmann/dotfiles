@@ -32,6 +32,7 @@ mds/exchange_adapter/sgx/om/build.mk
 mds/exchange_adapter/taifex/build.mk
 mds/exchange_adapter/tfx/build.mk
 mds/exchange_adapter/wse/build.mk
+mds/instrument_data_driver/build.mk
 mds/market_data_server/build.mk
 mds/mcast_proxy/build.mk
 mds/replay_driver/build.mk

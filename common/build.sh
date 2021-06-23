@@ -13,11 +13,6 @@ if [[ "$rr" == "" ]]; then
     exit -1
 fi
 
-if [[ "$#" -eq 0 ]]; then
-    echo "error: no target(s)"
-    exit -1
-fi
-
 # non-terse by default
 terse=""
 # no mks list by default
@@ -26,8 +21,9 @@ mks_file=""
 proto=""
 config="debug"
 cache=""
+args=""
 
-while true; do
+while [[ $# -gt 0 ]]; do
     if [[ "$1" == "--terse" ]]; then
         terse="yes"
         shift 1
@@ -44,9 +40,19 @@ while true; do
         cache="use_cache=1"
         shift 1
     else 
-        break
+        if [[ -z "$args" ]]; then
+            args="$1"
+        else
+            args="$args $1"
+        fi
+        shift 1
     fi
 done
+
+if [[ -z "$args" ]]; then
+    echo "error: no target(s)"
+    exit -1
+fi
 
 # baseline params, plus gcc8 if present
 if [[ -z "$GCC_CPU_CORES" ]]; then
@@ -54,7 +60,7 @@ if [[ -z "$GCC_CPU_CORES" ]]; then
 else
     jobs=$GCC_CPU_CORES
 fi
-params="config=$config use_distcc=0 $cache -C $rr -j$jobs"
+params="config=$config use_distcc=0 $cache -C $rr -j$jobs $args"
 
 has_gcc8=""
 $(gcc --version | grep -P '8\.\d+\.\d+' >/dev/null)

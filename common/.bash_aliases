@@ -22,8 +22,6 @@ alias vimdiff="$EDITOR -d"
 
 # tmux
 alias tmux='tmux -2'
-alias ta='tmux attach-session -t 0'
-alias tl='tmux list-session'
 
 # docker
 alias drun='docker run -it --rm --network host'

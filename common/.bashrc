@@ -27,7 +27,11 @@ HISTFILESIZE=2000
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 PROMPT_COMMAND=__ps1
-. ~/.git-prompt.sh
+if [ -r ~/.git-prompt ]; then
+    source ~/.git-prompt
+else
+    function __git_ps1() { echo "" ; }
+fi
 function __ps1()
 {
     local red='\[\e[1;31m\]'
@@ -70,19 +74,39 @@ export LD_LIBRARY_PATH="/usr/local/include"
 
 export GOPATH="/home/jason/gocode"
 export PATH=~/.cargo/bin:/usr/local/go/bin:/opt/jdk/bin:$GOPATH/bin:$PATH
-export JDK8_BIN=/opt/jdk/bin/java
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
-_dotfiles=(
-~/.ase_rc
-~/.bash_aliases
-~/.bash_functions
-~/.debesys
-~/.keys
-~/.vpn
-~/.workstation
-)
-for f in "${_dotfiles[@]}"; do
+for f in \
+    ~/.ase_rc \
+    ~/.bash_aliases \
+    ~/.bash_functions \
+    ~/.debesys \
+    ~/.keys \
+    ~/.vpn \
+    ~/.workstation \
+; do
     test -r $f && source $f
 done
+
+CDPATH=""
+for n in one two three; do
+    dev="/home/jason/dev-root"
+    CDPATH="$CDPATH:$dev/debesys-$n/mds/exchange_adapter"
+    CDPATH="$CDPATH:$dev/debesys-$n/mds/consumer"
+done
+# remove the first colon
+export CDPATH=$(echo $CDPATH | sed 's/://')
+CDPATH="/home/jason/projects:$CDPATH"
+
+export RIPGREP_CONFIG_PATH=~/.rgrc
+
+# try keyboard settings, ignore failures
+setxkbmap -option ctrl:nocaps 2>/dev/null || :
+xset r rate 200 30 2>/dev/null || :
+
+# only one xcape
+pidof xcape >/dev/null 2>&1
+if [[ $? -eq 1 ]]; then
+    xcape -t 200 2>/dev/null
+fi

@@ -9,6 +9,9 @@ if [ -f $DEVWS_REPO/deploy/chef/scripts/bashrc/devws.bash ]; then
    source $DEVWS_REPO/deploy/chef/scripts/bashrc/devws.bash
 fi
 
+# added this before I knew what JAVA_HOME was...
+export JDK8_BIN=/opt/jdk/bin/java
+
 # devws.bash contains an alias deploy, you might want to change the name to an alias you already use.
 # alias dpl="devws_request_deploy"
 
@@ -19,8 +22,8 @@ fi
 export LANG='en_US.UTF-8'
 export LANGUAGE='en_US'
 
-alias ttrun='`git rev-parse --show-toplevel`/run'
-alias suttrun='sudo `git rev-parse --show-toplevel`/run'
+alias ttrun='$(git rev-parse --show-toplevel)/run'
+alias suttrun='sudo $(git rev-parse --show-toplevel)/run'
 alias cf='cd /etc/debesys'
 alias lg='cd /var/log/debesys'
 
@@ -28,8 +31,6 @@ alias lg='cd /var/log/debesys'
 alias r1='cd ~/dev-root/debesys-one'
 alias r2='cd ~/dev-root/debesys-two'
 alias r3='cd ~/dev-root/debesys-three'
-alias cdcap='cd ~/dev-root/captures'
-alias cdpro='cd `git rev-parse --show-toplevel`/the_arsenal/all_messages/source/tt/messaging'
 
 function _cb {
     cbr=$(echo $(git rev-parse --show-toplevel)/deploy/chef/cookbooks)
