@@ -1,5 +1,4 @@
-# vim: set ft=sh
-#
+# vim: set ft=bashrc tw=80
 export LIBRARY_PATH="/usr/lib/x86_64-linux-gnu"
 export LD_LIBRARY_PATH="/usr/local/lib"
 
@@ -15,6 +14,10 @@ fi
 
 # devws.bash contains an alias build, you might overwrite it if you only build one component
 # alias build="devws_request_build -t all_edge"
+
+# required for ase builds
+export LANG='en_US.UTF-8'
+export LANGUAGE='en_US'
 
 alias ttrun='`git rev-parse --show-toplevel`/run'
 alias suttrun='sudo `git rev-parse --show-toplevel`/run'
@@ -159,10 +162,9 @@ function ksedge {
 # into an actual chef solr run_list filter like:
 # "run_list:*app1* AND run_list:*app2*"
 function _make_rl_filter {
-    rl_tokens="$1"
     sep=""
     rl_filter=""
-    IFS=' ' read -rA rl_tokens <<< "$rl"
+    IFS=' ' read -a rl_tokens <<< "$1"
     for tok in "${rl_tokens[@]}"; do
         rl_filter="${rl_filter}${sep}run_list:*$tok*"
         sep=" AND "
@@ -185,7 +187,7 @@ function _knife_search {
     if [[ -z "$args" ]]; then
         args="-a chef_environment -a ipaddress -a run_list -a tags"
     fi
-    $cmd search "$rl_filter AND chef_environment:*$env* $top_filter" ${=args}
+    $cmd search "$rl_filter AND chef_environment:*$env* $top_filter" $args
 }
 
 # similar, but one-line server names output
@@ -354,7 +356,9 @@ function ttw {
 function edge {
     env="$1"
     query="run_list:*edgeserver* AND chef_environment:*$env*"
-    query+=" NOT chef_environment:*delayed* NOT extract_package_overrides_edgeserver_config:irelease" 
+    query+=" NOT chef_environment:*delayed*"
+    query+=" NOT extract_package_overrides_edgeserver_config:irelease" 
+    query+=" NOT run_list:*edgeserver\\:\\:noop*"
     host=$(knife search "$query" -a name 2>/dev/null | grep name: | awk '{ print $2 }' | head -n 1)
     if [[ "$host" == "" ]]; then
         echo "error: no host found"
@@ -407,13 +411,6 @@ function rerun {
     app=$1
     shift 1
     pmake $app && ttrun $app $@
-}
-
-alias logstrip='sed "s/ \s* \| \s* \| \s* \| \s* \| \s* //"'
- # INFO | SPLUNK_IGNORE | 0010001 | 010 |  | 
-
-function nid {
-    ~/projects/nid.rb $1
 }
 
 function selnode {

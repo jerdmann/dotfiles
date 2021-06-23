@@ -1,3 +1,5 @@
+fixit/compiler/build.mk
+fixit/cpp/build.mk
 mds/consumer/event_logger/build.mk
 mds/consumer/pdsu_engine/build.mk
 mds/consumer/ppiq_server_engine/build.mk
@@ -59,3 +61,4 @@ price_server/ps_common/sub_mgr/build.mk
 price_server/psadmin/build.mk
 price_server/test/fw/build.mk
 the_arsenal/all_messages/build.mk
+the_arsenal/pycommon/build.mk

@@ -49,7 +49,12 @@ while true; do
 done
 
 # baseline params, plus gcc8 if present
-params="config=$config use_distcc=0 $cache -C $rr -j$(nproc --ignore 2)"
+if [[ -z "$GCC_CPU_CORES" ]]; then
+    jobs=$(nproc --ignore 1)
+else
+    jobs=$GCC_CPU_CORES
+fi
+params="config=$config use_distcc=0 $cache -C $rr -j$jobs"
 
 has_gcc8=""
 $(gcc --version | grep -P '8\.\d+\.\d+' >/dev/null)
