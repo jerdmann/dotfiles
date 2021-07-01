@@ -69,3 +69,10 @@ function _tmux_scrap {
     tmux rename-window scrap
 }
 alias scrap=_tmux_scrap
+
+# linemerge thing
+function lm {
+    delim=","
+    [[ ! -z "$1" ]] && delim="$1"
+    awk -v d="$delim" '{ s=(NR==1?s:s d)$0 } END {print s}'
+}
