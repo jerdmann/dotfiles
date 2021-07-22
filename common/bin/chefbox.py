@@ -16,17 +16,16 @@ def knife_search(org, fmt, *args):
     if org == "ext":
         cmd = "{} -c ~/.chef/knife.external.rb".format(cmd)
 
-    toks = sys.argv[2:]
     idx = 0
-    for t in toks:
+    for t in args:
         if t.startswith("-"): break
         idx += 1
     idx -= 1
-    assert(idx > 0)
-    rl = toks[0:idx]
-    env = toks[idx]
+    assert(idx >= 0)
+    rl = args[0:idx]
+    env = args[idx]
 
-    args = ' '.join(toks[idx+1:])
+    args = ' '.join(args[idx+1:])
     if not args:
         args = "-a chef_environment -a ipaddress -a run_list -a tags"
     args = "{} -F {}".format(args, fmt)
@@ -57,10 +56,10 @@ if __name__ == "__main__":
         name = name[1:]
 
     if name == "ks":
-        print(knife_search(org, "summary", sys.argv[1:]))
+        print(knife_search(org, "summary", *sys.argv[1:]))
 
     elif name == "ksn":
-        j = json.loads(knife_search(org, "json", sys.argv[1:]))
+        j = json.loads(knife_search(org, "json", *sys.argv[1:]))
         names = []
         for row in j['rows']:
             for name in row:
@@ -69,7 +68,7 @@ if __name__ == "__main__":
 
     elif name == "sshks":
         ip_rex = re.compile(r'ipaddress:\s+(\S+)')
-        out = knife_search(org, "summary", sys.argv[1:])
+        out = knife_search(org, "summary", *sys.argv[1:])
         ips = []
         for match in ip_rex.finditer(out):
             ips.append(match.group(1))
