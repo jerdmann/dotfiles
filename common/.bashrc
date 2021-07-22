@@ -21,7 +21,7 @@ shopt -s globstar
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
-HISTFILESIZE=2000
+HISTFILESIZE=10000
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -76,6 +76,7 @@ export GOPATH="/home/jason/gocode"
 export PATH=~/.cargo/bin:/usr/local/go/bin:/opt/jdk/bin:$GOPATH/bin:$PATH
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+export PATH="$PATH:/home/jason/projects/python"
 
 for f in \
     ~/.ase_rc \
@@ -89,15 +90,7 @@ for f in \
     test -r $f && source $f
 done
 
-CDPATH=""
-for n in one two three; do
-    dev="/home/jason/dev-root"
-    CDPATH="$CDPATH:$dev/debesys-$n/mds/exchange_adapter"
-    CDPATH="$CDPATH:$dev/debesys-$n/mds/consumer"
-done
-# remove the first colon
-export CDPATH=$(echo $CDPATH | sed 's/://')
-CDPATH="/home/jason/projects:$CDPATH"
+CDPATH="/home/jason/projects"
 
 export RIPGREP_CONFIG_PATH=~/.rgrc
 

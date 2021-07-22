@@ -93,7 +93,7 @@ function tag {
     popd >/dev/null
 }
 
-function mkdeb () {
+function mkdeb() {
     sudo mkdir /etc/debesys 2>/dev/null || :
     sudo mkdir /var/log/debesys 2>/dev/null || :
     sudo chown jason /etc/debesys
@@ -112,50 +112,21 @@ alias ksh='knife node show'
 alias eke='eknife node edit'
 alias eksh='eknife node show'
 
-filter_genpop="NOT run_list:*ps_server\:\:loopback* NOT run_list:*depth_coll*"
-filter_irelease="NOT extract_package_overrides_edgeserver_config:irelease"
-
-# has to be a better way to do this.  hilarious noop filter for now
-filter_none="NOT chef_environment:*fffffff*"
-
-# basically never want delayed nodes in my results
-filter_delayed="NOT chef_environment:*delayed*"
-
 # various "nice" front-ends
 function ks {
-    _knife_search knife "$filter_delayed" "$@"
+    _knife_search int "$@"
 }
 
 function eks {
-    _knife_search external_knife_ "$filter_delayed" "$@"
-}
-
-function kps {
-    _knife_search knife "$filter_genpop" "$@"
-}
-
-function ekps {
-    _knife_search external_knife_ "$filter_genpop" "$@"
+    _knife_search ext "$@"
 }
 
 function ksn {
-    _knife_flat_search knife "$1" "$2"
+    _knife_flat_search int "$@"
 }
 
 function eksn {
-    _knife_flat_search external_knife_ "$1" "$2"
-}
-
-function kpdsu {
-    _knife_search knife "$filter_none" "pds_uploader_$1" "$2"
-}
-
-function ekpdsu {
-    _knife_search external_knife_ "$filter_none" "pds_uploader_$1" "$2"
-}
-
-function ksedge {
-    _knife_search knife "$filter_irelease" "edgeserver" "$1"
+    _knife_flat_search ext "$@"
 }
 
 # split up a runlist (rl) filter param like:
@@ -163,46 +134,65 @@ function ksedge {
 # into an actual chef solr run_list filter like:
 # "run_list:*app1* AND run_list:*app2*"
 function _make_rl_filter {
-    sep=""
-    rl_filter=""
-    IFS=' ' read -a rl_tokens <<< "$1"
-    for tok in "${rl_tokens[@]}"; do
-        rl_filter="${rl_filter}${sep}run_list:*$tok*"
-        sep=" AND "
-    done
-    echo $rl_filter
+python - $@ <<EOF
+import sys
+op = sys.argv[1].upper()
+assert(op in ["AND", "OR", "NOT"])
+toks = sys.argv[2:]
+q = ' {} '.format(op).join(
+        ["run_list:*{}*".format(t) for t in toks])
+print(q)
+EOF
 }
 
 # single entrypoint for knife searches
 function _knife_search {
-    cmd="$1"
-    top_filter="$2"
+    org="$1"
+    shift 1
+    python - "$org" "$@" <<EOF
+import sys
+from subprocess import check_output
+org = sys.argv[1].lower()
+assert(org in ["int", "ext"])
+cmd = "knife search"
+if org == "ext":
+    cmd = "{} -c ~/.chef/knife.external.rb".format(cmd)
 
-    rl="$3"
-    env="$4"
-    shift 4
-    args="$@"
+toks = sys.argv[2:]
+idx = 0
+for t in toks:
+    if t.startswith("-"): break
+    idx += 1
+idx -= 1
+assert(idx > 0)
+rl = toks[0:idx]
+env = toks[idx]
 
-    rl_filter=$(_make_rl_filter "$rl" )
+args = ' '.join(toks[idx+1:])
+if not args:
+    args="-a chef_environment -a ipaddress -a run_list -a tags"
 
-    if [[ -z "$args" ]]; then
-        args="-a chef_environment -a ipaddress -a run_list -a tags"
-    fi
-    $cmd search "$rl_filter AND chef_environment:*$env* $top_filter" $args
+rl_filter = "{}".format(
+    ' AND '.join(["run_list:*{}*".format(t) for t in rl]))
+
+query = "{} AND chef_environment:*{}* NOT chef_environment:*delayed*".format(rl_filter, env)
+out = check_output('{} "{}" {}'.format(cmd, query, args), shell=True)
+print(out)
+EOF
 }
 
 # similar, but one-line server names output
 # handy for populating CLI args to other tools
 function _knife_flat_search {
-    cmd="$1"
-    rl="$2"
-    env="$3"
-
-    rl_filter=$(_make_rl_filter "$rl" )
-    rl_filter="$rl_filter "
-
-    $cmd search "$rl_filter AND chef_environment:*$env* NOT chef_environment:*delayed*" -a name | grep "name:" | awk '{printf "%s ", $2}'
+    hosts=$(_knife_search $@ | grep ^[a-z] | cut -f1 -d:)
+    echo -n $hosts
 }
+
+function _sshks() {
+    ips=$(_knife_search int $@ | grep ipaddress)
+    echo $ips
+}
+alias sshks=_sshks
 
 function ekjuno {
     eknife search "juno_up_market-ids:*_$1* AND chef_environment:ext-prod-live" -a ipaddress
@@ -268,7 +258,7 @@ function lbmify {
 
 function _pdci {
     file="$1"
-    cmd="ttrun price_decoder --dedup -f $file"
+    cmd="ttrun release price_decoder --dedup -f $file"
     shift 1
     iid=$(basename "$file" | grep -Eo "[0-9]{8,}")
     iidfilter=""
@@ -369,36 +359,6 @@ function edge {
     ttw $env $host
 }
 
-function pdsi {
-    env="$1"
-    iid="$2"
-    url=""
-
-    if [[ "$env" = "dev-cert" ]]; then
-        url="int-dev-cert.trade.tt"
-    elif [[ "$env" = "dev-sim" ]]; then
-        url="int-dev-sim.trade.tt"
-    elif [[ "$env" = "stage-cert" ]]; then
-        url="int-stage-cert.trade.tt"
-    elif [[ "$env" = "stage-sim" ]]; then
-        url="int-stage-sim.trade.tt"
-    elif [[ "$env" = "uat" ]]; then
-        url="ext-uat-cert.trade.tt"
-    elif [[ "$env" = "live" ]]; then
-        url="ext-prod-live.trade.tt"
-    else
-        echo "unknown environment $env"
-        return
-    fi
-
-    url="https://pds-$url/api/1/instruments/$iid"
-    google-chrome $url
-}
-
-function get_adapter_conf {
-    scp "$1:/etc/debesys/mds_adapter_*.conf" /tmp/
-}
-
 function pullcap {
     link=$1
     file=$(basename $link)
@@ -406,12 +366,6 @@ function pullcap {
     wget -nc -P /tmp $link
     unzip -o -j -d /tmp /tmp/$file
     rm /tmp/$file
-}
-
-function rerun {
-    app=$1
-    shift 1
-    pmake $app && ttrun $app $@
 }
 
 function selnode {
