@@ -174,13 +174,10 @@ nnoremap <silent> <leader>d <esc>Oprintf("TRACE ===> %s: \n", __func__);<esc>BBi
 
 nnoremap <leader>m :make<cr>:botright cw<cr>
 
-nnoremap <leader>j :cnext<cr>
-nnoremap <leader>k :cprev<cr>
+nnoremap <silent> <leader>l :wa<cr> :silent !tmux send-keys -t {next} -X cancel; tmux send-keys -Rt {next} Up Enter<cr>
 
 noremap <leader>p :read !xsel --clip --output<cr>
 noremap <leader>c :w !xsel -ib<cr><cr>
-
-map <silent> <leader>l :wa<cr> :silent !tmux send-keys -Rt \! Up Enter<cr>
 
 " lame node migrate thing
 function FlipNode()
@@ -199,7 +196,5 @@ nnoremap <C-h> :nohlsearch<cr>
 nnoremap ; :
 vnoremap ; :
 
-map H ^
-map L $
 map <F1> <Esc>
 imap <F1> <Esc>

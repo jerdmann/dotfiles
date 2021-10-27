@@ -1,5 +1,7 @@
+ase/native_spreader/nase.build.mk
 fixit/compiler/build.mk
 fixit/cpp/build.mk
+mds/consumer/cloud_uploader/build.mk
 mds/consumer/event_logger/build.mk
 mds/consumer/pdsu_engine/build.mk
 mds/consumer/ppiq_server_engine/build.mk
@@ -10,6 +12,7 @@ mds/exchange_adapter/b3/build.mk
 mds/exchange_adapter/bist/build.mk
 mds/exchange_adapter/bitmex/build.mk
 mds/exchange_adapter/cboe/build.mk
+mds/exchange_adapter/cedx/build.mk
 mds/exchange_adapter/cfe/build.mk
 mds/exchange_adapter/cme/build.mk
 mds/exchange_adapter/coinflex/build.mk
@@ -21,6 +24,7 @@ mds/exchange_adapter/fenics/build.mk
 mds/exchange_adapter/gdax/build.mk
 mds/exchange_adapter/ice/build.mk
 mds/exchange_adapter/jpx/build.mk
+mds/exchange_adapter/jse/build.mk
 mds/exchange_adapter/jump_trading/build.mk
 mds/exchange_adapter/lme/build.mk
 mds/exchange_adapter/meff/build.mk
@@ -36,13 +40,10 @@ mds/instrument_data_driver/build.mk
 mds/market_data_server/build.mk
 mds/mcast_proxy/build.mk
 mds/replay_driver/build.mk
+mds/targets.build.mk
 mds/test/fw/build.mk
 mds/test_harness/build.mk
-price_server/exchange/cme/cme_lh.build.mk
-price_server/exchange/gdax_lh/build.mk
-price_server/exchange/lme_lh/lme_lh.build.mk
-price_server/exchange/ose_lh/itch/build.mk
-price_server/exchange/test_lh/build.mk
+pds/source/pdsapi_shared.build.mk
 price_server/lbm_connect/build.mk
 price_server/lbm_price_listener/build.mk
 price_server/pds_uploader/build.mk
@@ -63,3 +64,4 @@ price_server/psadmin/build.mk
 price_server/test/fw/build.mk
 the_arsenal/all_messages/build.mk
 the_arsenal/pycommon/build.mk
+triage/cpp/triage_handler/build.mk

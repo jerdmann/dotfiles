@@ -63,6 +63,7 @@ function hlpf() { hlp "$1=$FIELD_VALS+";}
 function _tmux_scrap {
     tmux split-window -h
     tmux send-keys 'cd ~/projects/scrap' C-m
+    tmux send-keys 'make && ./scrap' C-m
     tmux select-pane -L
     tmux send-keys 'cd ~/projects/scrap' C-m
     tmux send-keys 'v src/scrap.cpp' C-m

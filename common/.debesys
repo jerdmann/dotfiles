@@ -2,21 +2,8 @@
 export LIBRARY_PATH="/usr/lib/x86_64-linux-gnu"
 export LD_LIBRARY_PATH="/usr/local/lib"
 
-export DEVWS_REPO="/home/jason/dev-root/debesys-one"
-
-if [ -f $DEVWS_REPO/deploy/chef/scripts/bashrc/devws.bash ]; then
-   # Skip this step if devws.bash isn't found where it's expected.
-   source $DEVWS_REPO/deploy/chef/scripts/bashrc/devws.bash
-fi
-
 # added this before I knew what JAVA_HOME was...
 export JDK8_BIN=/opt/jdk/bin/java
-
-# devws.bash contains an alias deploy, you might want to change the name to an alias you already use.
-# alias dpl="devws_request_deploy"
-
-# devws.bash contains an alias build, you might overwrite it if you only build one component
-# alias build="devws_request_build -t all_edge"
 
 # required for ase builds
 export LANG='en_US.UTF-8'
@@ -113,7 +100,8 @@ alias eke='eknife node edit'
 alias eksh='eknife node show'
 
 function ekjuno {
-    eknife search "juno_up_market-ids:*_$1* AND chef_environment:ext-prod-live" -a ipaddress
+    mkt=$(echo "$1" | awk '{print toupper($1)}')
+    eknife search "juno_up_config_market_ids:*_$mkt* AND chef_environment:ext-prod-live" -a ipaddress
 }
 
 function kssh {
@@ -142,7 +130,7 @@ function isearch {
     popd >/dev/null
 }
 
-export MY_TARGETS="mds demo_adapter price_server_engine"
+export MY_TARGETS="mds demo_adapter price_server_engine price_client_test"
 function mkmds {
     rr || return
     ~/build.sh --mks-file "" $MY_TARGETS
@@ -181,9 +169,9 @@ function _pdci {
     iid=$(basename "$file" | grep -Eo "[0-9]{8,}")
     iidfilter=""
     if [[ ! -z "$iid" ]]; then
-        eval $cmd --iid $iid --dedup $@
+        eval $cmd --iid $iid $@
     else
-        eval $cmd --dedup $@
+        eval $cmd $@
     fi
 }
 alias pdci=_pdci
@@ -289,3 +277,28 @@ function pullcap {
 function selnode {
     echo 'pse beacon 0' | sudo tee /tmp/mds_demo_commands.1.$1 && echo 'pse beacon 2' | sudo tee /tmp/mds_demo_commands.1.$1
 }
+
+function do_oneoff {
+    if [[ $# -eq 0 ]]; then
+        echo "expect: cookbook node1 [node2...]"
+        return
+    fi
+
+    cb="$1"
+    shift 1
+    if [[ $# -eq 0 ]]; then
+        echo "need at least 1 node"
+        return
+    fi
+
+    nodes=$@
+    echo "running oneoff of $cb on $nodes"
+    oneoff -c $cb --request-build -r -s $nodes -r --run-chef --override-oneoff
+}
+
+function _lstrip {
+    sed -r 's/ tsExchangeSend=[0-9]+ tsServerRecv=[0-9]+//' $@ \
+        | sed -r 's/\s+\| \S+ \| KV \|//' \
+        | sed -r 's/\[SPLUNK_IGNORE\]//'
+}
+alias lstrip=_lstrip
