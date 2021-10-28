@@ -16,8 +16,9 @@ from subprocess import check_output, Popen
 
 Filter = namedtuple('Filter', ['rl', 'env', 'args'])
 
-# global because lazy
+# globals because lazy
 allow_delayed = False
+rl_exact = False
 
 # parse a list of command arguments like:
 # mds_adapter_cme ppiq dev-cert -a cpu.total memory.total
@@ -50,8 +51,12 @@ def knife_search(org, fmt, filt):
         args = "-a chef_environment -a ipaddress -a run_list -a tags"
     args = "{} -F {}".format(args, fmt)
 
+    if rl_exact:
+        rl_fmt = "run_list:*\\[{}\\]*"
+    else:
+        rl_fmt = "run_list:*{}*"
     rl_filter = "{}".format(
-        ' AND '.join(["run_list:*{}*".format(t) for t in filt.rl]))
+        ' AND '.join([rl_fmt.format(t) for t in filt.rl]))
     query = "{} AND chef_environment:*{}*".format(rl_filter, filt.env)
     if not allow_delayed:
         query += " NOT chef_environment:*delayed*"
@@ -127,14 +132,16 @@ def ks_deploy(env):
 if __name__ == "__main__":
     name = os.path.basename(sys.argv[0])
 
-    rm_idx = -1
+    env_idx = -1
     for idx,arg in enumerate(sys.argv):
         if arg == "--delayed":
             allow_delayed = True
-            rm_idx = idx
-            break
-    if rm_idx > -1:
-        sys.argv[rm_idx] = "delayed"
+            env_idx = idx
+        elif arg == "--exact":
+            rl_exact = True
+            sys.argv.remove(arg)
+    if env_idx > -1:
+        sys.argv[env_idx] = "-delayed"
 
     if name == "chefbox.py":
         for target in ['ks', 'ksn', 'sshks']:
