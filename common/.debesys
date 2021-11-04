@@ -284,6 +284,12 @@ function do_oneoff {
         return
     fi
 
+    ref="-r --request-build"
+    if [[ "$1" = "-n" ]]; then
+        ref="-n"
+        shift 1
+    fi
+
     cb="$1"
     shift 1
     if [[ $# -eq 0 ]]; then
@@ -293,7 +299,7 @@ function do_oneoff {
 
     nodes=$@
     echo "running oneoff of $cb on $nodes"
-    oneoff -c $cb --request-build -r -s $nodes -r --run-chef --override-oneoff
+    oneoff -c $cb $ref -s $nodes --run-chef --override-oneoff --skip-package-check
 }
 
 function _lstrip {
