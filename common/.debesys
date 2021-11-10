@@ -279,7 +279,7 @@ function selnode {
 }
 
 function do_oneoff {
-    if [[ $# -eq 0 ]]; then
+    if [[ $# -lt 2 ]]; then
         echo "expect: cookbook node1 [node2...]"
         return
     fi
@@ -288,6 +288,10 @@ function do_oneoff {
     if [[ "$1" = "-n" ]]; then
         ref="-n"
         shift 1
+    fi
+    if [[ "$1" = "-r" ]]; then
+        ref="-r $2"
+        shift 2
     fi
 
     cb="$1"
@@ -300,6 +304,18 @@ function do_oneoff {
     nodes=$@
     echo "running oneoff of $cb on $nodes"
     oneoff -c $cb $ref -s $nodes --run-chef --override-oneoff --skip-package-check
+}
+
+function upstage {
+    if [[ $# -lt 2 ]]; then
+        echo "expect: cookbook version"
+        return
+    fi
+
+    cb="$1"
+    branch="release_v$2/current"
+    echo "running upenv of $cb on $branch"
+    upenv -c $cb -e int-stage -b $branch
 }
 
 function _lstrip {
