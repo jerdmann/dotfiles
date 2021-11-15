@@ -1,19 +1,15 @@
 # vim: set ft=bashrc tw=80
 alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
 alias xsel='xsel -b'
 alias xclip='xclip -sel clip'
 
+alias eb="$EDITOR ~/.bashrc"
 alias sb='source ~/.bashrc'
-alias eb='$EDITOR ~/.bashrc'
 alias dot='cd ~/.dotfiles'
 
-alias ll='ls -alF'
 alias ez="$EDITOR ~/.zshrc"
 alias sz='source ~/.zshrc'
 alias g="git"
-alias wgdl='wget --recursive --no-clobber --convert-links --html-extension --page-requisites --no-parent '
 
 # neovim all the things
 alias v="$EDITOR"
@@ -35,10 +31,6 @@ alias fuck='$EDITOR $(git diff --name-only | uniq)'
 alias gname='git symbolic-ref --short HEAD'
 # hash of branch tip
 alias ghash='git rev-parse HEAD'
-
-# rg is now muscle memory
-# command rg >/dev/null 2>&1 || alias rg="grep -ri"
-alias mkrg='rg -g \*.mk'
 
 # just the release part, eg release_v123
 function grname {

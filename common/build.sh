@@ -54,7 +54,7 @@ if [[ -z "$args" ]]; then
     exit -1
 fi
 
-# baseline params, plus gcc8 if present
+# baseline params, plus gcc9 if present
 if [[ -z "$GCC_CPU_CORES" ]]; then
     jobs=$(nproc --ignore 1)
 else
@@ -62,23 +62,23 @@ else
 fi
 params="config=$config use_distcc=0 $cache -C $rr -j$jobs $args"
 
-has_gcc8=""
-$(gcc --version | grep -P '8\.\d+\.\d+' >/dev/null)
+has_gcc9=""
+$(gcc --version | grep -P '9\.\d+\.\d+' >/dev/null)
 if [[ $? -eq 0 ]]; then 
-    has_gcc8="yes"
+    has_gcc9="yes"
 fi
-gcc8_mkvars="$rr/mds/all_mds_gcc8.mkvars"
+gcc9_mkvars="$rr/base_gcc9_cxx11.mkvars"
 
-if [[ "$has_gcc8" == "yes" && "$gcc8_mkvars" != "" ]]; then
-    params="$params var_file_name=$gcc8_mkvars"
+if [[ "$has_gcc9" == "yes" && "$gcc9_mkvars" != "" ]]; then
+    params="$params var_file_name=$gcc9_mkvars"
 fi
 
 if [[ "$proto" != "" ]]; then
     params="$params $proto"
 fi
 
-# build the mks list based on a union of what mks the user cares about and which ones are actually
-# present in the tree
+# build the mks list based on a union of what mks the user cares about and which
+# ones are actually present in the tree
 if [[ "$mks_file" != "" ]]; then
     my_mks=$(for f in $(cat "$mks_file"); do [[ -f "$rr/$f" ]] && printf "%s " $f; done)
     params="$params def_files=\"$my_mks\""
@@ -87,7 +87,8 @@ fi
 # terse mode if present
 cmd="make $params $@ 2>&1"
 if [[ "$terse" == "yes" ]]; then
-    cmd="$cmd | grep --line-buffered -v 'given more than once' | grep --line-buffered --color=never error:"
+    cmd="$cmd | grep --line-buffered -v 'given more than once'"
+              # | grep --line-buffered --color=never error:"
 fi
 
 # execute the command and pass through its return code

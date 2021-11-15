@@ -2,6 +2,13 @@
 export LIBRARY_PATH="/usr/lib/x86_64-linux-gnu"
 export LD_LIBRARY_PATH="/usr/local/lib"
 
+export DEVWS_REPO="/home/jason/dev-root/debesys-one"
+
+if [ -f $DEVWS_REPO/deploy/chef/scripts/bashrc/devws.bash ]; then
+   # Skip this step if devws.bash isn't found where it's expected.
+   source $DEVWS_REPO/deploy/chef/scripts/bashrc/devws.bash
+fi
+
 # added this before I knew what JAVA_HOME was...
 export JDK8_BIN=/opt/jdk/bin/java
 
@@ -11,13 +18,13 @@ export LANGUAGE='en_US'
 
 alias ttrun='$(git rev-parse --show-toplevel)/run'
 alias suttrun='sudo $(git rev-parse --show-toplevel)/run'
-alias cf='cd /etc/debesys'
-alias lg='cd /var/log/debesys'
+alias cf='pushd /etc/debesys'
+alias lg='pushd /var/log/debesys'
 
 # project dirs
-alias r1='cd ~/dev-root/debesys-one'
-alias r2='cd ~/dev-root/debesys-two'
-alias r3='cd ~/dev-root/debesys-three'
+alias r1='pushd ~/dev-root/debesys-one'
+alias r2='pushd ~/dev-root/debesys-two'
+alias r3='pushd ~/dev-root/debesys-three'
 
 function _cb {
     cbr=$(echo $(git rev-parse --show-toplevel)/deploy/chef/cookbooks)
@@ -80,15 +87,6 @@ function tag {
     popd >/dev/null
 }
 
-function mkdeb() {
-    sudo mkdir /etc/debesys 2>/dev/null || :
-    sudo mkdir /var/log/debesys 2>/dev/null || :
-    sudo chown jason /etc/debesys
-    sudo chown jason /var/log/debesys
-    sudo chmod 775 /etc/debesys
-    sudo chmod 775 /var/log/debesys
-}
-
 function external_knife_() {
     knife "$@" -c ~/.chef/knife.external.rb
 }
@@ -122,12 +120,6 @@ function lmk {
 
 function mk {
     ~/build.sh --mks-file ~/.my_mks --no-proto --use-cache $@
-}
-
-function isearch {
-    rr || return
-    ./run python price_server/scripts/instrument_search.py $@
-    popd >/dev/null
 }
 
 export MY_TARGETS="mds demo_adapter price_server_engine price_client_test"
@@ -164,8 +156,8 @@ function lbmify {
 
 function _pdci {
     file="$1"
-    cmd="ttrun release price_decoder --dedup -f $file"
     shift 1
+    cmd="ttrun release price_decoder --dedup -f $file"
     iid=$(basename "$file" | grep -Eo "[0-9]{8,}")
     iidfilter=""
     if [[ ! -z "$iid" ]]; then
@@ -196,9 +188,11 @@ function cboneoff {
 }
 
 function cbhash {
+    cb || return
     tip=$1
     shift 1
     for cb in $(ls -d "$@"); do sed -i "s/\"\w\+\"$/\"$tip\"/" $cb/attributes/debesys_repo_hash.rb; done
+    popd >/dev/null
 }
 
 function ttw {

@@ -21,7 +21,7 @@ exists on your host machine.
 ```shell
 > docker run -it --network=host --name=some_name --detach \
     --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
-    --mount src=/home/jason/dev-root/debesys-one,target=/home/jason/dev-root/debesys-one,type=bind \
+    --mount src=/home/jason/dev-root,target=/home/jason/dev-root,type=bind \
     --mount src=/etc/debesys,target=/etc/debesys,type=bind \
     debesys:latest
 ```

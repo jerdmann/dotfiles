@@ -99,7 +99,7 @@ setxkbmap -option ctrl:nocaps 2>/dev/null || :
 xset r rate 200 30 2>/dev/null || :
 
 # only one xcape
-pidof xcape >/dev/null 2>&1
-if [[ $? -eq 1 ]]; then
+if [[ -x /usr/bin/xcape ]]; then
+    killall xcape 2>/dev/null || :
     xcape -t 200 2>/dev/null
 fi

@@ -13,15 +13,17 @@ function rr {
     pushd $reporootdir >/dev/null
 }
 
-export _wk_container_name=trusty_manticore
-    
-function dwork {
-    docker start $_wk_container_name 2>/dev/null
-    docker attach $_wk_container_name
+export _wk_container_name=rusty_manticore
+function wkbuild {
+    docker build --network=host --tag debesys:latest \
+                           --build-arg user=$(id -un) \
+                           --build-arg userid=$(id -u) \
+                           --build-arg repodir=/home/jason/dev-root \
+                           .
 }
 
-function dworkbuild {
-    docker run -it --network=host --name=$_wk_container_name \
+function wkrun {
+    docker run $@ --name=$_wk_container_name \
         --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
         --mount src=/home/jason/dev-root,target=/home/jason/dev-root,type=bind \
         --mount src=/etc/debesys,target=/etc/debesys,type=bind \
@@ -77,3 +79,12 @@ function lm {
     [[ ! -z "$1" ]] && delim="$1"
     awk -v d="$delim" '{ s=(NR==1?s:s d)$0 } END {print s}'
 }
+
+function _tmsh {
+    name="$1"
+    if [[ -n "$name" ]]; then
+        echo "no hostname"
+    fi
+    reset && ssh -X -t $name "tmux attach -t $name || tmux new -s $name"
+}
+alias tmsh=_tmsh

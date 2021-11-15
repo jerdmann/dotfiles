@@ -35,8 +35,7 @@ RUN yum install -y --nogpgcheck \
         tcpdump \
         wget \
         xclip \
-        xsel \
-        zsh
+        xsel
 
 # Install nvim and the plugin manager thing.
 RUN cd /tmp \
@@ -76,7 +75,7 @@ VOLUME /etc/debesys
 
 # By creating a container user with the same userid as the host os, permissions
 # on the shared repo "just work".  Similar to the squashuid thing in nfs.
-RUN useradd -u $userid $user -s /bin/zsh \
+RUN useradd -u $userid $user \
         && chown -R $user /var \
         && chown -R $user /opt
 

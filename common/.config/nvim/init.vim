@@ -32,14 +32,11 @@ if filereadable(expand('~/.local/share/nvim/site/autoload/plug.vim'))
 endif
 
 set rtp+=~/.fzf
-set shell=/bin/bash
 
-set number
-set bg=dark
 if has('nvim')
     set guicursor=
 endif
-colo gruvbox
+set bg=dark
 hi Normal guibg=NONE ctermbg=NONE
 "regrettably living in a world with heaps of legacy code.  revisit
 "let g:clang_format#auto_format = 1
@@ -129,7 +126,7 @@ set smartcase
 set incsearch
 set hlsearch
 
-set scrolloff=2
+set scrolloff=8
 
 set inccommand=nosplit
 
