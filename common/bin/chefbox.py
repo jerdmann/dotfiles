@@ -179,10 +179,22 @@ if __name__ == "__main__":
 
         if len(ips) < 0:
             bail("no nodes found")
-        elif len(ips) > 1:
-            bail("{}multiple nodes found. narrow the search.\n".format(out))
 
-        ip = ips[0]
+        ip = None
+        if len(ips) == 1:
+            ip = ips[0]
+        else:
+            print(out)
+            for idx,val in enumerate(ips):
+                print("{}) {}".format(idx+1, val))
+            while ip is None:
+                tok = input("# ")
+                try:
+                    idx = int(tok) - 1
+                    ip = ips[idx]
+                except:
+                    continue
+
         p = Popen("ssh {}".format(ip), shell=True)
         p.communicate()
         sys.exit(p.returncode)

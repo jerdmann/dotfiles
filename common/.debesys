@@ -114,14 +114,6 @@ function bgf {
     knife tag create $1 basegofast
 }
 
-function lmk {
-    ~/build.sh --mks-file "" $@
-}
-
-function mk {
-    ~/build.sh --mks-file ~/.my_mks --no-proto --use-cache $@
-}
-
 export MY_TARGETS="mds demo_adapter price_server_engine price_client_test"
 function mkmds {
     rr || return

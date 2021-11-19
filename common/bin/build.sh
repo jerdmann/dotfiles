@@ -62,14 +62,8 @@ else
 fi
 params="config=$config use_distcc=0 $cache -C $rr -j$jobs $args"
 
-has_gcc9=""
-$(gcc --version | grep -P '9\.\d+\.\d+' >/dev/null)
-if [[ $? -eq 0 ]]; then 
-    has_gcc9="yes"
-fi
 gcc9_mkvars="$rr/base_gcc9_cxx11.mkvars"
-
-if [[ "$has_gcc9" == "yes" && "$gcc9_mkvars" != "" ]]; then
+if [[ -r "$gcc9_mkvars" ]]; then
     params="$params var_file_name=$gcc9_mkvars"
 fi
 
@@ -85,10 +79,9 @@ if [[ "$mks_file" != "" ]]; then
 fi
 
 # terse mode if present
-cmd="make $params $@ 2>&1"
+cmd="make $params $@"
 if [[ "$terse" == "yes" ]]; then
     cmd="$cmd | grep --line-buffered -v 'given more than once'"
-              # | grep --line-buffered --color=never error:"
 fi
 
 # execute the command and pass through its return code

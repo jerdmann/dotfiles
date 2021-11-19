@@ -76,7 +76,7 @@ export GOPATH="/home/jason/gocode"
 export PATH=~/.cargo/bin:/usr/local/go/bin:/opt/jdk/bin:$GOPATH/bin:$PATH
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-export PATH="$PATH:/home/jason/projects/python"
+export PATH="$PATH:/home/jason/bin:/home/jason/projects/python"
 
 for f in \
     ~/.ase_rc \
