@@ -9,6 +9,7 @@ if filereadable(expand('~/.local/share/nvim/site/autoload/plug.vim'))
     " baseline nice things
     Plug 'airblade/vim-gitgutter'
     Plug 'gruvbox-community/gruvbox'
+    Plug 'kaicataldo/material.vim'
     Plug 'tpope/vim-abolish'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-fugitive'
@@ -36,8 +37,13 @@ set rtp+=~/.fzf
 if has('nvim')
     set guicursor=
 endif
+if has('termguicolors')
+    set termguicolors
+endif
+
 set bg=dark
-hi Normal guibg=NONE ctermbg=NONE
+colo material
+" hi Normal guibg=NONE ctermbg=NONE
 "regrettably living in a world with heaps of legacy code.  revisit
 "let g:clang_format#auto_format = 1
 "let g:clang_format#auto_formatexpr = 1

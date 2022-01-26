@@ -121,6 +121,12 @@ function mkmds {
     popd >/dev/null
 }
 
+function mkclean {
+    rr || return
+    rm -rf build the_arsenal/all_messages/_pb_out
+    popd >/dev/null
+}
+
 function imkmds {
     rr || return
     ~/build.sh --idebug --mks-file "" $MY_TARGETS
@@ -270,7 +276,7 @@ function do_oneoff {
         return
     fi
 
-    ref="-r --request-build"
+    ref="-r"
     if [[ "$1" = "-n" ]]; then
         ref="-n"
         shift 1
@@ -289,7 +295,7 @@ function do_oneoff {
 
     nodes=$@
     echo "running oneoff of $cb on $nodes"
-    oneoff -c $cb $ref -s $nodes --run-chef --override-oneoff --skip-package-check
+    oneoff -c $cb $ref -s $nodes --override-oneoff --skip-package-check
 }
 
 function upstage {
@@ -310,3 +316,12 @@ function _lstrip {
         | sed -r 's/\[SPLUNK_IGNORE\]//'
 }
 alias lstrip=_lstrip
+
+function _rd {
+    if [[ $# -lt 2 ]]; then
+        echo "expect: exchange"
+        return
+    fi
+    ttrun replay_driver -l build/x86-64/debug/lib/lib$1_adapter.so -c /etc/debesys/mds_adapter_$1.conf $@
+}
+alias rd=_rd

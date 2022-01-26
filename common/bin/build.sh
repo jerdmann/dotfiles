@@ -21,6 +21,7 @@ mks_file=""
 proto=""
 config="debug"
 cache=""
+ext=""
 args=""
 
 while [[ $# -gt 0 ]]; do
@@ -38,6 +39,9 @@ while [[ $# -gt 0 ]]; do
         shift 1
     elif [[ "$1" == "--use-cache" ]]; then
         cache="use_cache=1"
+        shift 1
+    elif [[ "$1" == "--ext" ]]; then
+        ext="yes"
         shift 1
     else 
         if [[ -z "$args" ]]; then
@@ -63,7 +67,7 @@ fi
 params="config=$config use_distcc=0 $cache -C $rr -j$jobs $args"
 
 gcc9_mkvars="$rr/base_gcc9_cxx11.mkvars"
-if [[ -r "$gcc9_mkvars" ]]; then
+if [[ -r "$gcc9_mkvars" && -z "$ext" ]]; then
     params="$params var_file_name=$gcc9_mkvars"
 fi
 
