@@ -117,7 +117,7 @@ function bgf {
 export MY_TARGETS="mds demo_adapter price_server_engine price_client_test"
 function mkmds {
     rr || return
-    ~/build.sh --mks-file "" $MY_TARGETS
+    lmk $MY_TARGETS
     popd >/dev/null
 }
 
@@ -129,7 +129,7 @@ function mkclean {
 
 function imkmds {
     rr || return
-    ~/build.sh --idebug --mks-file "" $MY_TARGETS
+    lmk --idebug $MY_TARGETS
     popd >/dev/null
 }
 
@@ -267,12 +267,17 @@ function pullcap {
 }
 
 function selnode {
-    echo 'pse beacon 0' | sudo tee /tmp/mds_demo_commands.1.$1 && echo 'pse beacon 2' | sudo tee /tmp/mds_demo_commands.1.$1
+    instance=$1
+    if [[ -z "$instance" ]]; then
+        echo "expect: selnode [instance]"
+        return
+    fi
+    echo 'pse beacon 0' | sudo tee /tmp/mds_demo_commands.$instance && echo 'pse beacon 2' | sudo tee /tmp/mds_demo_commands.$instance
 }
 
 function do_oneoff {
     if [[ $# -lt 2 ]]; then
-        echo "expect: cookbook node1 [node2...]"
+        echo "expect: cookbook [-r|-n] node1 [node2...]"
         return
     fi
 
@@ -310,12 +315,12 @@ function upstage {
     upenv -c $cb -e int-stage -b $branch
 }
 
-function _lstrip {
+function _lc {
     sed -r 's/ tsExchangeSend=[0-9]+ tsServerRecv=[0-9]+//' $@ \
-        | sed -r 's/\s+\| \S+ \| KV \|//' \
+        | sed -r 's/[A-Z]+.+\|//g' \
         | sed -r 's/\[SPLUNK_IGNORE\]//'
 }
-alias lstrip=_lstrip
+alias lc=_lc
 
 function _rd {
     if [[ $# -lt 2 ]]; then
@@ -325,3 +330,15 @@ function _rd {
     ttrun replay_driver -l build/x86-64/debug/lib/lib$1_adapter.so -c /etc/debesys/mds_adapter_$1.conf $@
 }
 alias rd=_rd
+
+function _mdsfeeds {
+    if [[ $# -lt 2 ]]; then
+        echo "expect: exchange [args...]"
+        return
+    fi
+
+    ex=$1
+    shift 1
+    mds_feeds.py -c /etc/debesys/mds_adapter_$ex.conf $@
+}
+alias mdsfeeds=_mdsfeeds
