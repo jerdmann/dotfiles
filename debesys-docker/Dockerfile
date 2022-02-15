@@ -34,6 +34,7 @@ RUN yum install -y --nogpgcheck \
         sysvinit-tools \
         tcpdump \
         wget \
+        xauth \
         xclip \
         xsel
 
