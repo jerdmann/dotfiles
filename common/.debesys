@@ -316,7 +316,7 @@ function upstage {
 }
 
 function _lc {
-    sed -r 's/ tsExchangeSend=[0-9]+ tsServerRecv=[0-9]+//' $@ \
+    sed -r 's/ tsExchangeSend=[0-9]+ tsServerRecv=[0-9]+//' \
         | sed -r 's/[A-Z]+.+\|//g' \
         | sed -r 's/\[SPLUNK_IGNORE\]//'
 }

@@ -31,3 +31,5 @@
     validate-jira-number = true
     include-jira-summary = true
     jira-summary-length = 40
+[merge]
+    tool = vimdiff
