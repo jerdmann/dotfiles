@@ -53,14 +53,34 @@ function gbr {
     git checkout -b "$release/$1"
 }
 
-# rebase to tip of release
-function grebase {
-    release=$(grname)
-    if [[ $? -ne 0 ]]; then
-        echo "error: no release" >&2
+# full release branch name
+function gbname {
+    tmp=$(grname)
+    if [[ "$tmp" == "topic" ]]; then
+        echo "master"
         return
     fi
-    git rebase "$release/current"
+    val=$(echo $tmp | cut -f1 -d/)
+    echo "$val/current"
+}
+
+# rebase to tip of release
+function grebase {
+    base=$(gbname)
+    if [[ $? -ne 0 ]]; then
+        echo "error: no base" >&2
+        return
+    fi
+    cur=$(gname)
+    if [[ -z $cur ]]; then
+        echo "error: no current branch" >&2
+        return
+    fi
+
+    git checkout $base
+    git up
+    git checkout $cur
+    git rebase $base
 }
 
 function gbump {

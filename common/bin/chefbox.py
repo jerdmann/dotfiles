@@ -8,7 +8,7 @@ import shlex
 import sys
 from collections import namedtuple
 from operator import itemgetter
-from subprocess import check_output, Popen
+from subprocess import check_output, Popen, run, PIPE
 
 # chefbox.py
 # Inspired by the excellent busybox project.  One entrypoint, behaves like
@@ -61,8 +61,11 @@ def knife_search(org, fmt, filt):
     if not allow_delayed:
         query += " NOT chef_environment:*delayed*"
 
-    out = check_output('{} "{}" {}'.format(cmd, query, args), shell=True)
-    return out.decode()
+    p = run('{} "{}" {}'.format(cmd, query, args), shell=True, stdout=PIPE)
+    if p.returncode == 0:
+        return p.stdout.decode()
+    else:
+        return ""
 
 def bail(msg):
     sys.stderr.write("{}\n".format(msg))
@@ -129,6 +132,9 @@ def ks_deploy(env):
     pass
     # oneoff -c mds_adapter_b3 -r --override-oneoff -s $(ksn ter_b3 dev-md-sp) --run-chef
 
+def assert_nodes(out):
+    if not out: sys.exit(-1)
+
 if __name__ == "__main__":
     name = os.path.basename(sys.argv[0])
 
@@ -163,7 +169,9 @@ if __name__ == "__main__":
         print(knife_search(org, "summary", filt))
 
     elif name == "ksn":
-        j = json.loads(knife_search(org, "json", filt))
+        out = knife_search(org, "json", filt)
+        assert_nodes(out)
+        j = json.loads(out)
         names = []
         for row in j['rows']:
             for name in row:
@@ -173,6 +181,8 @@ if __name__ == "__main__":
     elif name == "sshks":
         ip_rex = re.compile(r'ipaddress:\s+(\S+)')
         out = knife_search(org, "summary", filt)
+        assert_nodes(out)
+
         ips = []
         for match in ip_rex.finditer(out):
             ips.append(match.group(1))
@@ -202,7 +212,10 @@ if __name__ == "__main__":
     elif name == "ksv":
         filt = Filter(filt.rl, filt.env, "-l")
         org = "ext" if is_ext(filt.env) else "int"
-        j = json.loads(knife_search(org, "json", filt))
+        out = knife_search(org, "json", filt)
+        assert_nodes(out)
+
+        j = json.loads(out)
         rows = sorted(j['rows'], key=lambda row: row['name'])
         for node in rows:
             ksv_print_node(node, filt)
