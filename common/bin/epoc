@@ -1,1 +1,5 @@
-date --universal --date @${1:0:10}
+#!/bin/bash
+while [[ $# -gt 0 ]]; do
+    date --universal --date @${1:0:10}
+    shift 1
+done

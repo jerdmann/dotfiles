@@ -7,7 +7,6 @@
     fl = log -p --name-only
     br = branch
     co = checkout
-    cm = commit
     cp = cherry-pick
     st = status
     rso = remote show origin

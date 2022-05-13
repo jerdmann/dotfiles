@@ -18,13 +18,13 @@ export LANGUAGE='en_US'
 
 alias ttrun='$(git rev-parse --show-toplevel)/run'
 alias suttrun='sudo $(git rev-parse --show-toplevel)/run'
-alias cf='pushd /etc/debesys'
-alias lg='pushd /var/log/debesys'
+alias cf='cd /etc/debesys'
+alias lg='cd /var/log/debesys'
 
 # project dirs
-alias r1='pushd ~/dev-root/debesys-one'
-alias r2='pushd ~/dev-root/debesys-two'
-alias r3='pushd ~/dev-root/debesys-three'
+alias r1='cd ~/dev-root/debesys-one'
+alias r2='cd ~/dev-root/debesys-two'
+alias r3='cd ~/dev-root/debesys-three'
 
 function _cb {
     cbr=$(echo $(git rev-parse --show-toplevel)/deploy/chef/cookbooks)
@@ -100,14 +100,6 @@ alias eksh='eknife node show'
 function ekjuno {
     mkt=$(echo "$1" | awk '{print toupper($1)}')
     eknife search "juno_up_config_market_ids:*_$mkt* AND chef_environment:ext-prod-live" -a ipaddress
-}
-
-function kssh {
-    knife ssh --no-host-key-verify -a ipaddress "$1" "$2"
-}
-
-function ekssh {
-    eknife ssh --no-host-key-verify -a ipaddress "$1" "$2"
 }
 
 function bgf {
@@ -262,7 +254,7 @@ function pullcap {
     file=$(basename $link)
 
     wget -nc -P /tmp $link
-    unzip -o -j -d /tmp /tmp/$file
+    unzip -o -j -d ~/captures/ /tmp/$file
     rm /tmp/$file
 }
 

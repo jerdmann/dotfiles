@@ -1,1 +1,4 @@
 hack.*
+*.pl
+*.py
+*__pycache__*

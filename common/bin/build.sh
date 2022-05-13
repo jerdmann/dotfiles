@@ -60,7 +60,7 @@ fi
 
 # baseline params, plus gcc9 if present
 if [[ -z "$GCC_CPU_CORES" ]]; then
-    jobs=$(nproc --ignore 1)
+    jobs=$(nproc --ignore 2)
 else
     jobs=$GCC_CPU_CORES
 fi

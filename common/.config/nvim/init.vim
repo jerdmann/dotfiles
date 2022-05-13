@@ -9,7 +9,6 @@ if filereadable(expand('~/.local/share/nvim/site/autoload/plug.vim'))
     " baseline nice things
     Plug 'airblade/vim-gitgutter'
     Plug 'gruvbox-community/gruvbox'
-    Plug 'kaicataldo/material.vim'
     Plug 'tpope/vim-abolish'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-fugitive'
@@ -25,6 +24,12 @@ if filereadable(expand('~/.local/share/nvim/site/autoload/plug.vim'))
     Plug 'fatih/vim-go'
     Plug 'rhysd/vim-clang-format'
     Plug 'rust-lang/rust.vim'
+
+    " lsp
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'hrsh7th/nvim-cmp', { 'branch': 'main' }
+    Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
+    Plug 'hrsh7th/cmp-nvim-lua', { 'branch': 'main' }
 
     " shenanigans
     Plug 'triglav/vim-visual-increment'
@@ -42,8 +47,7 @@ if has('termguicolors')
 endif
 
 set bg=dark
-colo material
-" hi Normal guibg=NONE ctermbg=NONE
+colo gruvbox
 "regrettably living in a world with heaps of legacy code.  revisit
 "let g:clang_format#auto_format = 1
 "let g:clang_format#auto_formatexpr = 1
@@ -88,7 +92,7 @@ augroup vimrc
     autocmd Filetype ruby       setlocal ts=4 sw=4
 
     autocmd Filetype      cpp   let b:commentary_format = '// %s'
-    " TODO.  weird paranoid cpp-only trimming. The random filetype actually has significant
+    " TODO.  weird filetype-specific trimming. The random filetype actually has significant
     " trailing whitespace so be a wuss for now.
     autocmd BufWritePre *.cpp,*.h,*.inl,*.md,*.py,*.rb,*.rs  :call TrimTrailingWhitespace()
 
@@ -103,9 +107,11 @@ augroup vimrc
     autocmd BufReadPost * if line("'\"") | exe "'\"" | endif
 augroup END
 
+let g:ale_enabled = 0
+let g:ale_pattern_options = {'\.min.js$': {'ale_enabled': 0}}
 let g:ale_linters = {'python': ['pyflakes']}
-let g:ale_cpp_cc_executable = 'clang++-9'
-let g:ale_cpp_gcc_options = '-std=c++17 -Wall'
+" let g:ale_cpp_cc_executable = 'clang++-9'
+" let g:ale_cpp_gcc_options = '-std=c++17 -Wall'
 
 let g:go_fmt_fail_silently = 0
 let g:go_autodetect_gopath = 1
@@ -132,6 +138,7 @@ set smartcase
 set incsearch
 set hlsearch
 
+set cursorline
 set scrolloff=8
 
 set inccommand=nosplit
@@ -150,6 +157,7 @@ set pastetoggle=<F2>
 let mapleader = "\<Space>"
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<cr>
 nnoremap <leader>g :silent grep! 
+nnoremap <leader>k :silent grep! -w <cword><cr>
 nnoremap <leader>q :bp \| bd #<cr>
 nnoremap <leader><leader> :b#<cr>
 
@@ -160,7 +168,6 @@ else
   set grepformat=%f:%l:%m,%m\ %f\ match%ts,%f
 endif
 
-nnoremap K :silent grep! -w <cword><cr>
 nnoremap Q <nop>
 nnoremap Y y$
 
@@ -168,30 +175,19 @@ nnoremap Y y$
 nnoremap <silent> <C-p> :FZF<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>t :Tags<cr>
-nnoremap <leader>w :w<cr>
 nnoremap <leader>fl :Lines<cr>
 nnoremap <leader>fr :Rg<cr>
 
 " lame debug
 nnoremap <silent> <leader>d <esc>Oprintf("TRACE ===> %s: \n", __func__);<esc>BBi
 
+nnoremap <leader>w :w<cr>
 nnoremap <leader>m :make<cr>:botright cw<cr>
 
 nnoremap <silent> <leader>l :wa<cr> :silent !tmux send-keys -t {next} -X cancel; tmux send-keys -Rt {next} Up Enter<cr>
 
 noremap <leader>p :read !xsel --clip --output<cr>
 noremap <leader>c :w !xsel -ib<cr><cr>
-
-" lame node migrate thing
-function FlipNode()
-    " grab the exchange name
-    call search('mds_adapter_', 'e')
-    normal l"eyw
-    " smash the old-style runlist entries to the new ones
-    execute "%s/mds_price_server::/mds_adapter_" . @e . "::price_server_"
-    execute "%s/mds_ppiq::/mds_adapter_" . @e . "::ppiq"
-    execute 'wq'
-endfunction
 
 vnoremap <C-h> :nohlsearch<cr>
 nnoremap <C-h> :nohlsearch<cr>
@@ -201,3 +197,52 @@ vnoremap ; :
 
 map <F1> <Esc>
 imap <F1> <Esc>
+
+lua << EOF
+
+-- require('lspconfig').clangd.setup{}
+-- Mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+local opts = { noremap=true, silent=true }
+vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+
+vim.lsp.set_log_level("debug")
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+end
+
+-- local servers = { 'clangd' }
+local servers = {}
+for _, lsp in pairs(servers) do
+  require('lspconfig')[lsp].setup {
+    on_attach = on_attach,
+    flags = {
+      -- This will be the default in neovim 0.7+
+      debounce_text_changes = 150,
+    }
+  }
+end
+EOF

@@ -88,3 +88,88 @@ function _tmsh {
     reset && ssh -X -t $name "tmux attach -t $name || tmux new -s $name"
 }
 alias tmsh=_tmsh
+
+# just the release part, eg release_v123
+function grname {
+    tmp=$(gname)
+    if [[ "$tmp" == "master" ]]; then
+        echo "topic"
+        return
+    fi
+
+    echo $tmp | cut -f1 -d/
+}
+
+# checkout a release branch
+function gbr {
+    release=$(grname)
+    if [[ "$release" == "" ]]; then
+        echo "error: no release" >&2
+        return
+    fi
+    git checkout -b "$release/$1"
+}
+
+# full release branch name
+function gbname {
+    tmp=$(grname)
+    if [[ "$tmp" == "topic" ]]; then
+        echo "master"
+        return
+    fi
+    val=$(echo $tmp | cut -f1 -d/)
+    echo "$val/current"
+}
+
+# rebase to tip of release
+function grebase {
+    base=$(gbname)
+    if [[ $? -ne 0 ]]; then
+        echo "error: no base" >&2
+        return
+    fi
+    cur=$(gname)
+    if [[ -z $cur ]]; then
+        echo "error: no current branch" >&2
+        return
+    fi
+
+    git checkout $base
+    git up
+    git checkout $cur
+    git rebase $base
+}
+
+function gbump {
+    python -c '
+import sys, re, subprocess
+r = re.search(r"(\S+)\.v(\d+)", sys.stdin.read())
+if not r:
+    sys.stderr.write("error: branch missing .v[number]")
+    sys.exit(-1)
+
+base = r.group(1)
+tag = int(r.group(2)) + 1
+
+branch = "{}.v{}".format(r.group(1), int(r.group(2)) + 1)
+subprocess.check_call("git checkout -b {}".format(branch).split())
+' < <(gname)
+}
+
+function gg {
+    if [[ "$#" -eq 0 ]]; then
+        echo "expect: commit message"
+        return
+    fi
+    g commit -m "@goodgardening @$"
+}
+
+function perfrecord {
+    sudo perf record -a -g -F 99 $@
+}
+
+function perfrender {
+    perf script | stackcollapse-perf.pl --all | flamegraph.pl > perf.svg
+    firefox perf.svg
+
+}

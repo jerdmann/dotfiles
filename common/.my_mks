@@ -1,6 +1,7 @@
-ase/native_spreader/nase.build.mk
-fixit/compiler/build.mk
-fixit/cpp/build.mk
+xase/native_spreader/nase.build.mk
+xfixit/compiler/build.mk
+xfixit/cpp/build.mk
+mds/adapter_json/build.mk
 mds/consumer/cloud_uploader/build.mk
 mds/consumer/event_logger/build.mk
 mds/consumer/pdsu_engine/build.mk
@@ -29,12 +30,15 @@ mds/exchange_adapter/jump_trading/build.mk
 mds/exchange_adapter/lme/build.mk
 mds/exchange_adapter/meff/build.mk
 mds/exchange_adapter/mexder/build.mk
+mds/exchange_adapter/nasdaq_ned/build.mk
 mds/exchange_adapter/nfx/build.mk
 mds/exchange_adapter/nse/build.mk
 mds/exchange_adapter/sgx/itch/build.mk
 mds/exchange_adapter/sgx/om/build.mk
 mds/exchange_adapter/taifex/build.mk
+mds/exchange_adapter/tfex/build.mk
 mds/exchange_adapter/tfx/build.mk
+mds/exchange_adapter/unittest/build.mk
 mds/exchange_adapter/wse/build.mk
 mds/instrument_data_driver/build.mk
 mds/market_data_server/build.mk
@@ -43,7 +47,9 @@ mds/replay_driver/build.mk
 mds/targets.build.mk
 mds/test/fw/build.mk
 mds/test_harness/build.mk
+misc/ttmetrics/build.mk
 pds/source/pdsapi_shared.build.mk
+price_server/exchange/lme_lh/lme_lh.build.mk
 price_server/lbm_connect/build.mk
 price_server/lbm_price_listener/build.mk
 price_server/pds_uploader/build.mk
@@ -63,5 +69,6 @@ price_server/ps_common/sub_mgr/build.mk
 price_server/psadmin/build.mk
 price_server/test/fw/build.mk
 the_arsenal/all_messages/build.mk
-the_arsenal/pycommon/build.mk
-triage/cpp/triage_handler/build.mk
+xthe_arsenal/pycommon/build.mk
+xtriage/cpp/triage_handler/build.mk
+darwin/cpp/build.mk
