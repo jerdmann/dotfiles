@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import argparse
 import json
 import os
 import os.path
@@ -158,12 +157,12 @@ if __name__ == "__main__":
             check_output('ln -sf {} {}'.format(name, target), shell=True)
         sys.exit()
 
-    org = "int"
-    if name[0] == 'e':
-        org = "ext"
-        name = name[1:]
-
     filt = make_filter(sys.argv[1:])
+
+    # always heurestic, compatible with e-prefix things
+    org = "ext" if is_ext(filt.env) else "int"
+    if name[0] == 'e':
+        name = name[1:]
 
     if name == "ks":
         print(knife_search(org, "summary", filt))
@@ -211,7 +210,6 @@ if __name__ == "__main__":
 
     elif name == "ksv":
         filt = Filter(filt.rl, filt.env, "-l")
-        org = "ext" if is_ext(filt.env) else "int"
         out = knife_search(org, "json", filt)
         assert_nodes(out)
 

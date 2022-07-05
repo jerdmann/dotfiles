@@ -85,7 +85,7 @@ function _tmsh {
     if [[ -n "$name" ]]; then
         echo "no hostname"
     fi
-    reset && ssh -X -t $name "tmux attach -t $name || tmux new -s $name"
+    reset && ssh -t $name "tmux attach -d -t $name || tmux new -s $name"
 }
 alias tmsh=_tmsh
 
@@ -161,15 +161,15 @@ function gg {
         echo "expect: commit message"
         return
     fi
-    g commit -m "@goodgardening @$"
+    git commit -m "@goodgardening $1"
 }
 
 function perfrecord {
-    sudo perf record -a -g -F 99 $@
+    sudo perf record -a -g $@
 }
 
 function perfrender {
-    perf script | stackcollapse-perf.pl --all | flamegraph.pl > perf.svg
-    firefox perf.svg
+    perf script -i $1 | stackcollapse-perf.pl --all | flamegraph.pl > $1.svg
+    firefox $1.svg &
 
 }
