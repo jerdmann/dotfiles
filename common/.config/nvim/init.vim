@@ -108,7 +108,7 @@ augroup vimrc
 augroup END
 
 let g:ale_enabled = 0
-let g:ale_pattern_options = {'\.min.js$': {'ale_enabled': 0}}
+let g:ale_pattern_options = {'\.rb$': {'ale_enabled': 1}}
 let g:ale_linters = {'python': ['pyflakes']}
 " let g:ale_cpp_cc_executable = 'clang++-9'
 " let g:ale_cpp_gcc_options = '-std=c++17 -Wall'
@@ -140,6 +140,7 @@ set hlsearch
 
 set cursorline
 set scrolloff=8
+set cursorline
 
 set inccommand=nosplit
 
@@ -170,6 +171,9 @@ endif
 
 nnoremap Q <nop>
 nnoremap Y y$
+
+nnoremap <leader>k :silent grep! -w <cword><cr>
+nnoremap <leader>g :silent grep! 
 
 " FZF is life changing
 nnoremap <silent> <C-p> :FZF<cr>

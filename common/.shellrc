@@ -14,6 +14,7 @@ for f in \
     ~/.bash_functions \
     ~/.debesys \
     ~/.keys \
+    ~/.t3 \
     ~/.vpn \
     ~/.workstation \
 ; do

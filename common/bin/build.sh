@@ -85,7 +85,7 @@ fi
 # terse mode if present
 cmd="make $params $@"
 if [[ "$terse" == "yes" ]]; then
-    cmd="$cmd | grep --line-buffered -v 'given more than once'"
+    cmd="$cmd 2>&1 | grep --line-buffered -v -e 'recipe for target' -e 'given more than once' -e 'Use of this header'"
 fi
 
 # execute the command and pass through its return code

@@ -164,12 +164,7 @@ function gg {
     git commit -m "@goodgardening $1"
 }
 
-function perfrecord {
-    sudo perf record -a -g $@
-}
-
 function perfrender {
-    perf script -i $1 | stackcollapse-perf.pl --all | flamegraph.pl > $1.svg
-    firefox $1.svg &
+    perf script -i $1 | stackcollapse-perf.pl --all | flamegraph.pl > $1.svg && sudo mv $1.svg /usr/share/nginx/html/
 
 }
