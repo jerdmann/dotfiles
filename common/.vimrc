@@ -27,7 +27,6 @@ syntax on
 set t_Co=256
 set ttyfast
 set lazyredraw
-set number
 "set cursorline
 
 set bg=dark

@@ -1,6 +1,6 @@
 xase/native_spreader/nase.build.mk
-xfixit/compiler/build.mk
-xfixit/cpp/build.mk
+fixit/compiler/build.mk
+fixit/cpp/build.mk
 mds/adapter_json/build.mk
 mds/consumer/cloud_uploader/build.mk
 mds/consumer/event_logger/build.mk
@@ -48,8 +48,11 @@ mds/targets.build.mk
 mds/test/fw/build.mk
 mds/test_harness/build.mk
 misc/ttmetrics/build.mk
+misc/ttmetrics/metrics_driver.build.mk
 pds/source/pdsapi_shared.build.mk
+price_server/exchange/cme/cme_lh.build.mk
 price_server/exchange/lme_lh/lme_lh.build.mk
+price_server/exchange/ttfix_lh/ttfix_lh.build.mk
 price_server/lbm_connect/build.mk
 price_server/lbm_price_listener/build.mk
 price_server/pds_uploader/build.mk
@@ -69,6 +72,6 @@ price_server/ps_common/sub_mgr/build.mk
 price_server/psadmin/build.mk
 price_server/test/fw/build.mk
 the_arsenal/all_messages/build.mk
-xthe_arsenal/pycommon/build.mk
-xtriage/cpp/triage_handler/build.mk
+the_arsenal/pycommon/build.mk
+triage/cpp/triage_handler/build.mk
 darwin/cpp/build.mk

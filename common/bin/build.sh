@@ -43,7 +43,7 @@ while [[ $# -gt 0 ]]; do
     elif [[ "$1" == "--ext" ]]; then
         ext="yes"
         shift 1
-    else 
+    else
         if [[ -z "$args" ]]; then
             args="$1"
         else
@@ -81,6 +81,8 @@ if [[ "$mks_file" != "" ]]; then
     my_mks=$(for f in $(cat "$mks_file"); do [[ -f "$rr/$f" ]] && printf "%s " $f; done)
     params="$params def_files=\"$my_mks\""
 fi
+
+export SKIP_PROTO_RULES=1
 
 # terse mode if present
 cmd="make $params $@"

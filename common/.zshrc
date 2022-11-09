@@ -21,8 +21,8 @@ setopt aliases
 unsetopt equals
 
 bindkey -e
-# bindkey "^[[1;5D" emacs-backward-word
-# bindkey "^[[1;5C" emacs-forward-word
+bindkey "^[[1;5D" emacs-backward-word
+bindkey "^[[1;5C" emacs-forward-word
 
 # Fix punctuation behavior for word commands.
 export WORDCHARS=''

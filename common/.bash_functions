@@ -85,7 +85,7 @@ function _tmsh {
     if [[ -n "$name" ]]; then
         echo "no hostname"
     fi
-    reset && ssh -t $name "tmux attach -d -t $name || tmux new -s $name"
+    reset && ssh -X -t $name "tmux attach -d -t $name || tmux new -s $name"
 }
 alias tmsh=_tmsh
 
@@ -166,5 +166,4 @@ function gg {
 
 function perfrender {
     perf script -i $1 | stackcollapse-perf.pl --all | flamegraph.pl > $1.svg && sudo mv $1.svg /usr/share/nginx/html/
-
 }
