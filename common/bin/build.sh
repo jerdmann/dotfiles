@@ -43,7 +43,7 @@ while [[ $# -gt 0 ]]; do
     elif [[ "$1" == "--ext" ]]; then
         ext="yes"
         shift 1
-    else
+    else 
         if [[ -z "$args" ]]; then
             args="$1"
         else
@@ -60,7 +60,7 @@ fi
 
 # baseline params, plus gcc9 if present
 if [[ -z "$GCC_CPU_CORES" ]]; then
-    jobs=$(nproc --ignore 2)
+    jobs=$(nproc --ignore 1)
 else
     jobs=$GCC_CPU_CORES
 fi
@@ -69,6 +69,8 @@ params="config=$config use_distcc=0 $cache -C $rr -j$jobs $args"
 gcc9_mkvars="$rr/base_gcc9_cxx11.mkvars"
 if [[ -r "$gcc9_mkvars" && -z "$ext" ]]; then
     params="$params var_file_name=$gcc9_mkvars"
+else
+    params="$params var_file_name=base.mkvars"
 fi
 
 if [[ "$proto" != "" ]]; then
@@ -80,17 +82,20 @@ fi
 if [[ "$mks_file" != "" ]]; then
     my_mks=$(for f in $(cat "$mks_file"); do [[ -f "$rr/$f" ]] && printf "%s " $f; done)
     params="$params def_files=\"$my_mks\""
-fi
 
-export SKIP_PROTO_RULES=1
+    # no-op processing the all_messages mkfiles means invoking protoc once for every proto file
+    # this is rather expensive.  skip it if we're running a streamlined build
+    export SKIP_PROTO_RULES=1
+fi
 
 # terse mode if present
 cmd="make $params $@"
 if [[ "$terse" == "yes" ]]; then
-    cmd="$cmd 2>&1 | grep --line-buffered -v -e 'recipe for target' -e 'given more than once' -e 'Use of this header'"
+    cmd="$cmd | grep --line-buffered -v -e 'given more than once' -e NOTE: -e discover_mkvars"
 fi
 
 # execute the command and pass through its return code
 eval $cmd
 rc=$?
+# rc="${PIPESTATUS[0]}"
 exit $rc

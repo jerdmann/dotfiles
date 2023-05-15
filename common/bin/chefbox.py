@@ -66,6 +66,19 @@ def knife_search(org, fmt, filt):
     else:
         return ""
 
+def knife_environment_get(org, filt):
+    assert(org in ["int", "ext"])
+    cmd = "knife"
+    if org == "ext":
+        cmd = "{} -c ~/.chef/knife.external.rb".format(cmd)
+    cmd = "{} environment show".format(cmd)
+
+    p = run('{} "{}" {}'.format(cmd, query, args), shell=True, stdout=PIPE)
+    if p.returncode == 0:
+        return p.stdout.decode()
+    else:
+        return ""
+
 def bail(msg):
     sys.stderr.write("{}\n".format(msg))
     sys.exit(-1)
@@ -149,7 +162,7 @@ if __name__ == "__main__":
         sys.argv[env_idx] = "-delayed"
 
     if name == "chefbox.py":
-        for target in ['ks', 'ksn', 'sshks']:
+        for target in ['ks', 'ksn', 'sshks', 'kev']:
             check_output('ln -sf {} {}'.format(name, target), shell=True)
             check_output('ln -sf {} e{}'.format(name, target), shell=True)
 
@@ -217,6 +230,12 @@ if __name__ == "__main__":
         rows = sorted(j['rows'], key=lambda row: row['name'])
         for node in rows:
             ksv_print_node(node, filt)
+
+    elif name == "kev":
+        # kev ase prod-live
+        e = knife_environment_get(sys.argv[1])
+
+        # 'cookbook_versions'
 
     else:
         bail("unhandled invocation: {}".format(name))

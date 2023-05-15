@@ -158,7 +158,7 @@ function _pdci {
     fi
 }
 alias pdci=_pdci
-alias pdc="suttrun release price_decoder"
+alias pdc="ttrun release price_decoder"
 
 function cbdevup {
     for cb in $@; do

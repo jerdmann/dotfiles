@@ -17,7 +17,7 @@ for f in \
     ~/.t3 \
     ~/.vpn \
     ~/.workstation \
-    ~/.cargo/env
+    ~/.cargo/env \
 ; do
     test -r $f && source $f
 done

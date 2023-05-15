@@ -169,16 +169,14 @@ nnoremap <leader>g :silent grep!
 nnoremap <silent> <C-p> :FZF<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>t :Tags<cr>
+nnoremap <leader>fb :Buffers<cr>
 nnoremap <leader>fl :Lines<cr>
 nnoremap <leader>fr :Rg<cr>
-
-" lame debug
-nnoremap <silent> <leader>d <esc>Oprintf("TRACE ===> %s: \n", __func__);<esc>BBi
 
 nnoremap <leader>w :w<cr>
 nnoremap <leader>m :make<cr>:botright cw<cr>
 
-nnoremap <silent> <leader>l :wa<cr> :silent !tmux send-keys -t {top-right} -X cancel; tmux send-keys -Rt {top-right} Up Enter<cr>
+nnoremap <silent> <leader>l :wa<cr> :silent !tmux send-keys -t {last} -X cancel; tmux send-keys -Rt {last} Up Enter<cr>
 
 vnoremap <leader>p "+p
 vnoremap <leader>y "+y

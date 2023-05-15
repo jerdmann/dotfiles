@@ -1,0 +1,3 @@
+#!/bin/bash
+build.sh --terse --mks-file .my_mks $@
+exit $?
