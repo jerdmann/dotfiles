@@ -114,7 +114,7 @@ function lbmify {
     done
 }
 
-export MDS_TARGETS="mds demo_adapter price_server_engine price_client_test"
+export MDS_TARGETS="mds demo_adapter price_server_engine replay_driver"
 function mkmds {
     rr || return
     lmk $MDS_TARGETS
@@ -141,7 +141,7 @@ function sbe {
     SBE_JAR=$reporootdir/$sbe_dir/sbe-all.jar
     ./make_schema.sh
     cd sbe_common
-    $reporootdir/run python make_enums.py
+    ./make_enums.py
     popd >/dev/null
 }
 
@@ -265,7 +265,8 @@ function selnode {
         echo "expect: selnode [instance]"
         return
     fi
-    echo 'pse beacon 0' | sudo tee /tmp/mds_demo_commands.$instance && echo 'pse beacon 2' | sudo tee /tmp/mds_demo_commands.$instance
+    pipe=/tmp/mds_demo_commands.$instance
+    echo 'pse beacon 0' | sudo tee $pipe && echo 'pse beacon 2' | sudo tee $pipe
 }
 
 function do_oneoff {
@@ -292,8 +293,10 @@ function do_oneoff {
     fi
 
     nodes=$@
+    cmd="oneoff -c $cb $ref -s $nodes --override-oneoff --skip-package-check"
     echo "running oneoff of $cb on $nodes"
-    oneoff -c $cb $ref -s $nodes --override-oneoff --skip-package-check
+    echo "command is: $cmd"
+    eval $cmd
 }
 
 function upstage {
@@ -335,8 +338,6 @@ function _mdsfeeds {
     mds_feeds.py -c /etc/debesys/mds_adapter_$ex.conf $@
 }
 alias mdsfeeds=_mdsfeeds
-
-alias rj='remmina -c ~/.local/share/remmina/group_rdp_jump_jch72vm95.remmina &'
 
 function wjcat() {
     ssh wks jcat $1 | xclip

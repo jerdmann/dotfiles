@@ -27,10 +27,3 @@ export CDPATH="/home/jason/projects:/home/jason/gocode/src/github.com/jerdmann"
 # try keyboard settings, ignore failures
 setxkbmap -option ctrl:nocaps 2>/dev/null || :
 xset r rate 250 30 2>/dev/null || :
-
-# only one xcape
-# if [[ -x /usr/bin/xcape ]]; then
-#     killall xcape 2>/dev/null || :
-#     xcape -t 200 2>/dev/null
-# fi
-
