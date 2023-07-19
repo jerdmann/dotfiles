@@ -1,0 +1,4 @@
+#!/bin/bash
+build.sh --mks-file "" $@
+mkgen.py $1
+exit $?

@@ -91,7 +91,7 @@ fi
 # terse mode if present
 cmd="make $params $@"
 if [[ "$terse" == "yes" ]]; then
-    cmd="$cmd | grep --line-buffered -v -e 'given more than once' -e NOTE: -e discover_mkvars"
+    cmd="$cmd | grep --line-buffered -v -e 'given more than once' -e NOTE: -e discover_mkvars -e 'LD_LIBRARY_PATH='"
 fi
 
 # execute the command and pass through its return code

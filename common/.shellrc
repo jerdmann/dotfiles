@@ -12,11 +12,11 @@ for f in \
     ~/.ase_rc \
     ~/.bash_aliases \
     ~/.bash_functions \
-    ~/.debesys \
     ~/.keys \
     ~/.t3 \
     ~/.vpn \
     ~/.workstation \
+    ~/.debesys \
     ~/.cargo/env \
 ; do
     test -r $f && source $f

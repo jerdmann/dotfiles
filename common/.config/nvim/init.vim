@@ -130,7 +130,6 @@ set hlsearch
 set cursorline
 set scrolloff=8
 set number
-set relativenumber
 
 set inccommand=nosplit
 
@@ -149,7 +148,7 @@ let mapleader = "\<Space>"
 nnoremap <leader>e :e <C-R>=expand('%:p:h') . '/'<cr>
 nnoremap <leader>g :silent grep! 
 nnoremap <leader>k :silent grep! -w <cword><cr>
-nnoremap <leader>q :bn \| bd #<cr>
+nnoremap <leader>q :bp \| bd #<cr>
 nnoremap <leader><leader> :b#<cr>
 
 if executable('rg')
@@ -176,7 +175,7 @@ nnoremap <leader>fr :Rg<cr>
 nnoremap <leader>w :w<cr>
 nnoremap <leader>m :make<cr>:botright cw<cr>
 
-nnoremap <silent> <leader>l :wa<cr> :silent !tmux send-keys -t {last} -X cancel; tmux send-keys -Rt {last} Up Enter<cr>
+nnoremap <silent> <leader>l :wa<cr> :silent !tmux send-keys -t 0 -X cancel; tmux send-keys -Rt 0 Up Enter<cr>
 
 vnoremap <leader>p "+p
 vnoremap <leader>y "+y

@@ -3,6 +3,7 @@ export LIBRARY_PATH="/usr/lib/x86_64-linux-gnu"
 export LD_LIBRARY_PATH="/usr/local/lib"
 
 export DEVWS_REPO="/home/jason/dev-root/debesys-one"
+export DEPLOY_ONE_OFF_NEVER_EXPIRE=1
 
 if [ -f $DEVWS_REPO/deploy/chef/scripts/bashrc/devws.bash ]; then
    # Skip this step if devws.bash isn't found where it's expected.
@@ -250,13 +251,18 @@ function edge {
     ttw $env $host
 }
 
-function pullcap {
+function capunzip {
+    unzip -o -j -d ~/captures/ $1
+    rm $1
+}
+
+function capget {
     link=$1
     file=$(basename $link)
+    link=$(echo $link | sed 's/retriever-download/complete/')
 
     wget -nc -P /tmp $link
-    unzip -o -j -d ~/captures/ /tmp/$file
-    rm /tmp/$file
+    capunzip "/tmp/$file"
 }
 
 function selnode {
@@ -269,9 +275,9 @@ function selnode {
     echo 'pse beacon 0' | sudo tee $pipe && echo 'pse beacon 2' | sudo tee $pipe
 }
 
-function do_oneoff {
+function oof {
     if [[ $# -lt 2 ]]; then
-        echo "expect: cookbook [-r|-n] node1 [node2...]"
+        echo "expect: cookbook [-r|-n] [--build] node1 [node2...]"
         return
     fi
 
@@ -284,6 +290,11 @@ function do_oneoff {
         ref="-r $2"
         shift 2
     fi
+    build=""
+    if [[ "$1" = "--build" ]]; then
+        build="--request-build"
+        shift 1
+    fi
 
     cb="$1"
     shift 1
@@ -293,7 +304,10 @@ function do_oneoff {
     fi
 
     nodes=$@
-    cmd="oneoff -c $cb $ref -s $nodes --override-oneoff --skip-package-check"
+    cmd="oneoff -c $cb $ref -s $nodes --override-oneoff --skip-package-check --run-chef"
+    if [[ ! -z "$build" ]]; then
+        cmd="$cmd $build"
+    fi
     echo "running oneoff of $cb on $nodes"
     echo "command is: $cmd"
     eval $cmd
