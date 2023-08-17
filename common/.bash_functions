@@ -63,10 +63,9 @@ function hlgf() { hlg "$1=$FIELD_VALS+";}
 function hlpf() { hlp "$1=$FIELD_VALS+";}
 
 function _tmux_scrap {
-    tmux split-window -h
     tmux send-keys 'cd ~/projects/scrap' C-m
     tmux send-keys 'make && ./scrap' C-m
-    tmux select-pane -L
+    tmux split-window -h
     tmux send-keys 'cd ~/projects/scrap' C-m
     tmux send-keys 'v src/scrap.cpp' C-m
     tmux rename-window scrap
@@ -85,6 +84,7 @@ function _tmsh {
     if [[ -n "$name" ]]; then
         echo "no hostname"
     fi
+    export TERM_TITLE="$name"
     reset && ssh -X -t $name "tmux attach -d -t $name || tmux new -s $name"
 }
 alias tmsh=_tmsh

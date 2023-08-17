@@ -178,7 +178,9 @@ if __name__ == "__main__":
         name = name[1:]
 
     if name == "ks":
-        print(knife_search(org, "summary", filt))
+        out = knife_search(org, "summary", filt)
+        print(out)
+        sys.exit(0 if out else -1)
 
     elif name == "ksn":
         out = knife_search(org, "json", filt)

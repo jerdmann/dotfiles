@@ -60,7 +60,7 @@ fi
 
 # baseline params, plus gcc9 if present
 if [[ -z "$GCC_CPU_CORES" ]]; then
-    jobs=$(nproc --ignore 1)
+    jobs=$(nproc --ignore 2)
 else
     jobs=$GCC_CPU_CORES
 fi
@@ -80,7 +80,8 @@ fi
 # build the mks list based on a union of what mks the user cares about and which
 # ones are actually present in the tree
 if [[ "$mks_file" != "" ]]; then
-    my_mks=$(for f in $(cat "$mks_file"); do [[ -f "$rr/$f" ]] && printf "%s " $f; done)
+    my_mks=$(for f in $(cat "$rr/$mks_file"); do [[ -f "$rr/$f" ]] && printf "%s " $f; done)
+    echo $my_mks
     params="$params def_files=\"$my_mks\""
 
     # no-op processing the all_messages mkfiles means invoking protoc once for every proto file
@@ -91,7 +92,7 @@ fi
 # terse mode if present
 cmd="make $params $@"
 if [[ "$terse" == "yes" ]]; then
-    cmd="$cmd | grep --line-buffered -v -e 'given more than once' -e NOTE: -e discover_mkvars -e 'LD_LIBRARY_PATH='"
+    cmd="$cmd | grep --line-buffered -v -e 'given more than once' -e NOTE: -e discover_mkvars -e PATH="
 fi
 
 # execute the command and pass through its return code
