@@ -265,14 +265,36 @@ function capget {
     capunzip "/tmp/$file"
 }
 
-function selnode {
+function nodesel {
     instance=$1
     if [[ -z "$instance" ]]; then
-        echo "expect: selnode [instance]"
+        echo "expect: nodesel [instance]"
         return
     fi
     pipe=/tmp/mds_demo_commands.$instance
-    echo 'pse beacon 0' | sudo tee $pipe && echo 'pse beacon 2' | sudo tee $pipe
+    echo 'pse beacon 2' | sudo tee $pipe && echo 'pse beacon 0' | sudo tee $pipe
+}
+
+function nodeevac {
+    instance=$1
+    if [[ -z "$instance" ]]; then
+        echo "expect: nodeevac [instance]"
+        return
+    fi
+    pipe=/tmp/mds_demo_commands.$instance
+    echo 'pse beacon 3' | sudo tee $pipe && echo 'pse beacon 0' | sudo tee $pipe
+}
+
+function noderoll {
+    for instance in "$@"; do
+        pipe=/tmp/mds_demo_commands.$instance
+        echo adapter stop | sudo tee $pipe
+    done
+    sleep .5
+    for instance in "$@"; do
+        pipe=/tmp/mds_demo_commands.$instance
+        echo adapter start | sudo tee $pipe
+    done
 }
 
 function oof {
@@ -326,11 +348,18 @@ function upstage {
 }
 
 function _lc {
-    sed -ur 's/ tsExchangeSend=[0-9]+ tsServerRecv=[0-9]+//' \
-        | sed -ur 's/[A-Z]+.+\|//g' \
-        | sed -ur 's/\[SPLUNK_IGNORE\]//'
+    awk '{ 
+        gsub(/ tsExchangeSend=[0-9]+ tsServerRecv=[0-9]+/, "")
+        gsub(/[A-Z]+.+\|/, "")
+        gsub(/\[SPLUNK_IGNORE\]/, "")
+        print
+    }'
 }
 alias lc=_lc
+function _clip_lc {
+    xclip -o -sel clip | lc | xclip -i -sel clip
+}
+alias clc=_clip_lc
 
 function _rd {
     if [[ $# -lt 2 ]]; then
