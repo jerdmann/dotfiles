@@ -257,11 +257,9 @@ function capunzip {
 }
 
 function capget {
-    link=$1
-    file=$(basename $link)
-    link=$(echo $link | sed 's/retriever-download/complete/')
-
-    wget -nc -P /tmp $link
+    link=$(xclip -o -sel clip)
+    file=$(echo $link | cut -f1 -d? | xargs basename)
+    wget -nc -O "/tmp/$file" $link
     capunzip "/tmp/$file"
 }
 

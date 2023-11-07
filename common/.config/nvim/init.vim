@@ -16,8 +16,10 @@ if filereadable(expand('~/.local/share/nvim/site/autoload/plug.vim'))
     Plug 'w0rp/ale'
 
     " finding stuff
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-    Plug 'junegunn/fzf.vim'
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.4' }
+    " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    " Plug 'junegunn/fzf.vim'
 
     " langauge specific
     Plug 'elzr/vim-json'
@@ -164,15 +166,14 @@ nnoremap Y y$
 nnoremap <leader>k :silent grep! -w <cword><cr>
 nnoremap <leader>g :silent grep! 
 
-" FZF is life changing
-nnoremap <silent> <C-p> :FZF<cr>
-nnoremap <leader>b :Buffers<cr>
-nnoremap <leader>t :Tags<cr>
-nnoremap <leader>fb :Buffers<cr>
-nnoremap <leader>fl :Lines<cr>
-nnoremap <leader>fr :Rg<cr>
+" Telescope is life changing
+nnoremap <silent> <C-p> :Telescope find_files<cr>
+nnoremap <leader>b :Telescope buffers<cr>
+" nnoremap <leader>t :Tags<cr>
+nnoremap <leader>fl :Telescope live_grep<cr>
+" nnoremap <leader>fr :Rg<cr>
 
-nnoremap <leader>w :w<cr>
+" nnoremap <leader>w :w<cr>
 nnoremap <leader>m :make<cr>:botright cw<cr>
 
 nnoremap <silent> <leader>l :wa<cr> :silent !tmux send-keys -t 0 -X cancel; tmux send-keys -Rt 0 Up Enter<cr>
