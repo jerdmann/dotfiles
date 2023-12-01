@@ -15,11 +15,11 @@ if filereadable(expand('~/.local/share/nvim/site/autoload/plug.vim'))
     Plug 'tpope/vim-unimpaired'
     Plug 'w0rp/ale'
 
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
     " finding stuff
-    Plug 'nvim-lua/plenary.nvim'
-    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.4' }
-    " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-    " Plug 'junegunn/fzf.vim'
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
 
     " langauge specific
     Plug 'elzr/vim-json'
@@ -97,6 +97,14 @@ augroup vimrc
     " autocmd QuickFixCmdPost [^l]* cwindow
     autocmd QuickFixCmdPost [^l]* botr cwindow
     autocmd QuickFixCmdPost l* botr lwindow
+
+      autocmd!
+
+    " When editing a file, always jump to the last cursor position
+    autocmd BufReadPost *
+    \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+    \   exe "normal! g'\"" |
+    \ endif
 augroup END
 
 let g:ale_enabled = 0
@@ -166,16 +174,13 @@ nnoremap Y y$
 nnoremap <leader>k :silent grep! -w <cword><cr>
 nnoremap <leader>g :silent grep! 
 
-" Telescope is life changing
-nnoremap <silent> <C-p> :Telescope find_files<cr>
-nnoremap <leader>b :Telescope buffers<cr>
-" nnoremap <leader>t :Tags<cr>
-nnoremap <leader>fl :Telescope live_grep<cr>
-" nnoremap <leader>fr :Rg<cr>
+" FZF is life changing
+nnoremap <silent> <C-p> :FZF<cr>
+nnoremap <leader>b :Buffers<cr>
+nnoremap <leader>t :Tags<cr>
+nnoremap <leader>g :Lines<cr>
 
-" nnoremap <leader>w :w<cr>
 nnoremap <leader>m :make<cr>:botright cw<cr>
-
 nnoremap <silent> <leader>l :wa<cr> :silent !tmux send-keys -t 0 -X cancel; tmux send-keys -Rt 0 Up Enter<cr>
 
 vnoremap <leader>p "+p
