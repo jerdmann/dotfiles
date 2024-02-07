@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
+import argparse
 import json
 import os
 import os.path
 import re
-import shlex
 import sys
 from collections import namedtuple
-from operator import itemgetter
 from subprocess import check_output, Popen, run, PIPE
 
 # chefbox.py
 # Inspired by the excellent busybox project.  One entrypoint, behaves like
 # different programs depending on the symlink invocation name.
 
-Filter = namedtuple('Filter', ['rl', 'env', 'args'])
+Filter = namedtuple('Filter', ['rl', 'env', 'args', 'host'])
 
 # globals because lazy
 allow_delayed = False
@@ -22,7 +21,7 @@ rl_exact = False
 # parse a list of command arguments like:
 # mds_adapter_cme ppiq dev-cert -a cpu.total memory.total
 # into a Filter tuple above
-def make_filter(toks):
+def make_filter(toks, host):
     idx = 0
     for t in toks:
         if t.startswith("-"): break
@@ -36,7 +35,7 @@ def make_filter(toks):
     if len(toks) > idx:
         args = ' '.join(toks[idx+1:])
 
-    return Filter(rl, env, args)
+    return Filter(rl, env, args, host)
 
 # single entrypoint for knife searches
 def knife_search(org, fmt, filt):
@@ -57,6 +56,8 @@ def knife_search(org, fmt, filt):
     rl_filter = "{}".format(
         ' AND '.join([rl_fmt.format(t) for t in filt.rl]))
     query = "{} AND chef_environment:*{}*".format(rl_filter, filt.env)
+    if filt.host:
+        query = "{} AND name:*{}*".format(rl_filter, filt.host)
     if not allow_delayed:
         query += " NOT chef_environment:*delayed*"
 
@@ -67,17 +68,18 @@ def knife_search(org, fmt, filt):
         return ""
 
 def knife_environment_get(org, filt):
-    assert(org in ["int", "ext"])
-    cmd = "knife"
-    if org == "ext":
-        cmd = "{} -c ~/.chef/knife.external.rb".format(cmd)
-    cmd = "{} environment show".format(cmd)
+    raise Exception("todo!")
+    # assert(org in ["int", "ext"])
+    # cmd = "knife"
+    # if org == "ext":
+    #     cmd = "{} -c ~/.chef/knife.external.rb".format(cmd)
+    # cmd = "{} environment show".format(cmd)
 
-    p = run('{} "{}" {}'.format(cmd, query, args), shell=True, stdout=PIPE)
-    if p.returncode == 0:
-        return p.stdout.decode()
-    else:
-        return ""
+    # p = run('{} "{}" {}'.format(cmd, query, args), shell=True, stdout=PIPE)
+    # if p.returncode == 0:
+    #     return p.stdout.decode()
+    # else:
+    #     return ""
 
 def bail(msg):
     sys.stderr.write("{}\n".format(msg))
@@ -150,16 +152,15 @@ def assert_nodes(out):
 if __name__ == "__main__":
     name = os.path.basename(sys.argv[0])
 
-    env_idx = -1
-    for idx,arg in enumerate(sys.argv):
-        if arg == "--delayed":
-            allow_delayed = True
-            env_idx = idx
-        elif arg == "--exact":
-            rl_exact = True
-            sys.argv.remove(arg)
-    if env_idx > -1:
-        sys.argv[env_idx] = "-delayed"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--exact", action="store_true",
+            help="exact matches on runlist fragments")
+    parser.add_argument("--host",
+            help="optional host pattern")
+    parser.add_argument("tokens", nargs='+',
+            help="filter tokens: [runlist_1] [runlist_n] ... [env]")
+    args = parser.parse_args()
+    rl_exact = args.exact
 
     if name == "chefbox.py":
         for target in ['ks', 'ksn', 'sshks', 'kev']:
@@ -170,7 +171,7 @@ if __name__ == "__main__":
             check_output('ln -sf {} {}'.format(name, target), shell=True)
         sys.exit()
 
-    filt = make_filter(sys.argv[1:])
+    filt = make_filter(args.tokens, args.host)
 
     # always heurestic, compatible with e-prefix things
     org = "ext" if is_ext(filt.env) else "int"
