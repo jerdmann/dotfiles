@@ -98,8 +98,6 @@ augroup vimrc
     autocmd QuickFixCmdPost [^l]* botr cwindow
     autocmd QuickFixCmdPost l* botr lwindow
 
-      autocmd!
-
     " When editing a file, always jump to the last cursor position
     autocmd BufReadPost *
     \ if line("'\"") > 0 && line ("'\"") <= line("$") |
@@ -171,14 +169,11 @@ endif
 nnoremap Q <nop>
 nnoremap Y y$
 
-nnoremap <leader>k :silent grep! -w <cword><cr>
-nnoremap <leader>g :silent grep! 
-
 " FZF is life changing
 nnoremap <silent> <C-p> :FZF<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>t :Tags<cr>
-nnoremap <leader>g :Lines<cr>
+"nnoremap <leader>g :Rg<cr>
 
 nnoremap <leader>m :make<cr>:botright cw<cr>
 nnoremap <silent> <leader>l :wa<cr> :silent !tmux send-keys -t 0 -X cancel; tmux send-keys -Rt 0 Up Enter<cr>

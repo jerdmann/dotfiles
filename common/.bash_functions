@@ -36,7 +36,7 @@ function servethis {
     python -m SimpleHTTPServer 8000
 }
 
-fin()  { grep --line-buffered --color=always "$@"; }  # Filter In
+fin()  { grep --line-buffered "$@"; }  # Filter In
 fout() { grep --line-buffered -v "$@"; }  # Filter Out
 
 # Highlight matching regex in file or pipe

@@ -18,7 +18,12 @@ export LANG='en_US.UTF-8'
 export LANGUAGE='en_US'
 
 alias ttrun='$(git rev-parse --show-toplevel)/run'
-alias suttrun='sudo $(git rev-parse --show-toplevel)/run'
+alias ttsudo='sudo ttrun'
+function ttgdb {
+    prog=$1
+    shift 1
+    gdb --args build/x86-64/debug/bin/$prog $@
+}
 alias cf='cd /etc/debesys'
 alias lg='cd /var/log/debesys'
 
@@ -257,8 +262,9 @@ function capunzip {
 }
 
 function capget {
-    link=$(xclip -o -sel clip)
-    file=$(echo $link | cut -f1 -d? | xargs basename)
+    args=$(xclip -o -sel clip)
+    link=$(echo $args | awk '{print $4}' | sed "s/'//g")
+    file=$(echo $link | cut -f1 -d? | xargs -0 basename)
     wget -nc -O "/tmp/$file" $link
     capunzip "/tmp/$file"
 }
@@ -270,7 +276,7 @@ function nodesel {
         return
     fi
     pipe=/tmp/mds_demo_commands.$instance
-    echo 'pse beacon 2' | sudo tee $pipe && echo 'pse beacon 0' | sudo tee $pipe
+    echo 'pse beacon 2' | sudo tee $pipe && sleep 1 && echo 'pse beacon 0' | sudo tee $pipe
 }
 
 function nodeevac {
@@ -345,3 +351,26 @@ alias mdsfeeds=_mdsfeeds
 function wjcat() {
     ssh wks jcat $1 | xclip
 }
+
+function _tm {
+    rr || return
+    cd the_arsenal/all_messages/source/tt/messaging
+    }
+alias tm=_tm
+
+function _debesys_bootstrap {
+    if [[ $# -lt 1 ]]; then
+        echo "expect: ip"
+        return
+    fi
+
+    ip=$1
+    ssh $1 'cat <<-EOF |sudo tee /root/.vimrc
+filetype plugin indent on
+set nocompatible
+set bg=dark
+set expandtab
+set sw=4 ts=4
+EOF'
+}
+alias dbs=_debesys_bootstrap

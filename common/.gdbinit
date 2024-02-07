@@ -6,7 +6,7 @@ set history save
 set print pretty on
 
 set auto-load safe-path /
-# set exec-wrapper run
+set exec-wrapper /home/jerdmann/dev-root/debesys-three/run
 #set exec-wrapper /opt/debesys/edgeserver/run
 #set exec-wrapper /opt/debesys/ps_blah/run
 
