@@ -15,7 +15,6 @@ from subprocess import check_output, Popen, run, PIPE
 Filter = namedtuple('Filter', ['rl', 'env', 'args', 'host'])
 
 # globals because lazy
-allow_delayed = False
 rl_exact = False
 
 # parse a list of command arguments like:
@@ -57,9 +56,7 @@ def knife_search(org, fmt, filt):
         ' AND '.join([rl_fmt.format(t) for t in filt.rl]))
     query = "{} AND chef_environment:*{}*".format(rl_filter, filt.env)
     if filt.host:
-        query = "{} AND name:*{}*".format(rl_filter, filt.host)
-    if not allow_delayed:
-        query += " NOT chef_environment:*delayed*"
+        query = "{} AND name:*{}*".format(query, filt.host)
 
     p = run('{} "{}" {}'.format(cmd, query, args), shell=True, stdout=PIPE)
     if p.returncode == 0:
@@ -225,7 +222,7 @@ if __name__ == "__main__":
         sys.exit(p.returncode)
 
     elif name == "ksv":
-        filt = Filter(filt.rl, filt.env, "-l")
+        filt = Filter(filt.rl, filt.env, "-l", args.host)
         out = knife_search(org, "json", filt)
         assert_nodes(out)
 

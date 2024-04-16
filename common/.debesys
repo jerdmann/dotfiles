@@ -257,7 +257,7 @@ function edge {
 }
 
 function capunzip {
-    unzip -o -j -d ~/captures/ $1
+    unzip -o -j -d ~/pcap/ $1
     rm $1
 }
 
@@ -316,7 +316,7 @@ function upstage {
 function _lc {
     awk '{ 
         gsub(/ tsExchangeSend=[0-9]+ tsServerRecv=[0-9]+/, "")
-        gsub(/[A-Z]+.+\|/, "")
+        gsub(/[A-Z]+\s+\|(\s+\S*\s+\|){4,}/, "")
         gsub(/\[SPLUNK_IGNORE\]/, "")
         print
     }'
@@ -365,12 +365,13 @@ function _debesys_bootstrap {
     fi
 
     ip=$1
-    ssh $1 'cat <<-EOF |sudo tee /root/.vimrc
+    ssh $1 'cat <<-EOF |tee ~/.vimrc
 filetype plugin indent on
 set nocompatible
 set bg=dark
 set expandtab
 set sw=4 ts=4
 EOF'
+    sudo cp ~/.vimrc /root/
 }
 alias dbs=_debesys_bootstrap
