@@ -3,16 +3,6 @@ function cbup {
     knife cookbook --cookbook-path `git rev-parse --show-toplevel`/deploy/chef/cookbooks upload "$@"
 }
 
-function rr {
-    reporootdir=$(git rev-parse --show-toplevel)
-    [[ -n "$reporootdir" ]] || return
-    basedir=$(basename $reporootdir)
-    if [[ $basedir == "ext" || $basedir == "the_arsenal" ]]; then
-        reporootdir=$(dirname $reporootdir)
-    fi
-    pushd $reporootdir >/dev/null
-}
-
 export _wk_container_name=rusty_manticore
 function wkbuild {
     docker build --network=host --tag debesys:latest \
