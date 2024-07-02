@@ -398,3 +398,11 @@ sudo cp ~/.gdbinit /root/
 EOS
 }
 alias dbs=_debesys_bootstrap
+
+function _deb {
+    for d in $@
+    do
+        xdg-open https://tradingtech.atlassian.net/browse/$d
+    done
+}
+alias deb=_deb
