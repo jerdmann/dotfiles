@@ -337,15 +337,6 @@ function _clip_lc {
 }
 alias clc=_clip_lc
 
-function _rd {
-    if [[ $# -lt 2 ]]; then
-        echo "expect: exchange"
-        return
-    fi
-    ttrun replay_driver -l build/x86-64/debug/lib/lib$1_adapter.so -c /etc/debesys/mds_adapter_$1.conf $@
-}
-alias rd=_rd
-
 function _mdsfeeds {
     if [[ $# -lt 2 ]]; then
         echo "expect: exchange [args...]"
@@ -406,3 +397,8 @@ function _deb {
     done
 }
 alias deb=_deb
+
+function _dlib {
+    sed -i 's,/opt/debesys/mds_\S*/lib/,./build/x86-64/debug/lib/,' $1
+}
+alias dlib=_dlib
