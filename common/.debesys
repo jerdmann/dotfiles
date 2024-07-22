@@ -31,6 +31,7 @@ alias lg='cd /var/log/debesys'
 alias r1='cd ~/dev-root/debesys-one'
 alias r2='cd ~/dev-root/debesys-two'
 alias r3='cd ~/dev-root/debesys-three'
+alias cdeb="source ~/bin/deb.sh $@"
 
 function _cb {
     cbr=$(echo $(git rev-parse --show-toplevel)/deploy/chef/cookbooks)
