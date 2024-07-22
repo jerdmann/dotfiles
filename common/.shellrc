@@ -4,9 +4,17 @@ export EDITOR='nvim'
 export ASAN_OPTIONS=detect_leaks=0
 export GOPATH=/home/jason/gocode
 export JDK8_BIN=/opt/jdk/bin/java
-export PATH=~/.cargo/bin:/usr/local/go/bin:/opt/jdk/bin:$GOPATH/bin:$PATH
-export PATH="$PATH:$HOME/.rvm/bin"
-export PATH="$PATH:/home/jason/bin:/home/jason/projects/python"
+for dir in \
+	/usr/local/go/bin \
+	/opt/jdk/bin \
+	$GOPATH/bin \
+	/opt/zig \
+	/home/jason/bin \
+	/home/jason/neovim/bin \
+	/home/jason/.cargo/bin \
+; do
+    test -d $dir && export PATH="$dir:$PATH"
+done
 
 for f in \
     ~/.ase_rc \

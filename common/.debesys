@@ -109,14 +109,7 @@ function external_knife_() {
 alias eknife='external_knife_'
 
 alias ke='knife node edit'
-alias ksh='knife node show'
 alias eke='eknife node edit'
-alias eksh='eknife node show'
-
-function ekjuno {
-    mkt=$(echo "$1" | awk '{print toupper($1)}')
-    eknife search "juno_up_config_market_ids:*_$mkt* AND chef_environment:ext-prod-live" -a ipaddress
-}
 
 function bgf {
     knife tag create $1 basegofast
