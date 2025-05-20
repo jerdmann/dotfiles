@@ -1,6 +1,7 @@
-if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-    sh -c 'curl -fLo "~/.local/share"/nvim/site/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+let plug_file = "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim"
+if empty(glob(plug_file))
+  silent execute '!curl -fLo ' . plug_file . ' --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 if filereadable(expand('~/.local/share/nvim/site/autoload/plug.vim'))
@@ -44,11 +45,9 @@ set rtp+=~/.fzf
 if has('nvim')
     set guicursor=
 endif
-if has('termguicolors')
-    set termguicolors
-endif
 
 set bg=dark
+let g:gruvbox_contrast_dark="soft"
 colo gruvbox
 "regrettably living in a world with heaps of legacy code.  revisit
 "let g:clang_format#auto_format = 1
@@ -87,9 +86,6 @@ augroup vimrc
     autocmd Filetype ruby       setlocal ts=4 sw=4
 
     autocmd Filetype      cpp   let b:commentary_format = '// %s'
-    " TODO.  weird filetype-specific trimming. The random filetype actually has significant
-    " trailing whitespace so be a wuss for now.
-    autocmd BufWritePre *.cpp,*.h,*.inl,*.md,*.py,*.rb,*.rs  :call TrimTrailingWhitespace()
 
     autocmd BufWritePost ~/.config/nvim/init.vim source ~/.config/nvim/init.vim 
 
@@ -158,6 +154,7 @@ nnoremap <leader>g :silent grep!
 nnoremap <leader>k :silent grep! -w <cword><cr>
 nnoremap <leader>q :bp \| bd #<cr>
 nnoremap <leader><leader> :b#<cr>
+nnoremap <leader>w :w<cr>
 
 if executable('rg')
   set grepprg=rg\ --vimgrep
@@ -176,7 +173,7 @@ nnoremap <leader>t :Tags<cr>
 "nnoremap <leader>g :Rg<cr>
 
 nnoremap <leader>m :make<cr>:botright cw<cr>
-nnoremap <silent> <leader>l :wa<cr> :silent !tmux send-keys -t 0 -X cancel; tmux send-keys -Rt 0 Up Enter<cr>
+nnoremap <silent> <leader>l :wa<cr> :silent !tmux send-keys -t {last} -X cancel; tmux send-keys -Rt {last} Up Enter<cr>
 
 vnoremap <leader>p "+p
 vnoremap <leader>y "+y
