@@ -2,7 +2,7 @@
 export LIBRARY_PATH="/usr/lib/x86_64-linux-gnu"
 export LD_LIBRARY_PATH="/usr/local/lib"
 
-export DEVWS_REPO="/home/jason/dev-root/debesys-one"
+export DEVWS_REPO="/home/jerdmann/dev-root/debesys-scripts"
 export DEPLOY_ONE_OFF_NEVER_EXPIRE=1
 
 if [ -f $DEVWS_REPO/deploy/chef/scripts/bashrc/devws.bash ]; then
@@ -16,6 +16,9 @@ export JDK8_BIN=/opt/jdk/bin/java
 # required for ase builds
 export LANG='en_US.UTF-8'
 export LANGUAGE='en_US'
+
+# captain
+export QUARTERMASTER=ON
 
 alias ttrun='$(git rev-parse --show-toplevel)/run'
 alias ttsudo='sudo ttrun'
@@ -133,6 +136,7 @@ function mkmds {
 
 function mkclean {
     rr || return
+    sudo rm -rf build/x86-64/*/python/
     rm -rf build the_arsenal/all_messages/_pb_out
     lbmify
     popd >/dev/null
@@ -266,7 +270,7 @@ function capunzip {
 }
 
 function capget {
-    args=$(xclip -o -sel clip)
+    args=$@
     link=$(echo $args | awk '{print $4}' | sed "s/'//g")
     file=$(echo $link | cut -f1 -d? | xargs -0 basename)
     wget -nc -O "/tmp/$file" $link
@@ -377,7 +381,7 @@ set history filename ~/.gdb_history
 set history save
 set print pretty on
 set auto-load safe-path /
-set exec-wrapper /opt/debesys/mds_adapter_foo/run
+set exec-wrapper /opt/debesys/mds_foo/run
 EOF
 sudo cp ~/.gdbinit /root/
 EOS
@@ -393,6 +397,8 @@ function _deb {
 alias deb=_deb
 
 function _dlib {
-    sed -i 's,/opt/debesys/mds_\S*/lib/,./build/x86-64/debug/lib/,' $1
+    sed -i 's,/opt/debesys/\S*/lib/,./build/x86-64/debug/lib/,' $1
 }
 alias dlib=_dlib
+
+

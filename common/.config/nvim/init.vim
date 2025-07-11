@@ -49,10 +49,6 @@ endif
 set bg=dark
 let g:gruvbox_contrast_dark="soft"
 colo gruvbox
-"regrettably living in a world with heaps of legacy code.  revisit
-"let g:clang_format#auto_format = 1
-"let g:clang_format#auto_formatexpr = 1
-"let g:clang_format#auto_format_on_insert_leave = 1
 
 set nobackup
 set autowrite

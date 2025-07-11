@@ -23,6 +23,8 @@ config="debug"
 cache=""
 ext=""
 args=""
+jobs=""
+arg_mkvars=""
 
 while [[ $# -gt 0 ]]; do
     if [[ "$1" == "--terse" ]]; then
@@ -43,6 +45,12 @@ while [[ $# -gt 0 ]]; do
     elif [[ "$1" == "--ext" ]]; then
         ext="yes"
         shift 1
+    elif [[ "$1" == "-j" ]]; then
+        jobs=$2
+        shift 2
+    elif [[ "$1" == "--mkvars" ]]; then
+        arg_mkvars=$2
+        shift 2
     else 
         if [[ -z "$args" ]]; then
             args="$1"
@@ -59,15 +67,19 @@ if [[ -z "$args" ]]; then
 fi
 
 # baseline params, plus gcc9 if present
-if [[ -z "$GCC_CPU_CORES" ]]; then
-    jobs=$(nproc --ignore 4)
-else
-    jobs=$GCC_CPU_CORES
+if [[ -z "$jobs" ]]; then
+    if [[ -z "$GCC_CPU_CORES" ]]; then
+        jobs=$(nproc --ignore 4)
+    else
+        jobs=$GCC_CPU_CORES
+    fi
 fi
 params="config=$config use_distcc=0 $cache -C $rr -j$jobs $args"
 
 gcc9_mkvars="$rr/base_gcc9_cxx11.mkvars"
-if [[ -r "$gcc9_mkvars" && -z "$ext" ]]; then
+if [[ ! -z "$arg_mkvars" && -r "$arg_mkvars" ]]; then
+    params="$params var_file_name=$arg_mkvars"
+elif [[ -r "$gcc9_mkvars" && -z "$ext" ]]; then
     params="$params var_file_name=$gcc9_mkvars"
 else
     params="$params var_file_name=base.mkvars"
@@ -92,7 +104,7 @@ fi
 # terse mode if present
 cmd="make $params $@"
 if [[ "$terse" == "yes" ]]; then
-    cmd="$cmd | grep --line-buffered -v -e 'given more than once' -e NOTE: -e discover_mkvars -e PATH="
+    cmd="$cmd 2>&1 | grep --line-buffered -v -e 'given more than once' -e note: -e discover_mkvars -e PATH="
 fi
 
 # execute the command and pass through its return code
