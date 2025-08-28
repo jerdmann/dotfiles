@@ -321,20 +321,6 @@ function upstage {
     upenv -c $cb -e int-stage -b $branch
 }
 
-function _lc {
-    awk '{ 
-        gsub(/ tsExchangeSend=[0-9]+ tsServerRecv=[0-9]+/, "")
-        gsub(/[A-Z]+\s+\|(\s+\S*\s+\|){4,}/, "")
-        gsub(/\[SPLUNK_IGNORE\]/, "")
-        print
-    }'
-}
-alias lc=_lc
-function _clip_lc {
-    xclip -o -sel clip | lc | xclip -i -sel clip
-}
-alias clc=_clip_lc
-
 function _mdsfeeds {
     if [[ $# -lt 2 ]]; then
         echo "expect: exchange [args...]"

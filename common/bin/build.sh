@@ -77,7 +77,11 @@ fi
 params="config=$config use_distcc=0 $cache -C $rr -j$jobs $args"
 
 gcc9_mkvars="$rr/base_gcc9_cxx11.mkvars"
-if [[ ! -z "$arg_mkvars" && -r "$arg_mkvars" ]]; then
+if [[ ! -z "$arg_mkvars" ]]; then
+    if [[ ! -r "$arg_mkvars" ]]; then
+        echo "error: mkvars not found (check cwd?)"
+        exit -1
+    fi
     params="$params var_file_name=$arg_mkvars"
 elif [[ -r "$gcc9_mkvars" && -z "$ext" ]]; then
     params="$params var_file_name=$gcc9_mkvars"
